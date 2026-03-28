@@ -1,0 +1,160 @@
+GUIA BASICA PER DESCARREGAR I TREBALLAR AMB EL PROJECTE
+
+Aquestes instruccions serveixen per descarregar el repositori, fer canvis i pujar-los sense complicacions.
+
+1. QUE NECESSITA CADA PERSONA
+
+- Un compte de GitHub
+- Git instal.lat: https://git-scm.com/downloads
+- Visual Studio Code o un altre editor de codi
+
+Segons la part del projecte que s'hagi de tocar, tambe pot fer falta tenir instal.lat Node.js o altres eines.
+
+2. COM DESCARREGAR EL PROJECTE PER PRIMERA VEGADA
+
+1. Obrir la carpeta de l'ordinador on es vulgui guardar el projecte.
+2. Obrir una terminal o PowerShell en aquesta carpeta.
+3. Executar aquesta comanda:
+
+git clone https://github.com/rupasgon/Plataforma_Gestio_Voluntariat_Grup1.git
+
+4. Entrar a la carpeta del projecte:
+
+cd Plataforma_Gestio_Voluntariat_Grup1
+
+Amb aixo es descarrega una copia completa del repositori.
+
+3. COM OBRIR EL PROJECTE
+
+Si s'utilitza Visual Studio Code, dins de la carpeta del projecte es pot executar:
+
+code .
+
+Si aquesta comanda no funciona, es pot obrir VS Code manualment i seleccionar la carpeta del projecte.
+
+4. QUE CAL FER ABANS DE COMENCAR A TREBALLAR
+
+Abans de tocar res, cal actualitzar sempre el projecte amb aquesta comanda:
+
+git pull
+
+Aixi es descarreguen els ultims canvis que hi hagi a GitHub.
+
+5. COM COMPROVAR L'ESTAT DEL PROJECTE
+
+Per veure si hi ha arxius modificats o nous:
+
+git status
+
+El mes important es entendre aixo:
+
+- "nothing to commit, working tree clean": no hi ha canvis pendents
+- "modified": hi ha arxius modificats
+- "untracked": hi ha arxius nous sense afegir a Git
+
+6. FORMA RECOMANADA DE TREBALLAR
+
+El millor es que cada persona treballi en la seva propia branca.
+
+Exemple per crear una branca nova:
+
+git checkout -b nom-branca
+
+Exemple:
+
+git checkout -b marta-login
+
+Despres d'aixo, ja es poden fer canvis als arxius del projecte.
+
+7. COM DESAR ELS CANVIS
+
+1. Veure l'estat:
+
+git status
+
+2. Afegir els canvis:
+
+git add .
+
+3. Crear un commit amb un missatge clar:
+
+git commit -m "Actualitza el formulari de login"
+
+8. COM PUJAR ELS CANVIS A GITHUB
+
+Si s'esta treballant en una branca nova:
+
+git push -u origin nom-branca
+
+Exemple:
+
+git push -u origin marta-login
+
+La primera vegada pot demanar iniciar sessio a GitHub.
+
+9. SI ES VOL TREBALLAR DIRECTAMENT A MAIN
+
+No es la forma mes recomanable, pero si es fa, el proces seria:
+
+git pull
+git add .
+git commit -m "Descriu aqui el canvi"
+git push
+
+El problema es que aixi es mes facil que apareguin conflictes si diverses persones canvien el mateix.
+
+10. NORMES BASIQUES PER EVITAR PROBLEMES
+
+- Fer sempre git pull abans de comencar
+- No treballar alhora sobre el mateix arxiu si es pot evitar
+- Escriure missatges de commit clars
+- Pujar canvis petits i frequents
+- No esborrar arxius si no se n'esta segur
+- No modificar la carpeta .git
+
+11. SI APAREIX UN CONFLICTE
+
+Si Git mostra un conflicte en fer git pull o git push:
+
+- No esborrar res sense revisar-ho
+- Executar:
+
+git status
+
+- Revisar quins arxius estan en conflicte
+- Si fa falta, avisar la persona responsable del projecte
+
+12. COMANDES BASIQUES
+
+git clone https://github.com/rupasgon/Plataforma_Gestio_Voluntariat_Grup1.git
+cd Plataforma_Gestio_Voluntariat_Grup1
+git pull
+git status
+git checkout -b nom-branca
+git add .
+git commit -m "missatge"
+git push -u origin nom-branca
+
+13. EXEMPLE COMPLET
+
+git clone https://github.com/rupasgon/Plataforma_Gestio_Voluntariat_Grup1.git
+cd Plataforma_Gestio_Voluntariat_Grup1
+git pull
+git checkout -b anna-admin
+
+Despres de fer canvis:
+
+git add .
+git commit -m "Millora la pagina d'administracio"
+git push -u origin anna-admin
+
+14. RESUM RAPID
+
+1. Descarregar el projecte amb git clone
+2. Entrar a la carpeta
+3. Fer git pull
+4. Crear una branca propia
+5. Fer canvis
+6. Executar git add .
+7. Executar git commit -m "missatge"
+8. Executar git push -u origin nom-branca
