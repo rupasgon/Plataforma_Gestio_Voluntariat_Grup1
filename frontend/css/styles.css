@@ -1,0 +1,497 @@
+/* ===== ESTILS GENERALS (Mobile First <576px) ===== */
+
+body {
+    background-color: #d7d8d9;
+    /* color de fons de la pàgina */
+    color: black;
+    /* color del text */
+}
+
+/* ===== TÍTOLS ===== */
+
+h2 {
+    font-family: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    /* tipus de lletra */
+    font-weight: 700;
+    /* negreta */
+    color: #333;
+    /* color gris fosc */
+    transition: 0.3s;
+    /* animació suau */
+    animation: flotar 0.8s ease 2;
+    /* animació del títol */
+    position: relative;
+    /* necessari per la línia */
+    display: block;
+    /* ocupa tota la línia */
+    width: 100%;
+    /* amplada completa */
+}
+
+/* línia taronja sota el títol */
+
+h2::after {
+    content: "";
+    /* element decoratiu */
+    width: 0;
+    /* al principi no es veu */
+    height: 3px;
+    /* gruix de la línia */
+    background: #f34703;
+    /* color taronja */
+    position: absolute;
+    /* posició respecte el h2 */
+    left: 0;
+    /* comença a l'esquerra */
+    bottom: -5px;
+    /* una mica sota el text */
+    transition: width 0.4s;
+    /* animació quan apareix */
+}
+
+/* quan passes el ratolí pel títol */
+
+h2:hover::after {
+    width: 100%;
+    /* la línia es fa completa */
+}
+
+/* animació del títol */
+
+@keyframes flotar {
+
+    0% {
+        transform: translateY(0);
+        /* posició inicial */
+    }
+
+    50% {
+        transform: translateY(-70px);
+        /* puja una mica */
+    }
+
+    100% {
+        transform: translateY(0);
+        /* torna a la posició */
+    }
+
+}
+
+/* ===== MENÚ DE NAVEGACIÓ ===== */
+
+.menu-celeste {
+    background-color: #a8d8ff;
+    /* fons blau clar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    /* ombra del menú */
+    width: 99%;
+    /* amplada del menú */
+    margin: 0 auto;
+    /* centra el menú */
+}
+
+/* contenidor dels botons */
+
+.nav-pills {
+    justify-content: left;
+    /* botons a l'esquerra */
+}
+
+/* cada element del menú */
+
+.nav-pills .nav-item {
+    flex: 0 0 auto;
+    /* evita que s'estirin */
+    width: 120px;
+    /* amplada fixa */
+    text-align: center;
+    /* text centrat */
+    margin: 0 5px;
+    /* espai entre botons */
+}
+
+/* botó actiu */
+
+.nav-pills .nav-link.active {
+    background-color: #0d6efd !important;
+    /* blau bootstrap */
+    color: white !important;
+    /* text blanc */
+}
+
+/* estil general dels enllaços */
+
+.nav-pills .nav-link {
+    color: black !important;
+    /* text negre */
+}
+
+/* ===== HEADER ===== */
+
+/* ===== Header Background ===== */
+
+header img {
+    width: 100%;
+    /* ocupa tot l'ample */
+    height: 200px;
+    /* alçada en mòbil */
+    object-fit: cover;
+    /* adapta la imatge */
+    margin-bottom: 40px;
+    /* espai extra sota el footer */
+}
+
+/* ===== SECCIÓ INFORMACIÓ PLATAFORMA ===== */
+
+.informacio-plataforma {
+    width: 100%;
+    /* amplada completa */
+    margin: 0 auto;
+    /* centrat */
+}
+
+/* ===== Animació llista de noms ===== */
+
+.llista-noms li {
+    opacity: 0;
+    /* invisible al principi */
+    transform: translateX(100vw);
+    /* fora de la pantalla a la dreta */
+    animation: slideIn 0.5s forwards;
+    /* anima fins al lloc final */
+    list-style: none;
+    /* treu els punts de la llista */
+    margin: 0.5rem 0;
+    /* espai entre noms */
+}
+
+.llista-noms li:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+/* primer element apareix després de 0.2s */
+
+.llista-noms li:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+/* segon element després de 0.4s */
+
+.llista-noms li:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+/* tercer element després de 0.6s */
+
+.llista-noms li:nth-child(4) {
+    animation-delay: 0.8s;
+}
+
+/* quart element després de 0.8s */
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        /* apareix */
+        transform: translateX(0);
+        /* llisca fins a la posició final */
+    }
+}
+
+/* ===== FAQS ===== */
+
+.faq {
+    /* selector FAQ */
+    background-color: #FFB347;
+    /* fons blau clar */
+    border-radius: 15px;
+    /* cantonades rodones */
+}
+
+/* botons per defecte */
+.faq .accordion-button {
+    /* botons de cada pregunta */
+    background-color: #a8d8ff;
+    /* fons blau fosc */
+    color: black;
+    /* text blanc */
+    font-weight: bold;
+    /* negreta */
+}
+
+.faq .accordion-body {
+    /* cos de les respostes */
+    color: black;
+    /* text blau fosc */
+}
+
+/* botons al fer clic */
+
+.faq .accordion-button:not(.collapsed) {
+    /* botó obert */
+    background-color: #397ac9;
+    /* fons blau clar */
+    color: white;
+    /* text blau fosc */
+}
+
+/* fletxa blanc */
+.faq .accordion-button::after {
+    filter: invert(1);
+    /* fa que la fletxa sigui blanca */
+}
+
+/* FAQS sense animacions */
+
+.faq h2,
+/* h2 dins FAQS */
+.faq .accordion-button {
+    /* botons de l'accordion */
+    animation: none !important;
+    /* treu animació */
+    transition: none !important;
+    /* treu transicions */
+}
+
+/* FAQS sense línia ni animació */
+.faq h2::after {
+    transition: none !important;
+    /* treu transició */
+    width: 0 !important;
+    /* sempre width 0 */
+}
+
+.faq h2:hover::after {
+    width: 0 !important;
+    /* evita que s'ampliï al passar el ratolí */
+}
+
+/* ===== SECCIÓ PERFIL USUARI ===== */
+
+/* capa de fons gorga del perfil d'usuaris */
+
+.wrapper-perfil-usuaris {
+    width: 100%;
+    /* amplada completa */
+    height: auto;
+    /* alçada automàtica */
+    background-image: url("../img/background-perfil-usuaris.webp");
+    /* imatge de fons */
+    background-size: cover;
+    /* cobreix tot */
+    background-position: center;
+    /* imatge centrada */
+    border-radius: 20px;
+    /* cantonades arrodonides */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* ombra */
+}
+
+/* capa transparent de la info del perfil */
+
+.wrapper-perfil-info {
+    width: 62%;
+    /* amplada del wrapper */
+    height: auto;
+    /* alçada automàtica */
+    border-radius: 20px;
+    /* cantonades arrodonides */
+    position: relative;
+    overflow: hidden;
+}
+
+.wrapper-perfil-info::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(252, 252, 253, 0.5);
+    /* nivell transparència */
+    border-radius: 20px;
+}
+
+.wrapper-perfil-info * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== IMATGES PERFIL ===== */
+
+/* Estil general de les imatges */
+.foto-efecte {
+    width: 30%;
+    /* amplada de la imatge respecte al contenidor */
+    transition: transform 0.3s ease;
+    /* fa que el moviment sigui suau quan fem hover */
+}
+
+/* Efecte quan passem el ratolí per sobre */
+.foto-efecte:hover {
+    transform: translateY(-28px) scale(1.05);
+    /* puja la imatge 28px cap amunt i la fa una mica més gran */
+}
+
+/* ===== FOOTER ===== */
+
+.footer {
+    background-image: url('../img/footer-background.webp');
+    /* imatge de fons del footer*/
+    background-size: cover;
+    /* ocupa tot l'espai */
+    background-position: center;
+    /* centra la imatge */
+    background-repeat: no-repeat;
+    /* no repetir la imatge */
+    color: white;
+    /* text blanc */
+    min-height: 300px;
+    /* alçada mínima del footer */
+    max-height: 300px;
+    /* alçada màxima del footer */
+    display: flex;
+    /* activa flexbox */
+    align-items: center;
+    /* centra verticalment el contingut */
+    margin-bottom: 40px;
+    /* espai extra sota el footer */
+}
+
+/* imatge del logo del footer */
+
+.footer-logo {
+    height: 120px;
+    /* alçada de la imatge del logo del footer */
+}
+
+/* color del text del footer */
+
+.footer-text {
+    color: white;
+    /* color blanc del text del footer */
+}
+
+/* capa transparent del footer */
+
+.wrapper-footer {
+    padding-bottom: 20px;
+    /* espaiet per sota, que el text no quedi enganxat al final */
+    padding-left: 10px;
+    /* espai a l’esquerra, perquè no toqui la paret del container */
+    width: 34%;
+    /* amplada aproximada del wrapper, ajustable segons el disseny */
+    height: auto;
+    /* automàtic, depèn del contingut que hi fiquem */
+    border-radius: 20px;
+    /* cantonades arrodonides per fer-ho més agradable visualment */
+    position: relative;
+    /* necessari per al pseudo-element ::before que volem posar de fons */
+    overflow: hidden;
+    /* talla tot el que sobresurti, útil per efectes visuals */
+}
+
+.wrapper-footer::before {
+    content: "";
+    /* pseudo-element buit només per decoració de fons */
+    position: absolute;
+    /* col·locat respecte al wrapper, ocupa tot l’espai */
+    inset: 0;
+    /* cobreix tot: top 0, right 0, bottom 0, left 0 */
+    background: rgba(11, 7, 235, 0.5);
+    /* blau semi-transparent, per crear un efecte de fons */
+    border-radius: 20px;
+    /* mantenim les cantonades igual que el wrapper */
+}
+
+.wrapper-footer * {
+    position: relative;
+    /* tots els elements fills es posicionen respecte al pseudo-element */
+    z-index: 1;
+    /* assegurem que el text i contingut estiguin per davant del fons */
+}
+
+/* ===== LOGIN CSS ===== */
+
+/* Classe que aplica l'estil al card de login */
+.card-login {
+    background-color: #ffffff;
+    /* Color de fons blau cel */
+    color: #000;
+    /* Color del text: negre */
+    border-radius: 10px;
+    /* Cantonades arrodonides de 10px */
+    border: 1px solid #dfe3e8 !important;
+    transition: none;
+    /* Transició suau quan hi hagi transformacions */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Ombra del card per donar profunditat i destacar sobre el fons */
+}
+
+/* CARD LOGIN sense animacio */
+
+.card-login {
+    animation: none !important;
+    /* treu qualsevol animacio */
+    transition: none !important;
+    /* treu qualsevol transicio */
+}
+
+/* ===== ADMIN DASHBOARD ===== */
+
+.admin-dashboard h1 {
+    font-family: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 700;
+    color: #333;
+}
+
+.admin-stat-card {
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
+
+.admin-stat-label {
+    color: #5a6470;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.admin-stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2a2a2a;
+    line-height: 1.1;
+}
+
+.admin-stat-text {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.admin-panel-card {
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+}
+
+/* ===== MEDIA QUERIES ===== */
+
+/* tauletes */
+
+@media (min-width:768px) {
+
+    header img {
+        height: 250px;
+        /* alçada header */
+    }
+
+}
+
+/* ordinadors */
+
+@media (min-width:992px) {
+
+    header img {
+        height: 350px;
+        /* alçada header */
+    }
+
+}
