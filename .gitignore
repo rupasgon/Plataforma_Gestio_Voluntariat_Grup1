@@ -17,3 +17,6 @@ Thumbs.db
 # Build
 /dist/
 /build/
+
+# Private local notes
+docs/project-history-summary.private.md
