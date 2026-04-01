@@ -8,6 +8,8 @@ const botoMostrarContrasenya = document.getElementById("mostrar_contrasenya");
 const errorIdentificador = document.getElementById("error_identificador");
 const errorContrasenya = document.getElementById("error_contrasenya");
 
+const API_BASE_URL = "http://localhost:3000/api";
+
 function mostrarEstat(missatge, tipus) {
   estatAcces.className = `login-status mt-4 alert alert-${tipus}`;
   estatAcces.textContent = missatge;
@@ -26,7 +28,7 @@ function validarIdentificador() {
   } else if (semblaCorreu && !correuValid) {
     missatge = "El format del correu electronic no es valid.";
   } else if (!semblaCorreu && !usuariValid) {
-    missatge = "El nom d'usuari ha de tenir minim 3 caracters.";
+    missatge = "El nom d usuari ha de tenir minim 3 caracters.";
   }
 
   errorIdentificador.textContent = missatge;
@@ -50,6 +52,27 @@ function validarContrasenya() {
   return valida;
 }
 
+async function enviarCredencials() {
+  const resposta = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      identificador: campIdentificador.value.trim(),
+      password: campContrasenya.value
+    })
+  });
+
+  const dades = await resposta.json().catch(() => ({}));
+
+  if (!resposta.ok) {
+    throw new Error(dades.message || "No s ha pogut iniciar la sessio.");
+  }
+
+  return dades;
+}
+
 botoMostrarContrasenya.addEventListener("click", () => {
   const esText = campContrasenya.type === "text";
   campContrasenya.type = esText ? "password" : "text";
@@ -68,30 +91,28 @@ campContrasenya.addEventListener("input", () => {
   }
 });
 
-formulariAcces.addEventListener("submit", (esdeveniment) => {
+formulariAcces.addEventListener("submit", async (esdeveniment) => {
   esdeveniment.preventDefault();
 
   const identificadorValid = validarIdentificador();
   const contrasenyaValida = validarContrasenya();
 
   if (!identificadorValid || !contrasenyaValida) {
-    mostrarEstat("Revisa els camps obligatoris abans d'entrar.", "warning");
+    mostrarEstat("Revisa els camps obligatoris abans d entrar.", "warning");
     return;
   }
 
   botoEntrar.disabled = true;
   botoEntrar.textContent = "Verificant...";
+  mostrarEstat("Validant les credencials...", "info");
 
-  setTimeout(() => {
+  try {
+    const dades = await enviarCredencials();
+    mostrarEstat(`Acces correcte. Usuari validat amb rol ${dades.user.rol}.`, "success");
+  } catch (error) {
+    mostrarEstat(error.message, "danger");
+  } finally {
     botoEntrar.disabled = false;
     botoEntrar.textContent = "Entrar";
-
-    const sessioRecordada = document.getElementById("recordar_sessio").checked;
-    const textSessio = sessioRecordada ? " Sessio recordada." : "";
-
-    mostrarEstat(
-      "Validacions superades. El formulari esta llest per connectar-se amb l'autenticacio real." + textSessio,
-      "success"
-    );
-  }, 600);
+  }
 });

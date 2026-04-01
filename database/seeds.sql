@@ -2,9 +2,9 @@ USE parelles_linguistiques;
 
 INSERT INTO users (nom, cognoms, email, password, rol)
 VALUES
-  ('Admin', 'Principal', 'admin@example.com', 'hashed_password', 'admin'),
-  ('Joan', 'Voluntari', 'voluntari@example.com', 'hashed_password', 'voluntari'),
-  ('Maria', 'Aprenent', 'aprenent@example.com', 'hashed_password', 'aprenent');
+  ('Admin', 'Principal', 'admin@example.com', '$2b$10$AlkleXUs7dzGDybSodOsnudLjK5mxaYval6WcVfjhW4.tUJu0IdiW', 'admin'),
+  ('Joan', 'Voluntari', 'voluntari@example.com', '$2b$10$s/3l0K6mkX3ttpcaWOS5fOASPUmu7AJEThf9riQ6tMrDOrJ3dKm5m', 'voluntari'),
+  ('Maria', 'Aprenent', 'aprenent@example.com', '$2b$10$FZg8s60um4chu1pbnPIaguKaGkxMdlAfE1MJ7qb4pYyfCp9ALH9FK', 'aprenent');
 
 INSERT INTO voluntaris (user_id, telefon, parroquia, data_naixement, disponibilitat, observacions)
 VALUES
