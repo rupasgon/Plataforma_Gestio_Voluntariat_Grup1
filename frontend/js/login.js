@@ -1,50 +1,80 @@
 // ===== ELEMENTS DEL FORMULARI =====
 const formulariAcces = document.getElementById("formulari_acces");
 const estatAcces = document.getElementById("estat_acces");
-const campCorreu = document.getElementById("correu");
+const campIdentificador = document.getElementById("identificador");
 const campContrasenya = document.getElementById("contrasenya");
 const botoEntrar = document.getElementById("boto_entrar");
 const botoMostrarContrasenya = document.getElementById("mostrar_contrasenya");
+const errorIdentificador = document.getElementById("error_identificador");
 const errorContrasenya = document.getElementById("error_contrasenya");
 
-// Mostra un missatge visual sota el formulari
 function mostrarEstat(missatge, tipus) {
-  estatAcces.className = `mt-3 alert alert-${tipus}`;
+  estatAcces.className = `login-status mt-4 alert alert-${tipus}`;
   estatAcces.textContent = missatge;
 }
 
-// Comprova que la contrasenya tingui una longitud mínima
+function validarIdentificador() {
+  const valor = campIdentificador.value.trim();
+  const semblaCorreu = valor.includes("@");
+  const correuValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+  const usuariValid = valor.length >= 3;
+  const esValid = semblaCorreu ? correuValid : usuariValid;
+
+  let missatge = "";
+  if (!valor) {
+    missatge = "Introdueix el teu usuari o correu electronic.";
+  } else if (semblaCorreu && !correuValid) {
+    missatge = "El format del correu electronic no es valid.";
+  } else if (!semblaCorreu && !usuariValid) {
+    missatge = "El nom d'usuari ha de tenir minim 3 caracters.";
+  }
+
+  errorIdentificador.textContent = missatge;
+  campIdentificador.classList.toggle("is-invalid", !esValid);
+  return esValid;
+}
+
 function validarContrasenya() {
-  const valida = campContrasenya.value.trim().length >= 6;
-  errorContrasenya.textContent = valida ? "" : "La contrasenya ha de tenir minim 6 caracters.";
+  const valor = campContrasenya.value.trim();
+  const valida = valor.length >= 6;
+
+  let missatge = "";
+  if (!valor) {
+    missatge = "Introdueix la contrasenya.";
+  } else if (!valida) {
+    missatge = "La contrasenya ha de tenir minim 6 caracters.";
+  }
+
+  errorContrasenya.textContent = missatge;
   campContrasenya.classList.toggle("is-invalid", !valida);
   return valida;
 }
 
-// Mostra o amaga el text de la contrasenya
 botoMostrarContrasenya.addEventListener("click", () => {
   const esText = campContrasenya.type === "text";
   campContrasenya.type = esText ? "password" : "text";
   botoMostrarContrasenya.textContent = esText ? "Mostrar" : "Ocultar";
 });
 
-// Revalida la contrasenya mentre s'escriu
+campIdentificador.addEventListener("input", () => {
+  if (campIdentificador.classList.contains("is-invalid")) {
+    validarIdentificador();
+  }
+});
+
 campContrasenya.addEventListener("input", () => {
   if (campContrasenya.classList.contains("is-invalid")) {
     validarContrasenya();
   }
 });
 
-// Enviament del formulari d'accés
 formulariAcces.addEventListener("submit", (esdeveniment) => {
   esdeveniment.preventDefault();
 
-  const correuValid = campCorreu.checkValidity();
+  const identificadorValid = validarIdentificador();
   const contrasenyaValida = validarContrasenya();
 
-  campCorreu.classList.toggle("is-invalid", !correuValid);
-
-  if (!correuValid || !contrasenyaValida) {
+  if (!identificadorValid || !contrasenyaValida) {
     mostrarEstat("Revisa els camps obligatoris abans d'entrar.", "warning");
     return;
   }
@@ -59,6 +89,9 @@ formulariAcces.addEventListener("submit", (esdeveniment) => {
     const sessioRecordada = document.getElementById("recordar_sessio").checked;
     const textSessio = sessioRecordada ? " Sessio recordada." : "";
 
-    mostrarEstat("Acces correcte." + textSessio, "success");
+    mostrarEstat(
+      "Validacions superades. El formulari esta llest per connectar-se amb l'autenticacio real." + textSessio,
+      "success"
+    );
   }, 600);
 });

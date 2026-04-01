@@ -6,58 +6,121 @@
     <title>Acces al sistema</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/login.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg bg-light border-bottom">
-      <div class="container">
-        <a class="navbar-brand" href="../index.html">Parelles Linguistiques</a>
-        <div class="d-flex gap-2">
-          <a class="btn btn-primary" href="../pages/login.html">Acces</a>
+  <body class="login-page">
+    <div class="container-fluid login-shell px-3 px-lg-5 py-4">
+      <nav class="row menu-celeste shadow p-3 mb-4">
+        <div class="col-12">
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="../index.html">Inici</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="./voluntari-form.html">Voluntaris</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="./aprenent-form.html">Aprenents</a>
+            </li>
+            <li class="nav-item ms-auto">
+              <a class="nav-link active" aria-current="page" href="./login.html">Acces</a>
+            </li>
+          </ul>
         </div>
-      </div>
-    </nav>
+      </nav>
 
-    <main class="container py-5">
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-5">
-          <h1 class="mb-3 text-center">Acces al sistema</h1>
-          <p class="text-center text-muted mb-4">Introdueix les teves dades per continuar</p>
+      <main class="login-layout">
+        <section class="login-intro">
+          <p class="login-kicker">Espai privat de la plataforma</p>
+          <h1 class="login-title">Accedeix al gestor de voluntariat linguistic</h1>
+          <p class="login-description">
+            Entra amb el teu usuari o correu electronic per continuar amb la gestio de perfils,
+            sollicituds i assignacions.
+          </p>
 
-          <form class="card card-login p-4 border-0" id="formulari_acces" novalidate>
-            <div class="mb-3">
-              <label for="correu" class="form-label">Correu electronic</label>
-              <input type="email" class="form-control" id="correu" autocomplete="email" required />
-              <div class="invalid-feedback">Introdueix un correu valid.</div>
-            </div>
+          <div class="login-feature-list">
+            <article class="login-feature-card">
+              <h2>Acces centralitzat</h2>
+              <p>Unifica l'entrada d'administradors, voluntaris i aprenents dins del mateix entorn.</p>
+            </article>
+            <article class="login-feature-card">
+              <h2>Validacio immediata</h2>
+              <p>La interficie comprova els camps obligatoris abans de permetre l'enviament.</p>
+            </article>
+            <article class="login-feature-card">
+              <h2>Disseny responsive</h2>
+              <p>La pantalla s'adapta a mobil, tauleta i escriptori mantenint la mateixa jerarquia visual.</p>
+            </article>
+          </div>
+        </section>
 
-            <div class="mb-2">
-              <label for="contrasenya" class="form-label">Contrasenya</label>
-              <div class="input-group">
-                <input type="password" class="form-control" id="contrasenya" minlength="6" autocomplete="current-password" required />
-                <button class="btn btn-outline-secondary" type="button" id="mostrar_contrasenya">Mostrar</button>
+        <section class="login-panel">
+          <div class="card card-login border-0">
+            <div class="card-body p-4 p-lg-5">
+              <div class="login-brand mb-4">
+                <img src="../img/logo2.png" alt="Logotip de la plataforma" class="login-brand-logo" />
+                <div>
+                  <p class="login-brand-overline mb-1">Parelles Linguistiques</p>
+                  <p class="login-brand-caption mb-0">Introdueix les teves dades per continuar</p>
+                </div>
               </div>
-              <div class="invalid-feedback d-block" id="error_contrasenya"></div>
+
+              <form id="formulari_acces" novalidate>
+                <div class="mb-3">
+                  <label for="identificador" class="form-label">Usuari o correu electronic</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="identificador"
+                    name="identificador"
+                    autocomplete="username"
+                    placeholder="exemple@domini.cat o nom.usuari"
+                    required
+                  />
+                  <div class="invalid-feedback d-block" id="error_identificador"></div>
+                </div>
+
+                <div class="mb-2">
+                  <div class="d-flex justify-content-between align-items-center gap-3">
+                    <label for="contrasenya" class="form-label mb-0">Contrasenya</label>
+                    <span class="login-help-text">Minim 6 caracters</span>
+                  </div>
+                  <div class="input-group">
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="contrasenya"
+                      name="contrasenya"
+                      minlength="6"
+                      autocomplete="current-password"
+                      placeholder="Escriu la teva contrasenya"
+                      required
+                    />
+                    <button class="btn btn-outline-secondary" type="button" id="mostrar_contrasenya">Mostrar</button>
+                  </div>
+                  <div class="invalid-feedback d-block" id="error_contrasenya"></div>
+                </div>
+
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 my-3">
+                  <div class="form-check m-0">
+                    <input class="form-check-input" type="checkbox" id="recordar_sessio" />
+                    <label class="form-check-label" for="recordar_sessio">Recorda la sessio en aquest dispositiu</label>
+                  </div>
+                  <a class="login-secondary-link" href="../index.html">Tornar a l'inici</a>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                  <button class="btn btn-primary login-submit-button" id="boto_entrar" type="submit">Entrar</button>
+                </div>
+              </form>
+
+              <div class="login-status mt-4 small" id="estat_acces" role="status" aria-live="polite"></div>
             </div>
-
-            <div class="form-check my-3">
-              <input class="form-check-input" type="checkbox" id="recordar_sessio" />
-              <label class="form-check-label" for="recordar_sessio">Recorda la sessio en aquest dispositiu</label>
-            </div>
-
-            <div class="d-grid gap-2 mt-2">
-              <button class="btn btn-primary" id="boto_entrar" type="submit">Entrar</button>
-              <a class="btn btn-outline-dark" href="../index.html">Tornar</a>
-            </div>
-          </form>
-
-          <div class="mt-3 small" id="estat_acces" role="status" aria-live="polite"></div>
-        </div>
-      </div>
-    </main>
-
-    <footer class="footer border-top py-3">
-      <div class="container text-muted">Projecte academic - MVP</div>
-    </footer>
+          </div>
+        </section>
+      </main>
+    </div>
 
     <script src="../js/login.js"></script>
   </body>
