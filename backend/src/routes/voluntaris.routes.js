@@ -4,6 +4,9 @@ const voluntariController = require('../controllers/voluntari.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const roleMiddleware = require('../middlewares/role.middleware');
 
+// Registre public del formulari de voluntaris (sense autenticacio).
+router.post('/register', voluntariController.crearVoluntari);
+
 router.use(authMiddleware);
 
 router.get('/', roleMiddleware(['admin']), voluntariController.llistarVoluntaris);
