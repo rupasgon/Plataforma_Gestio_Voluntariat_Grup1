@@ -1,10 +1,21 @@
-/* ===== ESTILS GENERALS (Mobile First <576px) ===== */
+/* ========================================================================================================================================================================= */
+
+/* ESTILS GENERALS (MÒBIL First <576px) */
+
+/* ========================================================================================================================================================================= */
 
 body {
     background-color: #d7d8d9;
     /* color de fons de la pàgina */
     color: black;
     /* color del text */
+}
+
+.container-fluid {
+    width: 98%;
+    /* la web ocupa el 98% de l'amplada de la pantalla */
+    margin: 0 auto;
+    /* centra tot el contingut horitzontalment */
 }
 
 /* ===== TÍTOLS ===== */
@@ -26,6 +37,30 @@ h2 {
     /* ocupa tota la línia */
     width: 100%;
     /* amplada completa */
+}
+
+/* ===== FONT SIZE PER H1, H2 I MENÚ ===== */
+
+/* H1 principal: titulars grans i destacats */
+body h1 {
+    font-size: 1.3rem;
+    /* mida del text */
+    line-height: 1.2;
+    /* espai vertical entre línies */
+}
+
+/* H2: subtítols i seccions */
+body h2 {
+    font-size: 1.5rem;
+    /* mida del text */
+    line-height: 1.3;
+    /* espai vertical entre línies */
+}
+
+/* Menú: links visibles però no massius */
+nav.menu-celeste a.nav-link {
+    font-size: 1rem;
+    /* mida del text */
 }
 
 /* línia taronja sota el títol */
@@ -93,8 +128,8 @@ h2:hover::after {
 /* contenidor dels botons */
 
 .nav-pills {
-    justify-content: left;
-    /* botons a l'esquerra */
+    justify-content: center;
+    /* botons al centre */
 }
 
 /* cada element del menú */
@@ -102,7 +137,7 @@ h2:hover::after {
 .nav-pills .nav-item {
     flex: 0 0 auto;
     /* evita que s'estirin */
-    width: 120px;
+    width: 180px;
     /* amplada fixa */
     text-align: center;
     /* text centrat */
@@ -208,6 +243,21 @@ header img {
     /* cantonades rodones */
 }
 
+.faq h2 {
+    font-size: 1.4rem;
+    /* mida del títol principal en mòbil */
+}
+
+.faq .accordion-button {
+    font-size: 0.7rem;
+    /* midad del text de la pregunta */
+}
+
+.faq .accordion-body {
+    font-size: 0.7rem;
+    /* mida del text de la resposta */
+}
+
 /* botons per defecte */
 .faq .accordion-button {
     /* botons de cada pregunta */
@@ -287,31 +337,53 @@ header img {
     /* ombra */
 }
 
+.wrapper-perfil-usuaris h2 {
+    font-size: 1.2rem;
+    /* mida del text */
+}
+
+.wrapper-perfil-usuaris p {
+    font-size: 0.8rem;
+    /* mida del text */
+}
+
 /* capa transparent de la info del perfil */
 
 .wrapper-perfil-info {
-    width: 62%;
-    /* amplada del wrapper */
+    width: 100%;
+    /* més ample en mòbil */
+    max-width: 90%;
+    /* limita la mida en desktop */
+    margin: 0 auto;
+    /* centra el contingut */
     height: auto;
-    /* alçada automàtica */
+    /* l'alçada s'ajusta automàticament segons el contingut o la imatge */
     border-radius: 20px;
-    /* cantonades arrodonides */
+    /* cantonades arrodonides de 20px */
     position: relative;
+    /* permet posicionar elements interns respecte aquest contenidor */
     overflow: hidden;
+    /* amaga qualsevol contingut que surti fora del contenidor */
 }
 
 .wrapper-perfil-info::before {
     content: "";
+    /* crea un pseudo-element abans del contingut */
     position: absolute;
+    /* es posiciona de forma absoluta dins del contenidor */
     inset: 0;
+    /* ocupa tot l'espai del contenidor (top, right, bottom, left = 0) */
     background: rgba(252, 252, 253, 0.5);
-    /* nivell transparència */
+    /* capa blanca amb transparència */
     border-radius: 20px;
+    /* mateix arrodoniment que el contenidor */
 }
 
 .wrapper-perfil-info * {
     position: relative;
+    /* permet controlar la capa del contingut */
     z-index: 1;
+    /* posa el contingut per sobre del pseudo-element */
 }
 
 /* ===== IMATGES PERFIL ===== */
@@ -343,9 +415,9 @@ header img {
     /* no repetir la imatge */
     color: white;
     /* text blanc */
-    min-height: 300px;
+    min-height: 80px;
     /* alçada mínima del footer */
-    max-height: 300px;
+    max-height: 80px;
     /* alçada màxima del footer */
     display: flex;
     /* activa flexbox */
@@ -353,145 +425,355 @@ header img {
     /* centra verticalment el contingut */
     margin-bottom: 40px;
     /* espai extra sota el footer */
+    font-size: 0.3em;
+    /* tamany font del footer*/
 }
 
-/* imatge del logo del footer */
+/* colocar els paràgrafs del footer en posició correcte */
 
-.footer-logo {
-    height: 120px;
-    /* alçada de la imatge del logo del footer */
+/* Primer paràgraf dins de .footer-text */
+.footer-text p:nth-child(1) {
+    padding-left: 30px;
+    /* primer paràgraf amb 150px */
 }
 
-/* color del text del footer */
-
-.footer-text {
-    color: white;
-    /* color blanc del text del footer */
+/* Segon paràgraf dins de .footer-text */
+.footer-text p:nth-child(2) {
+    padding-left: 50px;
+    /* segon paràgraf amb 200px */
 }
 
-/* capa transparent del footer */
-
-.wrapper-footer {
-    padding-bottom: 20px;
-    /* espaiet per sota, que el text no quedi enganxat al final */
-    padding-left: 10px;
-    /* espai a l’esquerra, perquè no toqui la paret del container */
-    width: 34%;
-    /* amplada aproximada del wrapper, ajustable segons el disseny */
-    height: auto;
-    /* automàtic, depèn del contingut que hi fiquem */
-    border-radius: 20px;
-    /* cantonades arrodonides per fer-ho més agradable visualment */
-    position: relative;
-    /* necessari per al pseudo-element ::before que volem posar de fons */
-    overflow: hidden;
-    /* talla tot el que sobresurti, útil per efectes visuals */
+/* Tercer paràgraf dins de .footer-text */
+.footer-text p:nth-child(3) {
+    padding-left: 30px;
+    /* tercer paràgraf amb 150px */
 }
 
-.wrapper-footer::before {
-    content: "";
-    /* pseudo-element buit només per decoració de fons */
-    position: absolute;
-    /* col·locat respecte al wrapper, ocupa tot l’espai */
-    inset: 0;
-    /* cobreix tot: top 0, right 0, bottom 0, left 0 */
-    background: rgba(11, 7, 235, 0.5);
-    /* blau semi-transparent, per crear un efecte de fons */
-    border-radius: 20px;
-    /* mantenim les cantonades igual que el wrapper */
+/* Quart i cinquè paràgraf reals (ignorant els <br>) */
+.footer-text p:nth-of-type(4),
+.footer-text p:nth-of-type(5) {
+    padding-left: 1px;
+    /* marge a l'esquerra dels paràgrafs */
 }
 
-.wrapper-footer * {
-    position: relative;
-    /* tots els elements fills es posicionen respecte al pseudo-element */
-    z-index: 1;
-    /* assegurem que el text i contingut estiguin per davant del fons */
-}
+/* ========================================================================================================================================================================= */
 
-/* ===== LOGIN CSS ===== */
+/* ADMIN DASHBOARD */
 
-/* Classe que aplica l'estil al card de login */
-.card-login {
-    background-color: #ffffff;
-    /* Color de fons blau cel */
-    color: #000;
-    /* Color del text: negre */
-    border-radius: 10px;
-    /* Cantonades arrodonides de 10px */
-    border: 1px solid #dfe3e8 !important;
-    transition: none;
-    /* Transició suau quan hi hagi transformacions */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    /* Ombra del card per donar profunditat i destacar sobre el fons */
-}
-
-/* CARD LOGIN sense animacio */
-
-.card-login {
-    animation: none !important;
-    /* treu qualsevol animacio */
-    transition: none !important;
-    /* treu qualsevol transicio */
-}
-
-/* ===== ADMIN DASHBOARD ===== */
+/* ========================================================================================================================================================================= */
 
 .admin-dashboard h1 {
     font-family: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    /* defineix la tipografia del títol amb diferents fonts de reserva */
     font-weight: 700;
+    /* fa el text en negreta (gruix fort) */
     color: #333;
+    /* color gris fosc per al títol */
 }
 
 .admin-stat-card {
     border: 1px solid #dfe3e8;
+    /* vora fina gris clar al voltant de la targeta */
     border-radius: 10px;
+    /* cantonades arrodonides de la targeta */
 }
 
 .admin-stat-label {
     color: #5a6470;
+    /* color gris per al text de l'etiqueta */
     font-size: 0.85rem;
+    /* mida de lletra una mica més petita */
     font-weight: 600;
+    /* text semi-negreta */
     text-transform: uppercase;
+    /* converteix el text a majúscules */
     letter-spacing: 0.02em;
+    /* petit espai entre lletres per millorar la lectura */
 }
 
 .admin-stat-value {
     font-size: 1.8rem;
+    /* mida gran per destacar el valor de l'estadística */
     font-weight: 700;
+    /* text en negreta */
     color: #2a2a2a;
+    /* gris molt fosc per al valor */
     line-height: 1.1;
+    /* ajusta l'espai vertical entre línies */
 }
 
 .admin-stat-text {
     font-size: 1rem;
+    /* mida de lletra normal per al text de l'estadística */
     font-weight: 600;
+    /* text semi-negreta per destacar una mica */
 }
 
 .admin-panel-card {
     border: 1px solid #dfe3e8;
+    /* vora fina gris clar al voltant de la targeta del panell */
     border-radius: 10px;
+    /* cantonades arrodonides per donar un aspecte suau */
 }
 
-/* ===== MEDIA QUERIES ===== */
 
-/* tauletes */
+/* MEDIA QUERIES */
+
+/* ========================================================================================================================================================================= */
+
+                                                                                /* TAULETES min-width:768px */
+
+/* ========================================================================================================================================================================= */
+
 
 @media (min-width:768px) {
 
+    /* imatge del header */
     header img {
         height: 250px;
         /* alçada header */
     }
 
+    /* Espai a la dreta del menú perquè Login i Administrador
+   no quedin enganxats al límit dret del navegador */
+    .menu-celeste .nav {
+        padding-right: 20px;
+        /* separació del marge dret */
+    }
+
+    /* contenidor dels botons */
+    .nav-pills {
+        justify-content: flex-start;
+        /* esquerra correcte */
+        flex-wrap: nowrap;
+        /* tots en una fila */
+    }
+
+    .nav-pills .nav-item {
+        width: auto;
+        /* treu amplada fixa */
+    }
+
+    /* ===== FOOTER ===== */
+
+    .footer {
+        background-image: url('../img/footer-background.webp');
+        /* imatge de fons del footer*/
+        background-size: cover;
+        /* ocupa tot l'espai */
+        background-position: center;
+        /* centra la imatge */
+        background-repeat: no-repeat;
+        /* no repetir la imatge */
+        color: white;
+        /* text blanc */
+        min-height: 150px;
+        /* alçada mínima del footer */
+        max-height: 150px;
+        /* alçada màxima del footer */
+        display: flex;
+        /* activa flexbox */
+        align-items: center;
+        /* centra verticalment el contingut */
+        margin-bottom: 40px;
+        /* espai extra sota el footer */
+        font-size: 0.6em;
+        /* tamany font del footer*/
+    }
+
+    /* colocar els paràgrafs del footer en posició correcte */
+
+    /* Primer paràgraf dins de .footer-text */
+    .footer-text p:nth-child(1) {
+        padding-left: 50px;
+        /* primer paràgraf amb 150px */
+    }
+
+    /* Segon paràgraf dins de .footer-text */
+    .footer-text p:nth-child(2) {
+        padding-left: 70px;
+        /* segon paràgraf amb 200px */
+    }
+
+    /* Tercer paràgraf dins de .footer-text */
+    .footer-text p:nth-child(3) {
+        padding-left: 50px;
+        /* tercer paràgraf amb 150px */
+    }
+
+    /* Quart i cinquè paràgraf reals (ignorant els <br>) */
+    .footer-text p:nth-of-type(4),
+    .footer-text p:nth-of-type(5) {
+        padding-left: 10px;
+        /* marge a l'esquerra dels paràgrafs */
+    }
 }
 
-/* ordinadors */
+/* ========================================================================================================================================================================= */
+
+                                                                        /* DESKTOPS min-width:992px */
+
+/* ========================================================================================================================================================================= */
+
 
 @media (min-width:992px) {
+
+    /* Espai a la dreta del menú perquè Login i Administrador
+   no quedin enganxats al límit dret del navegador */
+    .menu-celeste .nav {
+        padding-right: 20px;
+        /* separació del marge dret */
+    }
+
+    /* contenidor dels botons */
+
+    .nav-pills {
+        justify-content: left;
+        /* botons a l'esquerra */
+    }
+
+    .nav-pills .nav-item {
+        width: 180px;
+        /* amplada fixa */
+    }
+
+    /* ===== FONT SIZE PER H1, H2 I MENÚ (desktop 1920x1080) ===== */
+
+    /* H1 principal: titulars grans i destacats */
+    body h1 {
+        font-size: 5rem;
+        /* mida del text */
+        line-height: 1.2;
+        /* espai vertical entre línies */
+    }
+
+    /* H2: subtítols i seccions */
+    body h2 {
+        font-size: 3rem;
+        /* mida del text */
+        line-height: 1.3;
+        /* espai vertical entre línies */
+    }
+
+    /* Menú: links visibles però no massius */
+    nav.menu-celeste a.nav-link {
+        font-size: 1.4rem;
+        /* mida del text */
+    }
+
+    /* ================== INFORMACIÓ PLATAFORMA ================== */
+
+    /* Selecciona tots els paràgrafs dins la secció informacio-plataforma */
+    .informacio-plataforma p {
+        font-size: 1.6rem;
+        /* mida del text */
+        line-height: 1.6;
+        /* espai suficient entre línies per llegibilitat */
+        padding-left: 0;
+        /* opcional, si vols alinear-los a l'esquerra del container */
+        margin-bottom: 1rem;
+        /* separació entre paràgrafs */
+    }
+
+    /* Aplica estil a tots els elements <li> dins <ul> que estan dins .informacio-plataforma */
+    .informacio-plataforma ul li {
+        font-size: 1.2rem;
+        /* mida del text */
+        line-height: 1.6;
+        /* Altura de línia per millorar llegibilitat i separar visualment cada línia del text */
+        margin-bottom: 0.5rem;
+        /* Espai a sota de cada ítem de la llista per evitar que els elements quedin enganxats */
+    }
+
+    /* ================== Fonts i espais dins FAQ ================== */
+
+    /* Titulars H2 dins la secció FAQ */
+    .faq h2 {
+        font-size: 4rem;
+        /* mida del text */
+    }
+
+    /* Text dins les respostes de l'accordion */
+    .faq .accordion-body {
+        font-size: 1.6rem;
+        /* mida del text de les respostes */
+    }
+
+    /* Botons de l'accordion (les preguntes) */
+    .faq .accordion-button {
+        font-size: 1.6rem;
+        /* mida del text de la pregunta */
+    }
+
+    /* ================== SECCIÓ PERFIL D'USUARI ================== */
+
+    /* Titulars H2 dins el wrapper de perfil d’usuari */
+    .wrapper-perfil-usuaris h2 {
+        font-size: 4rem;
+        /* mida del text */
+        line-height: 1.3;
+        /* espai vertical per llegibilitat */
+        margin-bottom: 1rem;
+        /* separació respecte al text següent */
+    }
+
+    /* Paràgrafs dins el wrapper de perfil d’usuari */
+    .wrapper-perfil-usuaris p {
+        font-size: 1.6rem;
+        /* mida del text */
+        line-height: 1.6;
+        /* espai entre línies còmode per llegir textos llargs */
+        margin-bottom: 0.8rem;
+        /* separació entre paràgrafs */
+    }
 
     header img {
         height: 350px;
         /* alçada header */
+    }
+
+    /* ===== FOOTER ===== */
+
+    .footer {
+        min-height: 350px;
+        /* alçada mínima del footer */
+        max-height: 350px;
+        /* alçada màxima del footer */
+        display: flex;
+        /* activa flexbox */
+        align-items: center;
+        /* centra verticalment el contingut */
+        margin-bottom: 40px;
+        /* espai extra sota el footer */
+        font-size: 1.6em;
+        /* tamany font del footer*/
+    }
+
+    /* colocar els paràgrafs del footer en posició correcte */
+
+    /* Primer paràgraf dins de .footer-text */
+    .footer-text p:nth-child(1) {
+        padding-left: 150px;
+        /* primer paràgraf amb 150px */
+    }
+
+    /* Segon paràgraf dins de .footer-text */
+    .footer-text p:nth-child(2) {
+        padding-left: 250px;
+        /* segon paràgraf amb 200px */
+    }
+
+    /* Tercer paràgraf dins de .footer-text */
+    .footer-text p:nth-child(3) {
+        padding-left: 150px;
+        /* tercer paràgraf amb 150px */
+    }
+
+    /* Quart i cinquè paràgraf reals (ignorant els <br>) */
+    .footer-text p:nth-of-type(4),
+    .footer-text p:nth-of-type(5) {
+        padding-left: 20px;
+        /* marge a l'esquerra dels paràgrafs */
     }
 
 }
