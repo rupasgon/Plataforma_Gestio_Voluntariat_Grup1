@@ -429,6 +429,15 @@ header img {
     /* tamany font del footer*/
 }
 
+.wrapper-footer {
+    width: 100%;
+}
+
+.footer-logo {
+    width: 56px;
+    height: auto;
+}
+
 /* colocar els paràgrafs del footer en posició correcte */
 
 /* Primer paràgraf dins de .footer-text */
@@ -579,6 +588,10 @@ header img {
         /* espai extra sota el footer */
         font-size: 0.6em;
         /* tamany font del footer*/
+    }
+
+    .footer-logo {
+        width: 68px;
     }
 
     /* colocar els paràgrafs del footer en posició correcte */
@@ -747,6 +760,10 @@ header img {
         /* espai extra sota el footer */
         font-size: 1.6em;
         /* tamany font del footer*/
+    }
+
+    .footer-logo {
+        width: 88px;
     }
 
     /* colocar els paràgrafs del footer en posició correcte */
