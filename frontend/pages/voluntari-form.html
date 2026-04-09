@@ -8,67 +8,118 @@
     <link rel="stylesheet" href="../css/styles.css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-light border-bottom">
-      <div class="container">
-        <a class="navbar-brand" href="../index.html">Parelles Lingüístiques</a>
-        <div class="d-flex gap-2">
-          <a class="btn btn-primary" href="../pages/login.html">Accés</a>
+        <header class="container-fluid mt-4 px-5">
+      <nav class="row menu-celeste shadow p-3 mb-3">
+        <div class="col-12">
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="../index.html">Inici</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="./voluntari-form.html">Voluntaris</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="./aprenent-form.html">Aprenents</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#">Contacte</a>
+            </li>
+            <li class="nav-item ms-auto">
+              <a class="nav-link text-dark" href="./login.html">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="./admin.html">Administrador</a>
+            </li>
+          </ul>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
 
     <main class="container py-5">
-      <h1 class="mb-2">Formulari per a voluntaris</h1>
-      <p class="text-muted">Aquesta inscripció és oberta a totes les persones que accedeixen al web.</p>
-      <br>
-      <p>
-        <h3>Requisits per ser voluntari o voluntària:</h3> <br>
-        <ul>
-          <li>Tenir 18 anys o més.</li>
-          <li>Ser nadiu o nadiua en català.</li>
-          <li>Poder dedicar 10 hores a conversar en català.</li>
-        </ul>
+      <h1 class="mb-2">Formulari per voluntaris</h1>
+      <p class="text-muted">Aquesta inscripcio es oberta a totes les persones que accedeixen al web.</p>
 
-      </p>
-
-      <form class="card p-4" id="formulari_voluntari">
+      <form class="card p-4 border-0" id="formulari_voluntari" novalidate>
         <div class="row g-3">
           <div class="col-md-6">
             <label class="form-label" for="nom">Nom</label>
-            <input class="form-control" id="nom" required />
+            <input class="form-control" id="nom" required minlength="2" />
+            <div class="invalid-feedback">Introdueix un nom valid (minim 2 caracters).</div>
           </div>
           <div class="col-md-6">
             <label class="form-label" for="cognoms">Cognoms</label>
-            <input class="form-control" id="cognoms" required />
+            <input class="form-control" id="cognoms" required minlength="2" />
+            <div class="invalid-feedback">Introdueix els cognoms.</div>
           </div>
           <div class="col-md-6">
-            <label class="form-label" for="correu">Adreça electrònica</label>
+            <label class="form-label" for="correu">Correu electronic</label>
             <input class="form-control" id="correu" type="email" required />
+            <div class="invalid-feedback">Introdueix un correu electronic valid.</div>
           </div>
           <div class="col-md-6">
-            <label class="form-label" for="telefon">Telèfon</label>
-            <input class="form-control" id="telefon" />
+            <label class="form-label" for="telefon">Telefon</label>
+            <input class="form-control" id="telefon" required pattern="^[0-9]{6,15}$" />
+            <div class="invalid-feedback">Introdueix un telefon valid (entre 6 i 15 digits).</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="parroquia">Parroquia</label>
+            <select class="form-select" id="parroquia" required>
+              <option value="">Selecciona una opcio</option>
+              <option value="canillo">Canillo</option>
+              <option value="encamp">Encamp</option>
+              <option value="ordino">Ordino</option>
+              <option value="la_massana">La Massana</option>
+              <option value="andorra_la_vella">Andorra la Vella</option>
+              <option value="sant_julia">Sant Julia de Loria</option>
+              <option value="escaldes">Escaldes-Engordany</option>
+            </select>
+            <div class="invalid-feedback">Selecciona la parroquia de residencia.</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="data_naixement">Data de naixement</label>
+            <input class="form-control" id="data_naixement" type="date" required />
+            <div class="invalid-feedback">Introdueix la data de naixement.</div>
           </div>
           <div class="col-12">
             <label class="form-label" for="disponibilitat">Disponibilitat</label>
-            <input class="form-control" id="disponibilitat" placeholder="Ex: dimarts i dijous a la tarda" />
+            <input class="form-control" id="disponibilitat" placeholder="Ex: dimarts i dijous a la tarda" required />
+            <div class="invalid-feedback">Indica la teva disponibilitat.</div>
           </div>
           <div class="col-12">
-            <label class="form-label" for="motivacio">Motivació</label>
-            <textarea class="form-control" id="motivacio" rows="3"></textarea>
+            <label class="form-label" for="motivacio">Motivacio</label>
+            <textarea class="form-control" id="motivacio" rows="3" placeholder="Explica breument la teva motivacio"></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="observacions">Observacions</label>
+            <textarea class="form-control" id="observacions" rows="2"></textarea>
           </div>
         </div>
         <div class="mt-3">
-          <button class="btn btn-primary" type="submit">Enviar formulari</button>
+          <button class="btn btn-primary" id="boto_enviar_voluntari" type="submit">Enviar formulari</button>
           <a class="btn btn-link" href="../index.html">Tornar</a>
         </div>
       </form>
 
-      <div class="mt-3 text-muted" id="estat_voluntari"></div>
+      <div class="mt-3" id="estat_voluntari" role="status" aria-live="polite"></div>
     </main>
 
-    <footer class="footer border-top py-3">
-      <div class="container text-muted">Projecte acadèmic - MVP</div>
+        <footer class="footer text-white mt-5 p-4">
+      <div class="container">
+        <div class="wrapper-footer">
+          <div class="row">
+            <div class="col-12 text-start pt-2 pb-0">
+              <img src="../img/logo.png" class="footer-logo" alt="Logotip de la plataforma de voluntariat linguistic" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-start footer-text">
+              <p class="mb-1 fw-bold">Plataforma de Gestio del Voluntariat Linguistic</p>
+              <p class="mb-1">&copy; 2026 Tots els drets reservats</p>
+              <p class="mb-0">Contacte: info@voluntariatlinguistic.cat</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <script src="../js/voluntari-form.js"></script>

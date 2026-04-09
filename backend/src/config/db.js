@@ -1,6 +1,7 @@
 const mysql = require('mysql2/promise');
 
-const dbConfig = {
+// Pool global de connexions per reutilitzar sockets i evitar obrir una connexio per peticio.
+const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || 'root',
@@ -9,11 +10,6 @@ const dbConfig = {
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
-};
+});
 
-const pool = mysql.createPool(dbConfig);
-
-module.exports = {
-  dbConfig,
-  pool
-};
+module.exports = pool;
