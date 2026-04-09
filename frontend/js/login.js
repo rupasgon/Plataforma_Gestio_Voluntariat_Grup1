@@ -5,10 +5,14 @@ const campIdentificador = document.getElementById("identificador");
 const campContrasenya = document.getElementById("contrasenya");
 const botoEntrar = document.getElementById("boto_entrar");
 const botoMostrarContrasenya = document.getElementById("mostrar_contrasenya");
+const checkRecordarSessio = document.getElementById("recordar_sessio");
 const errorIdentificador = document.getElementById("error_identificador");
 const errorContrasenya = document.getElementById("error_contrasenya");
 
-const API_BASE_URL = "http://localhost:3000/api";
+const sessioActiva = AuthSession.loadSession();
+if (sessioActiva?.user?.rol) {
+  AuthSession.redirectByRole(sessioActiva.user.rol);
+}
 
 function mostrarEstat(missatge, tipus) {
   estatAcces.className = `login-status mt-4 alert alert-${tipus}`;
@@ -53,7 +57,7 @@ function validarContrasenya() {
 }
 
 async function enviarCredencials() {
-  const resposta = await fetch(`${API_BASE_URL}/auth/login`, {
+  const resposta = await fetch(`${AuthSession.API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -108,7 +112,19 @@ formulariAcces.addEventListener("submit", async (esdeveniment) => {
 
   try {
     const dades = await enviarCredencials();
-    mostrarEstat(`Acces correcte. Usuari validat amb rol ${dades.user.rol}.`, "success");
+
+    AuthSession.saveSession(
+      {
+        token: dades.token,
+        user: dades.user
+      },
+      checkRecordarSessio.checked
+    );
+
+    mostrarEstat("Sessio iniciada correctament. Redirigint...", "success");
+    window.setTimeout(() => {
+      AuthSession.redirectByRole(dades.user.rol);
+    }, 350);
   } catch (error) {
     mostrarEstat(error.message, "danger");
   } finally {

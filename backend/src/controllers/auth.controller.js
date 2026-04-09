@@ -8,7 +8,7 @@ function normalitzarIdentificador(identificador = '') {
 
 function crearToken(user) {
   return jwt.sign(
-    { sub: user.id, rol: user.rol, email: user.email },
+    { sub: user.id, rol: user.rol, email: user.email, nom: user.nom, cognoms: user.cognoms },
     process.env.JWT_SECRET || 'canvia-aquest-secret-en-produccio',
     { expiresIn: '8h' }
   );

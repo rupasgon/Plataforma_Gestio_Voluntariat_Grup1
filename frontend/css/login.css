@@ -75,37 +75,6 @@
     margin-bottom: 1.5rem;
 }
 
-.login-feature-list {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
-
-.login-feature-card {
-    padding: 1.1rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 18px;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(3px);
-}
-
-.login-feature-card h2 {
-    margin-bottom: 0.55rem;
-    color: white;
-    animation: none !important;
-    transition: none !important;
-}
-
-.login-feature-card h2::after,
-.login-feature-card h2:hover::after {
-    width: 0 !important;
-}
-
-.login-feature-card p {
-    margin-bottom: 0;
-    color: rgba(255, 255, 255, 0.84);
-}
-
 .login-panel {
     display: flex;
     align-items: center;
@@ -229,9 +198,6 @@
         padding: 2.5rem;
     }
 
-    .login-feature-list {
-        grid-template-columns: repeat(3, 1fr);
-    }
 }
 
 @media (min-width:992px) {

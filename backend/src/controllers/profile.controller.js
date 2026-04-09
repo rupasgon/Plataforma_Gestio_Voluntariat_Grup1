@@ -1,7 +1,14 @@
 exports.getMyProfile = (req, res) => {
-  res.json({ message: 'Get my profile mock', user: req.user });
+  res.json({
+    message: 'Perfil recuperat correctament.',
+    user: req.user
+  });
 };
 
 exports.updateMyProfile = (req, res) => {
-  res.json({ message: 'Update my profile mock', user: req.user, data: req.body });
+  res.json({
+    message: 'Perfil actualitzat correctament.',
+    user: req.user,
+    data: req.body
+  });
 };
