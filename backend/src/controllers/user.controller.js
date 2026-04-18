@@ -1,8 +1,13 @@
 const pool = require('../config/db');
 const { hashPassword } = require('../utils/password');
 const { obtenirUsuariAmbPerfil, sincronitzarPerfilUsuari } = require('../utils/user-profile');
+const { updateSessionUser } = require('../utils/session-store');
 
 const ROLS_VALIDS = ['admin', 'voluntari', 'aprenent'];
+
+function correuElectronicValid(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 function construirFiltreUsers(req) {
   const conditions = [];
@@ -103,6 +108,11 @@ exports.createUser = async (req, res, next) => {
       return res.status(400).json({ message: 'El rol indicat no es valid.' });
     }
 
+    if (!correuElectronicValid(emailNormalitzat)) {
+      connection.release();
+      return res.status(400).json({ message: 'Cal informar un correu electronic valid.' });
+    }
+
     const [duplicats] = await connection.execute('SELECT id FROM users WHERE email = ?', [emailNormalitzat]);
     if (duplicats.length > 0) {
       connection.release();
@@ -153,6 +163,11 @@ exports.updateUser = async (req, res, next) => {
       return res.status(400).json({ message: 'El rol indicat no es valid.' });
     }
 
+    if (!correuElectronicValid(emailNormalitzat)) {
+      connection.release();
+      return res.status(400).json({ message: 'Cal informar un correu electronic valid.' });
+    }
+
     const [existents] = await connection.execute('SELECT id FROM users WHERE id = ?', [userId]);
     if (existents.length === 0) {
       connection.release();
@@ -184,6 +199,15 @@ exports.updateUser = async (req, res, next) => {
     connection.release();
 
     const usuariActualitzat = await obtenirUsuariAmbPerfil(pool, userId);
+    if (req.sessionToken && req.user?.id === userId) {
+      updateSessionUser(req.sessionToken, {
+        id: usuariActualitzat.id,
+        nom: usuariActualitzat.nom,
+        cognoms: usuariActualitzat.cognoms,
+        email: usuariActualitzat.email,
+        rol: usuariActualitzat.rol
+      });
+    }
 
     res.json({
       message: 'Usuari actualitzat correctament.',
