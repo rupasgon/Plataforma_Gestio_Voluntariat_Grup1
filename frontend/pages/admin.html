@@ -12,7 +12,8 @@
       <div class="container">
         <a class="navbar-brand" href="../index.html">Parelles Linguistiques</a>
         <div class="d-flex gap-2">
-          <a class="btn btn-primary" href="../pages/login.html">Acces</a>
+          <a class="btn btn-outline-secondary" href="../index.html">Inici</a>
+          <button class="btn btn-primary" type="button" id="boto_logout">Tancar sessio</button>
         </div>
       </div>
     </nav>
@@ -56,13 +57,31 @@
         </div>
       </section>
 
+      <div class="alert alert-info d-none" id="estat_admin" role="status"></div>
+
       <div class="row g-4">
         <div class="col-12 col-lg-6">
           <section class="card h-100 admin-panel-card">
             <div class="card-body">
               <h5 class="card-title">Gestio de formularis</h5>
-              <p class="card-text">Revisar, validar i administrar les sollicituds d'usuaris.</p>
-              <button class="btn btn-outline-primary" id="carregar_usuaris">Carregar usuaris</button>
+              <p class="card-text">Revisar els usuaris registrats recentment i comprovar-ne el rol.</p>
+              <button class="btn btn-outline-primary" id="carregar_usuaris">Actualitzar usuaris</button>
+              <div class="table-responsive mt-3">
+                <table class="table table-sm align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col">Nom</th>
+                      <th scope="col">Correu</th>
+                      <th scope="col">Rol</th>
+                    </tr>
+                  </thead>
+                  <tbody id="taula_ultims_usuaris">
+                    <tr>
+                      <td colspan="3" class="text-muted">Encara no s'han carregat dades.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
         </div>
@@ -70,8 +89,24 @@
           <section class="card h-100 admin-panel-card">
             <div class="card-body">
               <h5 class="card-title">Assignacio de parelles</h5>
-              <p class="card-text">Crear i actualitzar l'assignacio entre voluntaris i aprenents.</p>
-              <button class="btn btn-outline-primary" id="carregar_parelles">Carregar parelles</button>
+              <p class="card-text">Consultar les parelles actives disponibles al sistema.</p>
+              <button class="btn btn-outline-primary" id="carregar_parelles">Actualitzar parelles</button>
+              <div class="table-responsive mt-3">
+                <table class="table table-sm align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col">Voluntari</th>
+                      <th scope="col">Aprenent</th>
+                      <th scope="col">Estat</th>
+                    </tr>
+                  </thead>
+                  <tbody id="taula_parelles_actives">
+                    <tr>
+                      <td colspan="3" class="text-muted">Encara no s'han carregat dades.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
         </div>
@@ -86,6 +121,7 @@
       <div class="container text-muted">Projecte academic - MVP</div>
     </footer>
 
+    <script src="../js/auth-session.js"></script>
     <script src="../js/admin.js"></script>
   </body>
 </html>
