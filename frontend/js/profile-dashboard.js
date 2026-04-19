@@ -5,28 +5,32 @@ window.onload = function(){
     
 }
 
-function getDades(){
-    /**
-     * fer petició al backend
-    si resposta OK:
-        obtenir dades
-        cridar mostrarPerfil(dades)
-    si error:
-        mostrar error
-     */
-    
+async function getDades(){
+    let resposta;
+    let dades;
 
-    showDades();
+    try{
+        resposta = await fetch("BACKEND_URL");
+        if (resposta.ok){
+            dades = await resposta.json();
+            console.log(dades);
+            showDades(dades);
+        } else {
+        console.error("Error en la resposta");
+        }
+    }catch (error){
+        console.error("Error de connexió: ", error);
+    }  
 }
 
 
 function showDades(dades){
-    /**
-     * posar dades.nom a #nom
-    posar dades.cognoms a #cognoms
-    posar dades.email a #email
-    posar dades.telefon a #telefon
-    ...
-     */
-
+    document.getElementById("nom").textContent = dades.nom;
+    document.getElementById("cognoms").textContent = dades.cognoms;
+    document.getElementById("email").textContent = dades.email;
+    document.getElementById("telefon").textContent = dades.telefon;
+    document.getElementById("parroquia").textContent = dades.parroquia;
+    document.getElementById("data_naixement").textContent = dades.data_naixement;
+    document.getElementById("disponibilitat").textContent = dades.disponibilitat;
+    document.getElementById("observacions").textContent = dades.observacions;
 }
