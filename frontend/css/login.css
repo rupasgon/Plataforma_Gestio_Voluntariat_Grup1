@@ -1,0 +1,496 @@
+/* ========================================================================================================================================================================= */
+
+/* ESTILS GENERALS (MÒBIL First <576px) */
+
+/* ========================================================================================================================================================================= */
+
+body {
+    background-color: #d7d8d9;
+    /* color de fons de la pàgina */
+    color: black;
+    /* color del text */
+}
+
+.container-fluid {
+    width: 98%;
+    /* la web ocupa el 98% de l'amplada de la pantalla */
+    margin: 0 auto;
+    /* centra tot el contingut horitzontalment */
+}
+
+/* ===== FONT SIZE PER H1, H2, llistes ol I MENÚ ===== */
+
+/* H1 principal: titulars grans i destacats */
+body h1 {
+    font-size: 1.5rem;
+    /* mida del text */
+    line-height: 1.2;
+    /* espai vertical entre línies */
+    font-weight: 700;
+    /* text en negreta */
+}
+
+h2 {
+    font-family: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    /* tipus de lletra */
+    font-weight: 700;
+    /* negreta */
+    color: #333;
+    /* color gris fosc */
+    transition: 0.3s;
+    /* animació suau */
+    animation: flotar 0.8s ease 2;
+    /* animació del títol */
+    position: relative;
+    /* necessari per la línia */
+    display: block;
+    /* ocupa tota la línia */
+    width: 100%;
+    /* amplada completa */
+}
+
+/* H2: subtítols i seccions */
+body h2 {
+    font-size: 1.5rem;
+    /* mida del text */
+    line-height: 1.3;
+    /* espai vertical entre línies */
+}
+
+h3 {
+    font-size: 1.2rem;
+    /* mida del text */
+    line-height: 1.2;
+    /* espai vertical entre línies */
+}
+
+p {
+    font-size: 1.1rem;
+    /* mida del text */
+    line-height: 1.3;
+    /* espai vertical entre línies */
+}
+
+/* Tamany font de la llista OL i UL */
+.llista-procés li,
+.llista-idees li,
+.llista-activitats li {
+    font-size: 1.1rem;
+    /* mida del text */
+}
+
+/* Menú: links visibles però no massius */
+nav.menu-celeste a.nav-link {
+    font-size: 1rem;
+    /* mida del text */
+}
+
+/* ===== MENÚ DE NAVEGACIÓ ===== */
+
+.menu-celeste {
+    background-color: #a8d8ff;
+    /* fons blau clar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    /* ombra del menú */
+    width: 99%;
+    /* amplada del menú */
+    margin: 0 auto;
+    /* centra el menú */
+}
+
+/* contenidor dels botons */
+.nav-pills {
+    justify-content: center;
+    /* botons al centre */
+}
+
+/* cada element del menú */
+.nav-pills .nav-item {
+    flex: 0 0 auto;
+    /* evita que s'estirin */
+    width: 180px;
+    /* amplada fixa */
+    text-align: center;
+    /* text centrat */
+    margin: 0 5px;
+    /* espai entre botons */
+}
+
+/* botó actiu */
+.nav-pills .nav-link.active {
+    background-color: #0d6efd !important;
+    /* blau bootstrap */
+    color: white !important;
+    /* text blanc */
+}
+
+/* estil general dels enllaços */
+.nav-pills .nav-link {
+    color: black !important;
+    /* text negre */
+}
+
+/* ===== HEADER ===== */
+
+/* ===== Header Background ===== */
+header img {
+    width: 100%;
+    /* ocupa tot l'ample */
+    height: 200px;
+    /* alçada en mòbil */
+    object-fit: cover;
+    /* adapta la imatge */
+    margin-bottom: 40px;
+    /* espai extra sota el footer */
+}
+
+/* ===== FORMULARI ===== */
+.card-login {
+    background-color: #a8d8ff;
+    /* color de fons blau clar del formulari */
+    border-radius: 20px;
+    /* cantonades arrodonides */
+    padding: 2rem;
+    /* espai interior entre contingut i vores */
+}
+
+/* ===== FOOTER ===== */
+
+.footer {
+    background-image: url('../img/footer-background.webp');
+    /* imatge de fons del footer*/
+    background-size: cover;
+    /* ocupa tot l'espai */
+    background-position: center;
+    /* centra la imatge */
+    background-repeat: no-repeat;
+    /* no repetir la imatge */
+    color: white;
+    /* text blanc */
+    min-height: 80px;
+    /* alçada mínima del footer */
+    max-height: 80px;
+    /* alçada màxima del footer */
+    display: flex;
+    /* activa flexbox */
+    align-items: center;
+    /* centra verticalment el contingut */
+    margin-bottom: 40px;
+    /* espai extra sota el footer */
+    font-size: 0.3em;
+    /* tamany font del footer*/
+}
+
+/* colocar els paràgrafs del footer en posició correcte */
+
+/* Primer paràgraf dins de .footer-text */
+.footer-text p:nth-child(1) {
+    padding-left: 25px;
+    /* primer paràgraf amb 150px */
+    font-size: 5px;
+    /* tamany font del footer*/
+    padding-top: 5px;
+    /* separació de 5 px adalt */
+}
+
+/* Segon paràgraf dins de .footer-text */
+.footer-text p:nth-child(2) {
+    padding-left: 45px;
+    /* segon paràgraf amb 200px */
+    font-size: 5px;
+    /* tamany font del footer*/
+}
+
+/* Tercer paràgraf dins de .footer-text */
+.footer-text p:nth-child(3) {
+    padding-left: 25px;
+    /* tercer paràgraf amb 150px */
+    font-size: 5px;
+    /* tamany font del footer*/
+}
+
+/* Quart i cinquè paràgraf reals (ignorant els <br>) */
+.footer-text p:nth-of-type(4),
+.footer-text p:nth-of-type(5) {
+    padding-left: 1px;
+    /* marge a l'esquerra dels paràgrafs */
+    font-size: 5px;
+    /* tamany font del footer*/
+}
+
+/* MEDIA QUERIES */
+
+/* ========================================================================================================================================================================= */
+
+/* TAULETES min-width:768px */
+
+/* ========================================================================================================================================================================= */
+
+
+@media (min-width:768px) {
+
+    /* ===== FONT SIZE PER H1, H2, llistes ol I MENÚ ===== */
+
+    /* H1 principal: titulars grans i destacats */
+    body h1 {
+        font-size: 2.3rem;
+        /* mida del text */
+        line-height: 1.2;
+        /* espai vertical entre línies */
+        font-weight: 700;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        /* mida del text */
+        line-height: 1.2;
+        /* espai vertical entre línies */
+    }
+
+    h3 {
+        font-size: 1.7rem;
+        /* mida del text */
+        line-height: 1.2;
+        /* espai vertical entre línies */
+    }
+
+    p {
+        font-size: 1.5rem;
+        /* mida del text */
+        line-height: 1.3;
+        /* espai vertical entre línies */
+    }
+
+    /* imatge del header */
+    header img {
+        height: 250px;
+        /* alçada header */
+    }
+
+    /* Espai a la dreta del menú perquè Login i Administrador
+   no quedin enganxats al límit dret del navegador */
+    .menu-celeste .nav {
+        padding-right: 20px;
+        /* separació del marge dret */
+    }
+
+    /* contenidor dels botons */
+    .nav-pills {
+        justify-content: flex-start;
+        /* esquerra correcte */
+        flex-wrap: nowrap;
+        /* tots en una fila */
+    }
+
+    .nav-pills .nav-item {
+        width: auto;
+        /* treu amplada fixa */
+    }
+
+    /* ===== FOOTER ===== */
+
+    .footer {
+        background-image: url('../img/footer-background.webp');
+        /* imatge de fons del footer*/
+        background-size: cover;
+        /* ocupa tot l'espai */
+        background-position: center;
+        /* centra la imatge */
+        background-repeat: no-repeat;
+        /* no repetir la imatge */
+        color: white;
+        /* text blanc */
+        min-height: 150px;
+        /* alçada mínima del footer */
+        max-height: 150px;
+        /* alçada màxima del footer */
+        display: flex;
+        /* activa flexbox */
+        align-items: center;
+        /* centra verticalment el contingut */
+        margin-bottom: 40px;
+        /* espai extra sota el footer */
+    }
+
+    /* colocar els paràgrafs del footer en posició correcte */
+
+    /* Primer paràgraf dins de .footer-text */
+    .footer-text p:nth-child(1) {
+        padding-left: 50px;
+        /* primer paràgraf amb 150px */
+        font-size: 10px;
+        /* tamany font del footer*/
+    }
+
+    /* Segon paràgraf dins de .footer-text */
+    .footer-text p:nth-child(2) {
+        padding-left: 100px;
+        /* segon paràgraf amb 200px */
+        font-size: 10px;
+        /* tamany font del footer*/
+    }
+
+    /* Tercer paràgraf dins de .footer-text */
+    .footer-text p:nth-child(3) {
+        padding-left: 50px;
+        /* tercer paràgraf amb 150px */
+        font-size: 10px;
+        /* tamany font del footer*/
+        padding-bottom: 20px;
+        /* separació abaix */
+    }
+
+    /* Quart i cinquè paràgraf reals (ignorant els <br>) */
+    .footer-text p:nth-of-type(4),
+    .footer-text p:nth-of-type(5) {
+        padding-left: 10px;
+        /* marge a l'esquerra dels paràgrafs */
+        font-size: 10px;
+        /* tamany font del footer*/
+    }
+}
+
+/* ========================================================================================================================================================================= */
+
+/* DESKTOPS min-width:992px */
+
+/* ========================================================================================================================================================================= */
+
+
+@media (min-width:992px) {
+
+    /* Espai a la dreta del menú perquè Login i Administrador
+   no quedin enganxats al límit dret del navegador */
+    .menu-celeste .nav {
+        padding-right: 20px;
+        /* separació del marge dret */
+    }
+
+    /* contenidor dels botons */
+
+    .nav-pills {
+        justify-content: left;
+        /* botons a l'esquerra */
+    }
+
+    .nav-pills .nav-item {
+        width: 180px;
+        /* amplada fixa */
+    }
+
+    /* Menú: links visibles però no massius */
+    nav.menu-celeste a.nav-link {
+        font-size: 1.4rem;
+        /* mida del text */
+    }
+
+    header img {
+        height: 350px;
+        /* alçada header */
+    }
+
+    /* ===== FONT SIZE PER H1, H2, llistes OL UL I MENÚ (desktop 1920x1080) ===== */
+
+    /* H1 principal: titulars grans i destacats */
+    body h1 {
+        font-size: 4rem;
+        /* mida del text */
+        line-height: 1.2;
+        /* espai vertical entre línies */
+    }
+
+    /* H2: subtítols i seccions */
+    body h2 {
+        font-size: 1rem;
+        /* mida del text */
+        line-height: 1.3;
+        /* espai vertical entre línies */
+    }
+
+    p {
+        font-size: 1.8rem;
+        /* mida del text */
+    }
+
+    /* ===== FORMULARI ===== */
+
+    .form-gran {
+        font-size: 1.6rem;
+        /* mida del text del formulari*/
+    }
+
+    .btn {
+        font-size: 1.6rem;
+        /* mida del text del botó */
+    }
+
+    .form-control {
+        font-size: 1.6rem;
+        /* mida del text dels camps de text i contrasenya */
+        padding: 0.6rem;
+        /* fa el camp més còmode per escriure */
+    }
+
+    .alert-info {
+        font-size: 1.6rem;
+        /* mida del text de la informació d'alerta */
+    }
+
+    #estat_acces {
+        font-size: 1.6rem;
+        /* mida del text del estat de l'acces */
+    }
+
+    /* ===== FOOTER ===== */
+
+    .footer {
+        min-height: 350px;
+        /* alçada mínima del footer */
+        max-height: 350px;
+        /* alçada màxima del footer */
+        display: flex;
+        /* activa flexbox */
+        align-items: center;
+        /* centra verticalment el contingut */
+        margin-bottom: 40px;
+        /* espai extra sota el footer */
+    }
+
+    /* colocar els paràgrafs del footer en posició correcte */
+
+    /* Primer paràgraf dins de .footer-text */
+    .footer-text p:nth-child(1) {
+        padding-left: 150px;
+        /* primer paràgraf amb 150px */
+        font-size: 1.6rem;
+        /* tamany font del footer*/
+    }
+
+    /* Segon paràgraf dins de .footer-text */
+    .footer-text p:nth-child(2) {
+        padding-left: 250px;
+        /* segon paràgraf amb 200px */
+        font-size: 1.6rem;
+        /* tamany font del footer*/
+    }
+
+    /* Tercer paràgraf dins de .footer-text */
+    .footer-text p:nth-child(3) {
+        padding-left: 150px;
+        /* tercer paràgraf amb 150px */
+        font-size: 1.6rem;
+        /* tamany font del footer*/
+        padding-bottom: 70px;
+        /* separació asota del tercer p*/
+    }
+
+    /* Quart i cinquè paràgraf reals (ignorant els <br>) */
+    .footer-text p:nth-of-type(4),
+    .footer-text p:nth-of-type(5) {
+        padding-left: 20px;
+        /* marge a l'esquerra dels paràgrafs */
+        font-size: 1.6rem;
+        /* tamany font del footer*/
+    }
+
+}
