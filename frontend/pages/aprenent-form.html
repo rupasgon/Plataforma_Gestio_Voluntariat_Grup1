@@ -12,14 +12,14 @@
       <div class="container">
         <a class="navbar-brand" href="../index.html">Parelles Linguistiques</a>
         <div class="d-flex gap-2">
-          <a class="btn btn-primary" href="../pages/login.html">Acces</a>
+          <a class="btn btn-primary" href="../pages/login2.html">Acces</a>
         </div>
       </div>
     </nav>
 
     <main class="container py-5">
       <h1 class="mb-2">Formulari d'aprenents</h1>
-      <p class="text-muted">Aquesta inscripcio es oberta a totes les persones que accedeixen al web.</p>
+      <p class="text-muted">Alta interna. Nomes disponible amb sessio d administrador activa.</p>
 
       <form class="card p-4" id="formulari_aprenent">
         <div class="row g-3">
@@ -34,6 +34,16 @@
           <div class="col-md-6">
             <label class="form-label" for="correu">Correu electronic</label>
             <input class="form-control" id="correu" type="email" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="password">Contrasenya</label>
+            <input class="form-control" id="password" type="password" required minlength="6" />
+            <div class="invalid-feedback">Introdueix una contrasenya d almenys 6 caracters.</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="password_confirm">Confirma la contrasenya</label>
+            <input class="form-control" id="password_confirm" type="password" required minlength="6" />
+            <div class="invalid-feedback">La confirmacio de contrasenya no coincideix.</div>
           </div>
           <div class="col-md-6">
             <label class="form-label" for="telefon">Telefon</label>
@@ -70,6 +80,7 @@
       <div class="container text-muted">Projecte academic - MVP</div>
     </footer>
 
+    <script src="../js/auth-session.js"></script>
     <script src="../js/aprenent-form.js"></script>
   </body>
 </html>
