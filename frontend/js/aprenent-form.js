@@ -1,6 +1,7 @@
 const formulariAprenent = document.getElementById('formulari_aprenent');
 const estatAprenent = document.getElementById('estat_aprenent');
 const botoEnviar = formulariAprenent.querySelector('button[type="submit"]');
+const API_BASE = window.PARELLES_AUTH?.API_BASE || 'http://localhost:3000/api';
 
 const camps = {
   nom: document.getElementById('nom'),
@@ -47,37 +48,6 @@ function validarContrasenya() {
   return passwordValida && confirmacioValida;
 }
 
-async function validarAccesAdmin() {
-  const sessio = window.PARELLES_AUTH.obtenirSessio();
-  if (!sessio?.token) {
-    window.location.href = './login2.html';
-    return false;
-  }
-
-  try {
-    const resposta = await fetch(`${window.PARELLES_AUTH.API_BASE}/auth/me`, {
-      headers: window.PARELLES_AUTH.obtenirCapcaleresAutenticades()
-    });
-
-    if (!resposta.ok) {
-      window.PARELLES_AUTH.esborrarSessio();
-      window.location.href = './login2.html';
-      return false;
-    }
-
-    const dades = await resposta.json();
-    if (dades.user.rol !== 'admin') {
-      window.location.href = './profile.html';
-      return false;
-    }
-
-    return true;
-  } catch (_error) {
-    mostrarEstat("No s'ha pogut validar la sessio d'administrador.", 'danger');
-    return false;
-  }
-}
-
 camps.correu.addEventListener('input', validarCorreu);
 camps.telefon.addEventListener('input', validarTelefon);
 camps.password.addEventListener('input', validarContrasenya);
@@ -100,9 +70,9 @@ formulariAprenent.addEventListener('submit', async (event) => {
   botoEnviar.textContent = 'Enviant...';
 
   try {
-    const resposta = await fetch(`${window.PARELLES_AUTH.API_BASE}/users`, {
+    const resposta = await fetch(`${API_BASE}/auth/register`, {
       method: 'POST',
-      headers: window.PARELLES_AUTH.obtenirCapcaleresAutenticades(),
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         nom: camps.nom.value.trim(),
         cognoms: camps.cognoms.value.trim(),
@@ -122,7 +92,7 @@ formulariAprenent.addEventListener('submit', async (event) => {
 
     formulariAprenent.reset();
     formulariAprenent.classList.remove('was-validated');
-    mostrarEstat('Usuari aprenent creat correctament.', 'success');
+    mostrarEstat('Registre completat correctament. Ja pots iniciar sessio.', 'success');
   } catch (error) {
     mostrarEstat(error.message, 'danger');
   } finally {
@@ -130,7 +100,3 @@ formulariAprenent.addEventListener('submit', async (event) => {
     botoEnviar.textContent = 'Enviar formulari';
   }
 });
-
-(async () => {
-  await validarAccesAdmin();
-})();
