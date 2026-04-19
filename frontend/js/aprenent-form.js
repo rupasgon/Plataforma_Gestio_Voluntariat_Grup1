@@ -22,7 +22,7 @@ function mostrarEstat(missatge, tipus) {
 
 function validarCorreu() {
   const esValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(camps.correu.value.trim());
-  camps.correu.setCustomValidity(esValid ? '' : 'Correu electronic invalid');
+  camps.correu.setCustomValidity(esValid ? '' : 'Correu electronic no valid');
   return esValid;
 }
 
@@ -34,7 +34,7 @@ function validarTelefon() {
   }
 
   const esValid = /^[0-9]{6,15}$/.test(valor);
-  camps.telefon.setCustomValidity(esValid ? '' : 'Telefon invalid');
+  camps.telefon.setCustomValidity(esValid ? '' : 'Telefon no valid');
   return esValid;
 }
 
