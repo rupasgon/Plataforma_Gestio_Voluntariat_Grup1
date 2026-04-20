@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma de Gestió del Voluntariat Lingüístic</title>
+
+  <!-- BOOTSTRAP -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS PROPI -->
+  <link rel="stylesheet" href="../css/aprenent.css">
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- CONTENIDOR PRINCIPAL -->
+  <div class="container-fluid mt-4 px-2 px-md-5">
+
+    <!-- HEADER -->
+    <header>
+
+      <!-- MENÚ -->
+      <nav class="row menu-celeste shadow p-3 mb-3" aria-label="Navegació principal">
+        <div class="col-12">
+          <ul class="nav nav-pills d-flex w-100">
+
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html">Inici</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="voluntari-form.html">Voluntaris</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="aprenent.html">Aprenents</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="parelles.html">Parelles</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="contacte.html">Contacte</a>
+            </li>
+
+            <li class="nav-item ms-md-auto">
+              <a class="nav-link" href="login.html">Login</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="admin.html">Admin</a>
+            </li>
+
+          </ul>
+        </div>
+      </nav>
+
+      <!-- IMATGE HEADER -->
+      <div class="row">
+        <div class="col-12 p-3">
+          <img src="../img/header.webp" class="img-fluid" alt="Capçalera de la plataforma de voluntariat lingüístic">
+        </div>
+      </div>
+
+    </header>
+
+    <!-- CONTINGUT PRINCIPAL -->
+    <main>
+
+      <section aria-labelledby="titol-aprenents">
+        <div class="container">
+
+          <div class="row">
+
+            <div class="col-12 p-4">
+
+              <h1 id="titol-aprenents" class="text-center  mb-5">Formulari d'aprenents</h1>
+
+              <!-- FORMULARI -->
+              <div class="col-12 col-md-8 col-lg-10 mx-auto mb-4">
+
+                <p class="text-center text-muted mb-4">Aquesta inscripció és oberta a totes les
+                  persones que accedeixen al web.</p>
+
+                <form class="card p-4" id="formulari_aprenent">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label" for="nom">Nom</label>
+                      <input type="text" class="form-control" id="nom" name="nom" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="cognoms">Cognoms</label>
+                      <input type="text" class="form-control" id="cognoms" name="cognoms" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="correu">Correu electrònic</label>
+                      <input type="email" class="form-control" id="correu" name="correu" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="telefon">Telèfon</label>
+                      <input type="tel" class="form-control" id="telefon" name="telefon" />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="nivell_catala">Nivell de català</label>
+                      <select class="form-select" id="nivell_catala" name="nivell_catala" required>
+                        <option value="">Selecciona una opció</option>
+                        <option value="inicial">Inicial</option>
+                        <option value="intermedi">Intermedi</option>
+                        <option value="avancat">Avançat</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="objectiu_principal">Objectiu
+                        principal</label>
+                      <input type="text" class="form-control" id="objectiu_principal" name="objectiu_principal"
+                        placeholder="Ex: millorar conversa oral" />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label" for="disponibilitat">Disponibilitat</label>
+                      <input type="text" class="form-control" id="disponibilitat" name="disponibilitat"
+                        placeholder="Ex: caps de setmana al matí" />
+                    </div>
+                  </div>
+                  <div class="d-flex gap-3 mt-5">
+                    <button class="btn btn-primary" type="submit">Enviar formulari</button>
+                    <a class="btn btn-link" href="../index.html">Tornar</a>
+                  </div>
+                </form>
+
+                <div class="mt-3 text-muted" id="estat_aprenent"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer text-black mt-5 p-1">
+
+      <div class="row">
+        <div class="col-12 text-start footer-text">
+
+          <p class="mb-1 fw-bold">Plataforma de Gestió</p>
+          <p class="mb-1 fw-bold">del</p>
+          <p class="mb-1 fw-bold">Voluntariat Lingüístic</p>
+
+          <br><br>
+
+          <p class="mb-1">© 2026 Tots els drets reservats</p>
+          <p class="mb-0">Contacte: info@voluntariatlinguistic.cat</p>
+
+        </div>
+      </div>
+
+    </footer>
+
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/aprenent-form.js"></script>
+
+</body>
+
+</html>
