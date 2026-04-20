@@ -65,6 +65,35 @@ nav.menu-celeste a.nav-link {
 
 /* línia taronja sota el títol */
 
+h3 {
+    font-size: 1.2rem;
+    /* mida del text */
+    line-height: 1.2;
+    /* espai vertical entre línies */
+}
+
+p {
+    font-size: 1.1rem;
+    /* mida del text */
+    line-height: 1.3;
+    /* espai vertical entre línies */
+}
+
+/* Tamany font de la llista OL i UL */
+.llista-procés li,
+.llista-idees li,
+.llista-activitats li {
+    font-size: 1.1rem;
+    /* mida del text */
+}
+
+/* Menú: links visibles però no massius */
+nav.menu-celeste a.nav-link {
+    font-size: 1rem;
+    /* mida del text */
+}
+
+/* línia taronja sota el títol */
 h2::after {
     content: "";
     /* element decoratiu */
@@ -85,14 +114,12 @@ h2::after {
 }
 
 /* quan passes el ratolí pel títol */
-
 h2:hover::after {
     width: 100%;
     /* la línia es fa completa */
 }
 
 /* animació del títol */
-
 @keyframes flotar {
 
     0% {
@@ -126,14 +153,12 @@ h2:hover::after {
 }
 
 /* contenidor dels botons */
-
 .nav-pills {
     justify-content: center;
     /* botons al centre */
 }
 
 /* cada element del menú */
-
 .nav-pills .nav-item {
     flex: 0 0 auto;
     /* evita que s'estirin */
@@ -146,7 +171,6 @@ h2:hover::after {
 }
 
 /* botó actiu */
-
 .nav-pills .nav-link.active {
     background-color: #0d6efd !important;
     /* blau bootstrap */
@@ -155,7 +179,6 @@ h2:hover::after {
 }
 
 /* estil general dels enllaços */
-
 .nav-pills .nav-link {
     color: black !important;
     /* text negre */
@@ -164,7 +187,6 @@ h2:hover::after {
 /* ===== HEADER ===== */
 
 /* ===== Header Background ===== */
-
 header img {
     width: 100%;
     /* ocupa tot l'ample */
@@ -202,27 +224,23 @@ header img {
 
 .llista-noms li:nth-child(1) {
     animation-delay: 0.2s;
+    /* primer element apareix després de 0.2s */
 }
-
-/* primer element apareix després de 0.2s */
 
 .llista-noms li:nth-child(2) {
     animation-delay: 0.4s;
+    /* segon element després de 0.4s */
 }
-
-/* segon element després de 0.4s */
 
 .llista-noms li:nth-child(3) {
     animation-delay: 0.6s;
+    /* tercer element després de 0.6s */
 }
-
-/* tercer element després de 0.6s */
 
 .llista-noms li:nth-child(4) {
     animation-delay: 0.8s;
+    /* quart element després de 0.8s */
 }
-
-/* quart element després de 0.8s */
 
 @keyframes slideIn {
     to {
@@ -238,9 +256,28 @@ header img {
 .faq {
     /* selector FAQ */
     background-color: #FFB347;
-    /* fons blau clar */
+    /* fons taronja clar */
     border-radius: 15px;
     /* cantonades rodones */
+    width: 100%;
+    /* amplada màxima */
+}
+
+.faq h2 {
+    font-size: 1.4rem;
+    /* mida del títol principal en mòbil */
+    font-weight: 700;
+    /* text en negreta */
+}
+
+.faq .accordion-button {
+    font-size: 0.9rem;
+    /* midad del text de la pregunta */
+}
+
+.faq .accordion-body {
+    font-size: 0.9rem;
+    /* mida del text de la resposta */
 }
 
 .faq h2 {
@@ -262,9 +299,9 @@ header img {
 .faq .accordion-button {
     /* botons de cada pregunta */
     background-color: #a8d8ff;
-    /* fons blau fosc */
+    /* fons blau cel */
     color: black;
-    /* text blanc */
+    /* text negre */
     font-weight: bold;
     /* negreta */
 }
@@ -272,7 +309,7 @@ header img {
 .faq .accordion-body {
     /* cos de les respostes */
     color: black;
-    /* text blau fosc */
+    /* text negre */
 }
 
 /* botons al fer clic */
@@ -282,13 +319,12 @@ header img {
     background-color: #397ac9;
     /* fons blau clar */
     color: white;
-    /* text blau fosc */
+    /* text blanc */
 }
 
-/* fletxa blanc */
-.faq .accordion-button::after {
-    filter: invert(1);
-    /* fa que la fletxa sigui blanca */
+/* Canvia el color de la fletxa del faqs a taronja */
+.accordion-button::after {
+    filter: invert(48%) sepia(96%) saturate(749%) hue-rotate(1deg) brightness(102%) contrast(101%);
 }
 
 /* FAQS sense animacions */
@@ -319,7 +355,6 @@ header img {
 /* ===== SECCIÓ PERFIL USUARI ===== */
 
 /* capa de fons gorga del perfil d'usuaris */
-
 .wrapper-perfil-usuaris {
     width: 100%;
     /* amplada completa */

@@ -37,7 +37,7 @@
 
     <main class="container py-5">
       <h1 class="mb-2">Formulari d'aprenents</h1>
-      <p class="text-muted">Aquesta inscripcio es oberta a totes les persones que accedeixen al web.</p>
+      <p class="text-muted">Inscripcio oberta per a nous aprenents.</p>
 
       <form class="card p-4 border-0" id="formulari_aprenent" novalidate>
         <div class="row g-3">
@@ -55,6 +55,16 @@
             <label class="form-label" for="correu">Correu electronic</label>
             <input class="form-control" id="correu" type="email" required />
             <div class="invalid-feedback">Introdueix un correu electronic valid.</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="password">Contrasenya</label>
+            <input class="form-control" id="password" type="password" required minlength="6" />
+            <div class="invalid-feedback">Introdueix una contrasenya d almenys 6 caracters.</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="password_confirm">Confirma la contrasenya</label>
+            <input class="form-control" id="password_confirm" type="password" required minlength="6" />
+            <div class="invalid-feedback">La confirmacio de contrasenya no coincideix.</div>
           </div>
           <div class="col-md-6">
             <label class="form-label" for="telefon">Telefon</label>
@@ -142,6 +152,7 @@
       </div>
     </footer>
 
+    <script src="../js/auth-session.js"></script>
     <script src="../js/aprenent-form.js"></script>
   </body>
 </html>

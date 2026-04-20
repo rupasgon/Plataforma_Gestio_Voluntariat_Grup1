@@ -132,3 +132,5 @@ formulariAcces.addEventListener("submit", async (esdeveniment) => {
     botoEntrar.textContent = "Entrar";
   }
 });
+
+redirigirSiJaHiHaSessio();

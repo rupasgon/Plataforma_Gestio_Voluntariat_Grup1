@@ -79,13 +79,32 @@
         </div>
       </section>
 
+      <div class="alert alert-info d-none" id="estat_admin" role="status"></div>
+
       <div class="row g-4">
         <div class="col-12 col-lg-6">
           <section class="card h-100 admin-panel-card">
             <div class="card-body">
               <h5 class="card-title">Gestio de formularis</h5>
-              <p class="card-text">Revisar, validar i administrar les sollicituds d'usuaris.</p>
-              <button class="btn btn-outline-primary" id="carregar_usuaris">Carregar usuaris</button>
+              <p class="card-text">Revisar els usuaris registrats recentment i comprovar-ne el rol.</p>
+              <button class="btn btn-outline-primary" id="carregar_usuaris">Actualitzar usuaris</button>
+              <div class="table-responsive mt-3">
+                <table class="table table-sm align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col">Nom</th>
+                      <th scope="col">Correu</th>
+                      <th scope="col">Rol</th>
+                      <th scope="col" class="text-end">Accions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="taula_ultims_usuaris">
+                    <tr>
+                      <td colspan="4" class="text-muted">Encara no s'han carregat dades.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
         </div>
@@ -93,12 +112,94 @@
           <section class="card h-100 admin-panel-card">
             <div class="card-body">
               <h5 class="card-title">Assignacio de parelles</h5>
-              <p class="card-text">Crear i actualitzar l'assignacio entre voluntaris i aprenents.</p>
-              <button class="btn btn-outline-primary" id="carregar_parelles">Carregar parelles</button>
+              <p class="card-text">Consultar les parelles actives disponibles al sistema.</p>
+              <button class="btn btn-outline-primary" id="carregar_parelles">Actualitzar parelles</button>
+              <div class="table-responsive mt-3">
+                <table class="table table-sm align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col">Voluntari</th>
+                      <th scope="col">Aprenent</th>
+                      <th scope="col">Estat</th>
+                    </tr>
+                  </thead>
+                  <tbody id="taula_parelles_actives">
+                    <tr>
+                      <td colspan="3" class="text-muted">Encara no s'han carregat dades.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
         </div>
       </div>
+
+      <section class="card mt-4 admin-panel-card">
+        <div class="card-body">
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 mb-3">
+            <div>
+              <h5 class="card-title mb-1">Edicio d usuaris</h5>
+              <p class="card-text mb-0">Selecciona un usuari del llistat i actualitza les seves dades.</p>
+            </div>
+            <div class="small text-muted" id="usuari_edicio_actual">Cap usuari seleccionat.</div>
+          </div>
+
+          <form id="formulari_edicio_usuari">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="edit_nom">Nom</label>
+                <input class="form-control" id="edit_nom" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="edit_cognoms">Cognoms</label>
+                <input class="form-control" id="edit_cognoms" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="edit_correu">Correu electronic</label>
+                <input class="form-control" id="edit_correu" type="email" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="edit_rol">Rol</label>
+                <select class="form-select" id="edit_rol" required>
+                  <option value="admin">admin</option>
+                  <option value="voluntari">voluntari</option>
+                  <option value="aprenent">aprenent</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="edit_password">Nova contrasenya</label>
+                <input class="form-control" id="edit_password" type="password" placeholder="Deixa aquest camp buit si no canvia" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="edit_telefon">Telefon</label>
+                <input class="form-control" id="edit_telefon" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="edit_parroquia">Parroquia</label>
+                <input class="form-control" id="edit_parroquia" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="edit_data_naixement">Data de naixement</label>
+                <input class="form-control" id="edit_data_naixement" type="date" />
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="edit_disponibilitat">Disponibilitat</label>
+                <input class="form-control" id="edit_disponibilitat" />
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="edit_observacions">Observacions</label>
+                <textarea class="form-control" id="edit_observacions" rows="3"></textarea>
+              </div>
+            </div>
+
+            <div class="mt-3 d-flex gap-2 flex-wrap">
+              <button class="btn btn-primary" type="submit" id="boto_guardar_usuari" disabled>Guardar canvis</button>
+              <button class="btn btn-outline-secondary" type="button" id="boto_cancelar_edicio">Cancelar seleccio</button>
+            </div>
+          </form>
+        </div>
+      </section>
 
       <div class="mt-4 d-flex justify-content-between flex-wrap gap-2">
         <a class="btn btn-link p-0" href="../index.html">Tornar a l'inici</a>
