@@ -1,5 +1,5 @@
 
-
+console.log("JS carregat");
 window.onload = function(){
     getDades();
     
@@ -11,13 +11,13 @@ async function getDades(){
     let dades;
 
     try{
-        resposta = await fetch("http://localhost:3000/profile/me");
+        resposta = await fetch("http://localhost:3000/api/profile/me");
         if (resposta.ok){
             dades = await resposta.json();
             console.log(dades);
             showDades(dades);
         } else {
-        console.error("Error en la resposta");
+        console.error("Error en la resposta: ", resposta.status, resposta.statusText);
         }
     }catch (error){
         console.error("Error de connexió: ", error);
