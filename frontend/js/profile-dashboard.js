@@ -5,12 +5,13 @@ window.onload = function(){
     
 }
 
+//Funció per accedir a les dades a partir de l'usuari que ha fet el login.
 async function getDades(){
     let resposta;
     let dades;
 
     try{
-        resposta = await fetch("BACKEND_URL");
+        resposta = await fetch("http://localhost:3000/profile/me");
         if (resposta.ok){
             dades = await resposta.json();
             console.log(dades);
@@ -23,7 +24,7 @@ async function getDades(){
     }  
 }
 
-
+//Funció per mostrar les dades de l'usuari actiu.
 function showDades(dades){
     document.getElementById("nom").textContent = dades.nom;
     document.getElementById("cognoms").textContent = dades.cognoms;
