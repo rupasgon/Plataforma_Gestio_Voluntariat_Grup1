@@ -159,6 +159,11 @@ header img {
     /* mida del text de les label i el de selecció */
 }
 
+#parroquia {
+    font-size: 1.1rem;
+    /* mida del text del select de parròquia */
+}
+
 /* ===== FOOTER ===== */
 
 .footer {
@@ -462,6 +467,11 @@ header img {
     #voluntari {
         font-size: 1.8rem;
         /* mida del text de les label i el de selecció */
+    }
+
+    #parroquia {
+        font-size: 1.6rem;
+        /* mida del text del select de parròquia */
     }
 
     /* ===== FOOTER ===== */
