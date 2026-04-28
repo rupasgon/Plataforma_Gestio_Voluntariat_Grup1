@@ -9,5 +9,6 @@ router.use(authMiddleware);
 router.get('/', roleMiddleware(['admin']), pairingController.listPairings);
 router.post('/', roleMiddleware(['admin']), pairingController.createPairing);
 router.patch('/:id/status', roleMiddleware(['admin']), pairingController.updatePairingStatus);
+router.delete('/:id', roleMiddleware(['admin']), pairingController.deletePairing);
 
 module.exports = router;

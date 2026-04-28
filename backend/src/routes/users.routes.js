@@ -11,5 +11,6 @@ router.get('/', roleMiddleware(['admin']), userController.listUsers);
 router.get('/:id', roleMiddleware(['admin']), userController.getUser);
 router.post('/', roleMiddleware(['admin']), userController.createUser);
 router.put('/:id', roleMiddleware(['admin']), userController.updateUser);
+router.delete('/:id', roleMiddleware(['admin']), userController.deleteUser);
 
 module.exports = router;

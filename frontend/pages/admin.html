@@ -8,25 +8,55 @@
     <link rel="stylesheet" href="../css/styles.css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-light border-bottom">
-      <div class="container">
-        <a class="navbar-brand" href="../index.html">Parelles Linguistiques</a>
-        <div class="d-flex gap-2">
-          <a class="btn btn-outline-secondary" href="../index.html">Inici</a>
-          <button class="btn btn-primary" type="button" id="boto_logout">Tancar sessio</button>
-        </div>
-      </div>
-    </nav>
+    <div class="container-fluid mt-4 px-2 px-md-5">
+      <header>
+        <nav class="row menu-celeste shadow p-3 mb-3" aria-label="Navegacio principal">
+          <div class="col-12">
+            <ul class="nav nav-pills d-flex w-100">
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="../index.html">Inici</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="./voluntari.html">Voluntaris</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="./aprenent.html">Aprenents</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="./disponibilitat.html">Disponibilitat</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="./parelles.html">Parelles</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="./contacte.html">Contacte</a>
+              </li>
+              <li class="nav-item ms-md-auto" id="nav_login_item" data-login-href="./login.html">
+                <a class="nav-link text-dark" href="./login.html">Login</a>
+              </li>
+              <li class="nav-item ms-md-auto d-none" id="nav_logout_item">
+                <a class="nav-link text-dark" href="./login.html" id="nav_logout_button">Tancar sessio</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
 
-    <main class="container py-5 admin-dashboard">
+        <div class="row">
+          <div class="col-12 p-3">
+            <img src="../img/header.webp" class="img-fluid" alt="Capcalera de la plataforma de voluntariat linguistic" />
+          </div>
+        </div>
+      </header>
+
+      <main class="container py-5 admin-dashboard">
+        <div class="d-flex justify-content-end align-items-center flex-wrap gap-2 mb-4">
+          <span class="text-muted" id="usuari_autenticat"></span>
+        </div>
+
       <div class="d-flex flex-column flex-lg-row align-items-lg-end justify-content-between mb-4 gap-3">
         <div>
           <h1 class="mb-1">Panell d'administracio</h1>
           <p class="text-muted mb-0">Control de registres i assignacions</p>
-        </div>
-        <div class="d-flex gap-2">
-          <button class="btn btn-outline-secondary" id="netejar_sortida">Netejar registre</button>
-          <button class="btn btn-primary" id="exportar_informe">Descarregar resum</button>
         </div>
       </div>
 
@@ -90,7 +120,7 @@
           <section class="card h-100 admin-panel-card">
             <div class="card-body">
               <h5 class="card-title">Assignacio de parelles</h5>
-              <p class="card-text">Consultar les parelles actives disponibles al sistema.</p>
+              <p class="card-text">Crear noves parelles i gestionar-ne l estat des del panell.</p>
               <button class="btn btn-outline-primary" id="carregar_parelles">Actualitzar parelles</button>
               <div class="table-responsive mt-3">
                 <table class="table table-sm align-middle mb-0">
@@ -99,15 +129,93 @@
                       <th scope="col">Voluntari</th>
                       <th scope="col">Aprenent</th>
                       <th scope="col">Estat</th>
+                      <th scope="col" class="text-end">Accions</th>
                     </tr>
                   </thead>
                   <tbody id="taula_parelles_actives">
                     <tr>
-                      <td colspan="3" class="text-muted">Encara no s'han carregat dades.</td>
+                      <td colspan="4" class="text-muted">Encara no s'han carregat parelles.</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
+
+              <hr class="my-4" />
+
+              <div class="mb-3">
+                <h6 class="mb-1">Nova parella</h6>
+                <p class="small text-muted mb-0">Selecciona un voluntari i un aprenent per crear una nova assignacio.</p>
+              </div>
+
+              <form id="formulari_nova_parella">
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label class="form-label" for="pair_voluntari">Voluntari</label>
+                    <select class="form-select" id="pair_voluntari" required>
+                      <option value="">Selecciona un voluntari</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" for="pair_aprenent">Aprenent</label>
+                    <select class="form-select" id="pair_aprenent" required>
+                      <option value="">Selecciona un aprenent</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label" for="pair_data_inici">Data d inici</label>
+                    <input class="form-control" id="pair_data_inici" type="date" required />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label" for="pair_estat">Estat inicial</label>
+                    <select class="form-select" id="pair_estat">
+                      <option value="activa">activa</option>
+                      <option value="pausada">pausada</option>
+                      <option value="tancada">tancada</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" for="pair_observacions">Observacions</label>
+                    <textarea class="form-control" id="pair_observacions" rows="2"></textarea>
+                  </div>
+                </div>
+
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                  <button class="btn btn-primary" type="submit" id="boto_crear_parella">Crear parella</button>
+                </div>
+              </form>
+
+              <hr class="my-4" />
+
+              <div class="mb-3">
+                <h6 class="mb-1">Canvi d estat</h6>
+                <p class="small text-muted mb-0" id="parella_seleccionada_text">Cap parella seleccionada.</p>
+              </div>
+
+              <form id="formulari_estat_parella">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label" for="pair_estat_nou">Nou estat</label>
+                    <select class="form-select" id="pair_estat_nou" required>
+                      <option value="activa">activa</option>
+                      <option value="pausada">pausada</option>
+                      <option value="tancada">tancada</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label" for="pair_data_fi">Data de finalitzacio</label>
+                    <input class="form-control" id="pair_data_fi" type="date" />
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" for="pair_observacions_estat">Observacions</label>
+                    <textarea class="form-control" id="pair_observacions_estat" rows="2"></textarea>
+                  </div>
+                </div>
+
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                  <button class="btn btn-primary" type="submit" id="boto_actualitzar_parella" disabled>Actualitzar estat</button>
+                  <button class="btn btn-outline-secondary" type="button" id="boto_cancelar_parella">Cancelar seleccio</button>
+                </div>
+              </form>
             </div>
           </section>
         </div>
@@ -182,13 +290,33 @@
       <div class="mt-4 d-flex justify-content-between flex-wrap gap-2">
         <a class="btn btn-link p-0" href="../index.html">Tornar a l'inici</a>
       </div>
-    </main>
 
-    <footer class="footer border-top py-3">
-      <div class="container text-muted">Projecte academic - MVP</div>
-    </footer>
+      <div class="mt-3 small text-muted" id="estat_sessio"></div>
+      </main>
 
+      <footer class="footer text-white mt-5 p-4">
+        <div class="container">
+          <div class="wrapper-footer">
+            <div class="row">
+              <div class="col-12 text-start pt-2 pb-0">
+                <img src="../img/logo.png" class="footer-logo" alt="Logotip de la plataforma de voluntariat linguistic" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 text-start footer-text">
+                <p class="mb-1 fw-bold">Plataforma de Gestio del Voluntariat Linguistic</p>
+                <p class="mb-1">&copy; 2026 Tots els drets reservats</p>
+                <p class="mb-0">Contacte: info@voluntariatlinguistic.cat</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="../js/script.js"></script>
     <script src="../js/auth-session.js"></script>
+    <script src="../js/nav-session.js"></script>
     <script src="../js/admin.js"></script>
   </body>
 </html>

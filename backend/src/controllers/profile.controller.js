@@ -1,6 +1,5 @@
 const pool = require('../config/db');
 const { obtenirUsuariAmbPerfil, sincronitzarPerfilUsuari } = require('../utils/user-profile');
-const { updateSessionUser } = require('../utils/session-store');
 
 function correuElectronicValid(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -11,15 +10,15 @@ exports.getMyProfile = async (req, res, next) => {
     const perfil = await obtenirUsuariAmbPerfil(pool, req.user.id);
 
     if (!perfil) {
-      return res.status(404).json({ message: 'No s\'ha trobat el perfil de l\'usuari.' });
+      return res.status(404).json({ message: 'No s ha trobat el perfil de l usuari.' });
     }
 
-    res.json({
+    return res.json({
       message: 'Perfil recuperat correctament.',
       data: perfil
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -70,15 +69,8 @@ exports.updateMyProfile = async (req, res, next) => {
     connection.release();
 
     const perfilActualitzat = await obtenirUsuariAmbPerfil(pool, req.user.id);
-    updateSessionUser(req.sessionToken, {
-      id: perfilActualitzat.id,
-      nom: perfilActualitzat.nom,
-      cognoms: perfilActualitzat.cognoms,
-      email: perfilActualitzat.email,
-      rol: perfilActualitzat.rol
-    });
 
-    res.json({
+    return res.json({
       message: 'Perfil actualitzat correctament.',
       data: perfilActualitzat
     });
@@ -87,6 +79,6 @@ exports.updateMyProfile = async (req, res, next) => {
       await connection.rollback();
       connection.release();
     }
-    next(error);
+    return next(error);
   }
 };

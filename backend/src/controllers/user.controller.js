@@ -42,6 +42,11 @@ exports.listUsers = async (req, res, next) => {
          u.created_at,
          u.updated_at,
          CASE
+           WHEN u.rol = 'voluntari' THEN v.id
+           WHEN u.rol = 'aprenent' THEN a.id
+           ELSE NULL
+         END AS perfil_id,
+         CASE
            WHEN u.rol = 'voluntari' THEN v.telefon
            WHEN u.rol = 'aprenent' THEN a.telefon
            ELSE NULL
@@ -212,6 +217,55 @@ exports.updateUser = async (req, res, next) => {
     res.json({
       message: 'Usuari actualitzat correctament.',
       data: usuariActualitzat
+    });
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+      connection.release();
+    }
+    next(error);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  const connection = await pool.getConnection();
+
+  try {
+    const userId = Number(req.params.id);
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      connection.release();
+      return res.status(400).json({ message: 'Cal indicar un identificador d usuari valid.' });
+    }
+
+    if (req.user?.id === userId) {
+      connection.release();
+      return res.status(400).json({ message: 'No pots eliminar el teu propi usuari des del panell d administracio.' });
+    }
+
+    const usuari = await obtenirUsuariAmbPerfil(connection, userId);
+    if (!usuari) {
+      connection.release();
+      return res.status(404).json({ message: 'No s ha trobat l usuari que es vol eliminar.' });
+    }
+
+    await connection.beginTransaction();
+
+    if (usuari.rol === 'voluntari' && usuari.perfil_id) {
+      await connection.execute('DELETE FROM parelles WHERE voluntari_id = ?', [usuari.perfil_id]);
+    }
+
+    if (usuari.rol === 'aprenent' && usuari.perfil_id) {
+      await connection.execute('DELETE FROM parelles WHERE aprenent_id = ?', [usuari.perfil_id]);
+    }
+
+    await connection.execute('DELETE FROM users WHERE id = ?', [userId]);
+
+    await connection.commit();
+    connection.release();
+
+    res.json({
+      message: 'Usuari eliminat correctament.'
     });
   } catch (error) {
     if (connection) {

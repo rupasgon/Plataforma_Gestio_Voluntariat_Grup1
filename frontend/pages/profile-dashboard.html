@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perfil</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="container-fluid mt-4 px-2 px-md-5">
+    <header>
+      <nav class="row menu-celeste shadow p-3 mb-3" aria-label="Navegacio principal">
+        <div class="col-12">
+          <ul class="nav nav-pills d-flex w-100">
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html">Inici</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="voluntari.html">Voluntaris</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="aprenent.html">Aprenents</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="disponibilitat.html">Disponibilitat</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="parelles.html">Parelles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contacte.html">Contacte</a>
+            </li>
+            <li class="nav-item ms-md-auto" id="nav_login_item" data-login-href="./login.html">
+              <a class="nav-link" href="./login.html">Login</a>
+            </li>
+            <li class="nav-item ms-md-auto d-none" id="nav_logout_item">
+              <a class="nav-link" href="./login.html" id="nav_logout_button">Tancar sessio</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="row">
+        <div class="col-12 p-3">
+          <img src="../img/header.webp" class="img-fluid" alt="Capcalera de la plataforma de voluntariat linguistic" />
+        </div>
+      </div>
+    </header>
+
+    <main class="container py-5">
+      <h1 class="mb-4">El meu perfil</h1>
+      <section class="row dades-usuari">
+        <div>
+          <div class="col-md-6">
+            <strong>Nom</strong>
+            <p class="nom" id="nom"></p>
+          </div>
+          <div class="col-md-6">
+            <strong>Cognoms</strong>
+            <p class="cognoms" id="cognoms"></p>
+          </div>
+          <div class="col-md-6">
+            <strong>Adreca electronica</strong>
+            <p class="email" id="email"></p>
+          </div>
+          <div class="col-md-6">
+            <strong>Telefon</strong>
+            <p class="telefon" id="telefon"></p>
+          </div>
+          <div class="col-md-6">
+            <strong>Parroquia</strong>
+            <p class="parroquia" id="parroquia"></p>
+          </div>
+          <div class="col-md-6">
+            <strong>Data de naixement</strong>
+            <p class="data_naixement" id="data_naixement"></p>
+          </div>
+          <div class="col-md-6">
+            <strong>Disponibilitat</strong>
+            <p class="disponibilitat" id="disponibilitat"></p>
+          </div>
+          <div class="col-md-6">
+            <strong>Observacions</strong>
+            <p class="observacions" id="observacions"></p>
+          </div>
+        </div>
+        <div class="mt-3">
+          <a class="btn btn-primary" href="./profile.html">Actualitza les teves dades</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer text-black mt-5 p-1">
+      <div class="row">
+        <div class="col-12 text-start footer-text">
+          <p class="mb-1 fw-bold">Plataforma de Gestio</p>
+          <p class="mb-1 fw-bold">del</p>
+          <p class="mb-1 fw-bold">Voluntariat Linguistic</p>
+
+          <br><br>
+
+          <p class="mb-1">Â© 2026 Tots els drets reservats</p>
+          <p class="mb-0">Contacte: info@voluntariatlinguistic.cat</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script src="../js/auth-session.js"></script>
+  <script src="../js/nav-session.js"></script>
+  <script src="../js/profile-dashboard.js"></script>
+</body>
+</html>

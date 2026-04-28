@@ -54,12 +54,12 @@
                         </li>
 
                         <!-- Empeny els següents cap a la dreta -->
-                        <li class="nav-item ms-lg-auto">
+                        <li class="nav-item ms-lg-auto" id="nav_login_item" data-login-href="pages/login.html">
                             <a class="nav-link" href="pages/login.html">Login</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="pages/admin.html">Admin</a>
+                        <li class="nav-item ms-md-auto d-none" id="nav_logout_item">
+                            <a class="nav-link" href="pages/login.html" id="nav_logout_button">Tancar sessio</a>
                         </li>
 
                     </ul>
@@ -338,14 +338,14 @@
                 <div class="row text-center">
 
                     <div class="col-6 col-md-6 p-3">
-                        <a href="pages/voluntari-form.html">
+                        <a href="pages/voluntari.html">
                             <img src="img/voluntari.webp" id="voluntari" class="img-fluid foto-efecte"
                                 alt="Imatge d'un voluntaris">
                         </a>
                     </div>
 
                     <div class="col-6 col-md-6 p-3">
-                        <a href="pages/aprenent-form.html">
+                        <a href="pages/aprenent.html">
                             <img src="img/aprenent.webp" id="aprenent" class="img-fluid foto-efecte"
                                 alt="Imatge d'un Aprenent">
                         </a>
@@ -383,6 +383,8 @@
     <audio id="soAprenent" src="./media/so-aprenent.wav"></audio>
 
     <script src="js/script.js"></script>
+    <script src="js/auth-session.js"></script>
+    <script src="js/nav-session.js"></script>
     <!-- BOOTSTRAP JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 

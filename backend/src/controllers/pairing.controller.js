@@ -163,3 +163,37 @@ exports.updatePairingStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.deletePairing = async (req, res, next) => {
+  const connection = await pool.getConnection();
+
+  try {
+    const pairingId = Number(req.params.id);
+
+    if (!Number.isInteger(pairingId) || pairingId <= 0) {
+      connection.release();
+      return res.status(400).json({ message: 'Cal indicar un identificador de parella valid.' });
+    }
+
+    const [rows] = await connection.execute('SELECT id FROM parelles WHERE id = ?', [pairingId]);
+    if (rows.length === 0) {
+      connection.release();
+      return res.status(404).json({ message: 'No s ha trobat la parella indicada.' });
+    }
+
+    await connection.beginTransaction();
+    await connection.execute('DELETE FROM parelles WHERE id = ?', [pairingId]);
+    await connection.commit();
+    connection.release();
+
+    res.json({
+      message: 'Parella eliminada correctament.'
+    });
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+      connection.release();
+    }
+    next(error);
+  }
+};

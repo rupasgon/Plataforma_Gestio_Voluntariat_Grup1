@@ -1,7 +1,6 @@
 const formulariPerfil = document.getElementById('formulari_perfil');
 const estatPerfil = document.getElementById('estat_perfil');
 const botoGuardar = document.getElementById('boto_guardar');
-const botoLogout = document.getElementById('boto_logout');
 const badgeRol = document.getElementById('rol_usuari');
 
 const campsPerfil = {
@@ -27,7 +26,7 @@ async function tancarSessio() {
       headers: window.PARELLES_AUTH.obtenirCapcaleresAutenticades()
     });
   } catch (error) {
-    // No cal bloquejar el tancament local si l'API no respon.
+    // No cal bloquejar el tancament local si l API no respon.
   }
 
   window.PARELLES_AUTH.esborrarSessio();
@@ -75,13 +74,13 @@ async function carregarPerfil() {
 
     const dadesPerfil = await respostaPerfil.json();
     if (!respostaPerfil.ok) {
-      mostrarEstat(dadesPerfil.message || 'No s\'ha pogut carregar el perfil.', 'danger');
+      mostrarEstat(dadesPerfil.message || 'No s ha pogut carregar el perfil.', 'danger');
       return;
     }
 
     emplenarFormulari(dadesPerfil.data);
   } catch (error) {
-    mostrarEstat('No s\'ha pogut carregar el perfil. Revisa la connexio amb l\'API.', 'danger');
+    mostrarEstat('No s ha pogut carregar el perfil. Revisa la connexio amb l API.', 'danger');
   }
 }
 
@@ -114,7 +113,7 @@ formulariPerfil.addEventListener('submit', async (event) => {
 
     const dades = await resposta.json();
     if (!resposta.ok) {
-      mostrarEstat(dades.message || 'No s\'ha pogut actualitzar el perfil.', 'danger');
+      mostrarEstat(dades.message || 'No s ha pogut actualitzar el perfil.', 'danger');
       return;
     }
 
@@ -127,7 +126,8 @@ formulariPerfil.addEventListener('submit', async (event) => {
             ...sessio.user,
             nom: dades.data.nom,
             cognoms: dades.data.cognoms,
-            email: dades.data.email
+            email: dades.data.email,
+            rol: dades.data.rol
           }
         },
         window.PARELLES_AUTH.teSessioRecordada()
@@ -137,13 +137,11 @@ formulariPerfil.addEventListener('submit', async (event) => {
     emplenarFormulari(dades.data);
     mostrarEstat('Perfil actualitzat correctament.', 'success');
   } catch (error) {
-    mostrarEstat('No s\'ha pogut desar el perfil. Revisa la connexio amb l\'API.', 'danger');
+    mostrarEstat('No s ha pogut desar el perfil. Revisa la connexio amb l API.', 'danger');
   } finally {
     botoGuardar.disabled = false;
     botoGuardar.textContent = 'Guardar canvis';
   }
 });
-
-botoLogout.addEventListener('click', tancarSessio);
 
 carregarPerfil();
