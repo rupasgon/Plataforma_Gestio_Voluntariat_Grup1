@@ -267,24 +267,44 @@ header img {
         /* alçada header */
     }
 
-    /* Espai a la dreta del menú perquè Login i Administrador
-   no quedin enganxats al límit dret del navegador */
-    .menu-celeste .nav {
-        padding-right: 20px;
-        /* separació del marge dret */
-    }
+    /* ==== MENÚ NAVEGACIÓ ==== */
 
     /* contenidor dels botons */
     .nav-pills {
-        justify-content: flex-start;
-        /* esquerra correcte */
+        justify-content: center;
+        /* botons al centre */
+    }
+
+    .nav-pills {
+        flex-direction: column;
+        /* menú vertical */
+        justify-content: center;
+        /* centra vertical */
+        align-items: center;
+        /* centra horitzontal */
         flex-wrap: nowrap;
-        /* tots en una fila */
+        /* sense salt */
     }
 
     .nav-pills .nav-item {
-        width: auto;
-        /* treu amplada fixa */
+        width: 30%;
+        /* ample complet */
+        margin: 5px 0;
+        /* espai vertical */
+    }
+
+    .nav-pills .nav-link {
+        width: 100%;
+        /* ocupa tot */
+        text-align: center;
+        /* text centrat */
+        font-size: 1.5rem !important;
+        /* tamany del text del menú */
+    }
+
+    .menu-celeste .nav {
+        padding-right: 0;
+        /* treu espai dret */
     }
 
     /* ===== FOOTER ===== */
@@ -369,19 +389,21 @@ header img {
     /* contenidor dels botons */
 
     .nav-pills {
-        justify-content: left;
-        /* botons a l'esquerra */
+        flex-direction: row;
+        /* menú en fila */
+        justify-content: flex-start;
+        /* alinea a l'esquerra */
+        align-items: center;
+        /* centra verticalment */
+        flex-wrap: nowrap;
+        /* evita salt de línia */
     }
 
     .nav-pills .nav-item {
         width: 180px;
-        /* amplada fixa */
-    }
-
-    /* Menú: links visibles però no massius */
-    nav.menu-celeste a.nav-link {
-        font-size: 1.4rem;
-        /* mida del text */
+        /* amplada fixa botons */
+        margin: 0 5px;
+        /* espai lateral */
     }
 
     header img {
