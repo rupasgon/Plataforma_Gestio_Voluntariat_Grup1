@@ -29,6 +29,9 @@ CREATE TABLE IF NOT EXISTS aprenents (
   telefon VARCHAR(30),
   parroquia VARCHAR(150),
   data_naixement DATE,
+  nivell_catala VARCHAR(30),
+  objectiu_principal VARCHAR(255),
+  pot_conversar ENUM('si','no'),
   disponibilitat VARCHAR(255),
   observacions TEXT,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

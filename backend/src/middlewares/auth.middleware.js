@@ -1,19 +1,26 @@
-const { getSession } = require('../utils/session-store');
+const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-  const authHeader = req.headers.authorization || '';
-  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+  const authorizationHeader = req.headers.authorization || '';
+  const [scheme, token] = authorizationHeader.split(' ');
 
-  if (!token) {
+  if (scheme !== 'Bearer' || !token) {
     return res.status(401).json({ message: 'Cal iniciar la sessio per accedir a aquest recurs.' });
   }
 
-  const session = getSession(token);
-  if (!session) {
-    return res.status(401).json({ message: 'La sessio no es valida o ha caducat.' });
-  }
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET || 'canvia-aquest-secret-en-produccio');
 
-  req.sessionToken = token;
-  req.user = { ...session.user };
-  next();
+    req.user = {
+      id: payload.sub,
+      rol: payload.rol,
+      email: payload.email,
+      nom: payload.nom,
+      cognoms: payload.cognoms
+    };
+
+    return next();
+  } catch (error) {
+    return res.status(401).json({ message: 'La sessio no es valida o ha expirat.' });
+  }
 };

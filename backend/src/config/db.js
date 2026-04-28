@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
-require('dotenv').config();
 
+// Pool global de connexions per reutilitzar sockets i evitar obrir una connexio per peticio.
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',

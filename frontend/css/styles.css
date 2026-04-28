@@ -18,17 +18,7 @@ body {
     /* centra tot el contingut horitzontalment */
 }
 
-/* ===== FONT SIZE PER H1, H2, llistes ol I MENÚ ===== */
-
-/* H1 principal: titulars grans i destacats */
-body h1 {
-    font-size: 1.5rem;
-    /* mida del text */
-    line-height: 1.2;
-    /* espai vertical entre línies */
-    font-weight: 700;
-    /* text en negreta */
-}
+/* ===== TÍTOLS ===== */
 
 h2 {
     font-family: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
@@ -49,6 +39,16 @@ h2 {
     /* amplada completa */
 }
 
+/* ===== FONT SIZE PER H1, H2 I MENÚ ===== */
+
+/* H1 principal: titulars grans i destacats */
+body h1 {
+    font-size: 1.3rem;
+    /* mida del text */
+    line-height: 1.2;
+    /* espai vertical entre línies */
+}
+
 /* H2: subtítols i seccions */
 body h2 {
     font-size: 1.5rem;
@@ -56,6 +56,14 @@ body h2 {
     line-height: 1.3;
     /* espai vertical entre línies */
 }
+
+/* Menú: links visibles però no massius */
+nav.menu-celeste a.nav-link {
+    font-size: 1rem;
+    /* mida del text */
+}
+
+/* línia taronja sota el títol */
 
 h3 {
     font-size: 1.2rem;
@@ -272,6 +280,21 @@ header img {
     /* mida del text de la resposta */
 }
 
+.faq h2 {
+    font-size: 1.4rem;
+    /* mida del títol principal en mòbil */
+}
+
+.faq .accordion-button {
+    font-size: 0.7rem;
+    /* midad del text de la pregunta */
+}
+
+.faq .accordion-body {
+    font-size: 0.7rem;
+    /* mida del text de la resposta */
+}
+
 /* botons per defecte */
 .faq .accordion-button {
     /* botons de cada pregunta */
@@ -350,7 +373,7 @@ header img {
 }
 
 .wrapper-perfil-usuaris h2 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     /* mida del text */
 }
 
@@ -441,32 +464,33 @@ header img {
     /* tamany font del footer*/
 }
 
+.wrapper-footer {
+    width: 100%;
+}
+
+.footer-logo {
+    width: 56px;
+    height: auto;
+}
+
 /* colocar els paràgrafs del footer en posició correcte */
 
 /* Primer paràgraf dins de .footer-text */
 .footer-text p:nth-child(1) {
-    padding-left: 25px;
+    padding-left: 30px;
     /* primer paràgraf amb 150px */
-    font-size: 5px;
-    /* tamany font del footer*/
-    padding-top: 5px;
-    /* separació de 5 px adalt */
 }
 
 /* Segon paràgraf dins de .footer-text */
 .footer-text p:nth-child(2) {
-    padding-left: 45px;
+    padding-left: 50px;
     /* segon paràgraf amb 200px */
-    font-size: 5px;
-    /* tamany font del footer*/
 }
 
 /* Tercer paràgraf dins de .footer-text */
 .footer-text p:nth-child(3) {
-    padding-left: 25px;
+    padding-left: 30px;
     /* tercer paràgraf amb 150px */
-    font-size: 5px;
-    /* tamany font del footer*/
 }
 
 /* Quart i cinquè paràgraf reals (ignorant els <br>) */
@@ -474,89 +498,79 @@ header img {
 .footer-text p:nth-of-type(5) {
     padding-left: 1px;
     /* marge a l'esquerra dels paràgrafs */
-    font-size: 5px;
-    /* tamany font del footer*/
 }
+
+/* ========================================================================================================================================================================= */
+
+/* ADMIN DASHBOARD */
+
+/* ========================================================================================================================================================================= */
+
+.admin-dashboard h1 {
+    font-family: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    /* defineix la tipografia del títol amb diferents fonts de reserva */
+    font-weight: 700;
+    /* fa el text en negreta (gruix fort) */
+    color: #333;
+    /* color gris fosc per al títol */
+}
+
+.admin-stat-card {
+    border: 1px solid #dfe3e8;
+    /* vora fina gris clar al voltant de la targeta */
+    border-radius: 10px;
+    /* cantonades arrodonides de la targeta */
+}
+
+.admin-stat-label {
+    color: #5a6470;
+    /* color gris per al text de l'etiqueta */
+    font-size: 0.85rem;
+    /* mida de lletra una mica més petita */
+    font-weight: 600;
+    /* text semi-negreta */
+    text-transform: uppercase;
+    /* converteix el text a majúscules */
+    letter-spacing: 0.02em;
+    /* petit espai entre lletres per millorar la lectura */
+}
+
+.admin-stat-value {
+    font-size: 1.8rem;
+    /* mida gran per destacar el valor de l'estadística */
+    font-weight: 700;
+    /* text en negreta */
+    color: #2a2a2a;
+    /* gris molt fosc per al valor */
+    line-height: 1.1;
+    /* ajusta l'espai vertical entre línies */
+}
+
+.admin-stat-text {
+    font-size: 1rem;
+    /* mida de lletra normal per al text de l'estadística */
+    font-weight: 600;
+    /* text semi-negreta per destacar una mica */
+}
+
+.admin-panel-card {
+    border: 1px solid #dfe3e8;
+    /* vora fina gris clar al voltant de la targeta del panell */
+    border-radius: 10px;
+    /* cantonades arrodonides per donar un aspecte suau */
+}
+
 
 /* MEDIA QUERIES */
 
 /* ========================================================================================================================================================================= */
 
-/* TAULETES min-width:768px */
+                                                                                /* TAULETES min-width:768px */
 
 /* ========================================================================================================================================================================= */
 
 
 @media (min-width:768px) {
-
-    /* ===== FONT SIZE PER H1, H2, llistes ol I MENÚ ===== */
-
-    /* H1 principal: titulars grans i destacats */
-    body h1 {
-        font-size: 2.3rem;
-        /* mida del text */
-        line-height: 1.2;
-        /* espai vertical entre línies */
-        font-weight: 700;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-        /* mida del text */
-        line-height: 1.2;
-        /* espai vertical entre línies */
-    }
-
-    h3 {
-        font-size: 1.7rem;
-        /* mida del text */
-        line-height: 1.2;
-        /* espai vertical entre línies */
-    }
-
-    p {
-        font-size: 1.5rem;
-        /* mida del text */
-        line-height: 1.3;
-        /* espai vertical entre línies */
-    }
-
-    /* Tamany font de la llista OL i UL */
-    .llista-procés li,
-    .llista-idees li,
-    .llista-activitats li,
-    .llista-consisteix li,
-    .llista-noms li {
-        font-size: 1.5rem;
-        /* mida del text */
-    }
-
-    /* faqs */
-    .faq h2 {
-        font-size: 2.3rem;
-        /* mida del text */
-    }
-
-    .accordion .accordion-button {
-        font-size: 1.5rem;
-        /* mida del text */
-    }
-
-    .accordion .accordion-body {
-        font-size: 1.5rem;
-        /* mida del text */
-    }
-
-    /* perfil usuaris */
-    #perfil-titol {
-        font-size: 2.5rem;
-        /* mida del text */
-    }
-
-    .wrapper-perfil-usuaris p {
-        font-size: 1.3rem;
-        /* mida del text */
-    }
 
     /* imatge del header */
     header img {
@@ -584,14 +598,6 @@ header img {
         /* treu amplada fixa */
     }
 
-    /* Tamany font de la llista OL i UL */
-    .llista-procés li,
-    .llista-idees li,
-    .llista-activitats li {
-        font-size: 1.5rem;
-        /* mida del text */
-    }
-
     /* ===== FOOTER ===== */
 
     .footer {
@@ -615,6 +621,12 @@ header img {
         /* centra verticalment el contingut */
         margin-bottom: 40px;
         /* espai extra sota el footer */
+        font-size: 0.6em;
+        /* tamany font del footer*/
+    }
+
+    .footer-logo {
+        width: 68px;
     }
 
     /* colocar els paràgrafs del footer en posició correcte */
@@ -623,26 +635,18 @@ header img {
     .footer-text p:nth-child(1) {
         padding-left: 50px;
         /* primer paràgraf amb 150px */
-        font-size: 10px;
-        /* tamany font del footer*/
     }
 
     /* Segon paràgraf dins de .footer-text */
     .footer-text p:nth-child(2) {
-        padding-left: 100px;
+        padding-left: 70px;
         /* segon paràgraf amb 200px */
-        font-size: 10px;
-        /* tamany font del footer*/
     }
 
     /* Tercer paràgraf dins de .footer-text */
     .footer-text p:nth-child(3) {
         padding-left: 50px;
         /* tercer paràgraf amb 150px */
-        font-size: 10px;
-        /* tamany font del footer*/
-        padding-bottom: 20px;
-        /* separació abaix */
     }
 
     /* Quart i cinquè paràgraf reals (ignorant els <br>) */
@@ -650,14 +654,12 @@ header img {
     .footer-text p:nth-of-type(5) {
         padding-left: 10px;
         /* marge a l'esquerra dels paràgrafs */
-        font-size: 10px;
-        /* tamany font del footer*/
     }
 }
 
 /* ========================================================================================================================================================================= */
 
-/* DESKTOPS min-width:992px */
+                                                                        /* DESKTOPS min-width:992px */
 
 /* ========================================================================================================================================================================= */
 
@@ -683,7 +685,7 @@ header img {
         /* amplada fixa */
     }
 
-    /* ===== FONT SIZE PER H1, H2, llistes OL UL I MENÚ (desktop 1920x1080) ===== */
+    /* ===== FONT SIZE PER H1, H2 I MENÚ (desktop 1920x1080) ===== */
 
     /* H1 principal: titulars grans i destacats */
     body h1 {
@@ -709,11 +711,6 @@ header img {
 
     /* ================== INFORMACIÓ PLATAFORMA ================== */
 
-    /* Aplica estil a tots els elements <h3> que estan dins .informacio-plataforma */
-    .informacio-plataforma h3 {
-        font-size: 2rem;
-    }
-
     /* Selecciona tots els paràgrafs dins la secció informacio-plataforma */
     .informacio-plataforma p {
         font-size: 1.6rem;
@@ -726,10 +723,9 @@ header img {
         /* separació entre paràgrafs */
     }
 
-    /* Aplica estil a tots els elements <li> dins <ul> o <ol> que estan dins .informacio-plataforma */
-    .informacio-plataforma ul li,
-    .informacio-plataforma ol li {
-        font-size: 1.5rem;
+    /* Aplica estil a tots els elements <li> dins <ul> que estan dins .informacio-plataforma */
+    .informacio-plataforma ul li {
+        font-size: 1.2rem;
         /* mida del text */
         line-height: 1.6;
         /* Altura de línia per millorar llegibilitat i separar visualment cada línia del text */
@@ -754,13 +750,13 @@ header img {
     /* Botons de l'accordion (les preguntes) */
     .faq .accordion-button {
         font-size: 1.6rem;
-        /* mida del text de les preguntes */
+        /* mida del text de la pregunta */
     }
 
     /* ================== SECCIÓ PERFIL D'USUARI ================== */
 
     /* Titulars H2 dins el wrapper de perfil d’usuari */
-    #perfil-titol {
+    .wrapper-perfil-usuaris h2 {
         font-size: 4rem;
         /* mida del text */
         line-height: 1.3;
@@ -797,6 +793,12 @@ header img {
         /* centra verticalment el contingut */
         margin-bottom: 40px;
         /* espai extra sota el footer */
+        font-size: 1.6em;
+        /* tamany font del footer*/
+    }
+
+    .footer-logo {
+        width: 88px;
     }
 
     /* colocar els paràgrafs del footer en posició correcte */
@@ -805,26 +807,18 @@ header img {
     .footer-text p:nth-child(1) {
         padding-left: 150px;
         /* primer paràgraf amb 150px */
-        font-size: 1.6rem;
-        /* tamany font del footer*/
     }
 
     /* Segon paràgraf dins de .footer-text */
     .footer-text p:nth-child(2) {
         padding-left: 250px;
         /* segon paràgraf amb 200px */
-        font-size: 1.6rem;
-        /* tamany font del footer*/
     }
 
     /* Tercer paràgraf dins de .footer-text */
     .footer-text p:nth-child(3) {
         padding-left: 150px;
         /* tercer paràgraf amb 150px */
-        font-size: 1.6rem;
-        /* tamany font del footer*/
-        padding-bottom: 70px;
-        /* separació asota del tercer p*/
     }
 
     /* Quart i cinquè paràgraf reals (ignorant els <br>) */
@@ -832,8 +826,6 @@ header img {
     .footer-text p:nth-of-type(5) {
         padding-left: 20px;
         /* marge a l'esquerra dels paràgrafs */
-        font-size: 1.6rem;
-        /* tamany font del footer*/
     }
 
 }
