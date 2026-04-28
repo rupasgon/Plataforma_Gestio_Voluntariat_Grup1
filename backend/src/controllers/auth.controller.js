@@ -8,11 +8,11 @@ function normalitzarIdentificador(identificador = '') {
   return identificador.trim().toLowerCase();
 }
 
-function crearToken(user) {
+function crearToken(user, recordarSessio = false) {
   return jwt.sign(
     { sub: user.id, rol: user.rol, email: user.email, nom: user.nom, cognoms: user.cognoms },
     process.env.JWT_SECRET || 'canvia-aquest-secret-en-produccio',
-    { expiresIn: '8h' }
+    { expiresIn: recordarSessio ? '7d' : '8h' }
   );
 }
 
@@ -96,6 +96,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const identificador = normalitzarIdentificador(req.body.identificador);
   const password = typeof req.body.password === 'string' ? req.body.password : '';
+  const recordarSessio = Boolean(req.body.recordarSessio);
 
   if (!identificador || !password) {
     return res.status(400).json({
@@ -126,11 +127,13 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Credencials incorrectes.' });
     }
 
-    const token = crearToken(user);
+    const token = crearToken(user, recordarSessio);
+    const payload = jwt.decode(token);
 
     return res.json({
       message: 'Login correcte.',
       token,
+      expiresAt: payload?.exp ? payload.exp * 1000 : null,
       user: {
         id: user.id,
         nom: user.nom,
@@ -156,5 +159,8 @@ exports.me = (req, res) => {
     return res.status(401).json({ message: 'La sessio no es valida o ha expirat.' });
   }
 
-  return res.json({ user: req.user });
+  return res.json({
+    user: req.user,
+    expiresAt: req.tokenExpiresAt || null
+  });
 };

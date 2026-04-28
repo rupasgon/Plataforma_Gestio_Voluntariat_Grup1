@@ -1,153 +1,74 @@
-.login-page {
-    min-height: 100vh;
-    font-family: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    background:
-        linear-gradient(135deg, rgba(168, 216, 255, 0.85), rgba(255, 179, 71, 0.7)),
-        url("../img/header.webp") center / cover no-repeat fixed;
+.login-section {
+    margin-bottom: 3rem;
 }
 
-.login-shell {
-    min-height: 100vh;
+.login-wrapper {
+    max-width: 1200px;
 }
 
-.login-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.75rem;
-    align-items: stretch;
-}
-
-.login-intro,
-.login-page .card-login {
-    position: relative;
-    overflow: hidden;
+.login-panel {
     border-radius: 24px;
-    box-shadow: 0 18px 45px rgba(32, 54, 78, 0.14);
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(3px);
 }
 
-.login-intro {
+.login-info {
     padding: 2rem 1.5rem;
-    background: linear-gradient(160deg, rgba(16, 58, 112, 0.86), rgba(43, 121, 183, 0.78));
-    color: white;
-}
-
-.login-intro::before {
-    content: "";
-    position: absolute;
-    inset: auto -40px -60px auto;
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
-}
-
-.login-intro>* {
-    position: relative;
-    z-index: 1;
+    background: linear-gradient(180deg, rgba(168, 216, 255, 0.9), rgba(255, 179, 71, 0.82));
+    color: #1f2d3d;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
 }
 
 .login-kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    margin-bottom: 1rem;
-    padding: 0.45rem 0.75rem;
+    display: inline-block;
+    padding: 0.35rem 0.8rem;
     border-radius: 999px;
-    background-color: rgba(255, 255, 255, 0.14);
-    font-size: 0.82rem;
+    background-color: rgba(255, 255, 255, 0.65);
+    font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
 }
 
-.login-title {
-    font-size: clamp(2rem, 3.4vw, 3.3rem);
-    font-weight: 700;
-    line-height: 1.05;
-    margin-bottom: 1rem;
-}
-
-.login-description {
-    max-width: 42rem;
-    font-size: 1.02rem;
+.login-copy {
+    font-size: 1rem;
     line-height: 1.7;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 1.5rem;
 }
 
-.login-panel {
-    display: flex;
-    align-items: center;
+.login-form-shell {
+    padding: 2rem 1.5rem;
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
-.login-page .card-login {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.94);
-    color: #13263d;
-    border: 1px solid rgba(223, 227, 232, 0.95) !important;
+.login-subtitle {
+    font-size: 1rem;
 }
 
-.login-page .card-login::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 8px;
-    background: linear-gradient(90deg, #0d6efd, #f34703);
+.card-login {
+    border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
-.login-brand {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.login-brand-logo {
-    width: 72px;
-    height: 72px;
-    object-fit: contain;
-    flex-shrink: 0;
-}
-
-.login-brand-overline {
-    font-size: 0.82rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: #397ac9;
-}
-
-.login-brand-caption {
-    color: #556274;
-}
-
-.login-help-text {
-    font-size: 0.8rem;
-    color: #68768a;
-}
-
-.login-secondary-link {
-    color: #0d6efd;
-    font-weight: 500;
-    text-decoration: none;
-}
-
-.login-secondary-link:hover {
-    text-decoration: underline;
-}
-
-.login-submit-button {
-    min-height: 48px;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-}
-
-.login-status {
-    min-height: 48px;
+.login-demo-box {
+    border-radius: 18px;
+    border: 1px solid rgba(57, 122, 201, 0.18);
+    background-color: rgba(168, 216, 255, 0.38);
 }
 
 #formulari_acces .form-label {
-    font-weight: 600;
+    font-weight: 700;
     color: #243447;
+}
+
+#formulari_acces .form-control,
+#formulari_acces .form-check-input,
+#formulari_acces .btn {
+    font-size: 1rem;
 }
 
 #formulari_acces .form-control {
@@ -163,50 +84,29 @@
 
 #formulari_acces .input-group .btn {
     border-radius: 0 14px 14px 0;
-    min-height: 100%;
-    padding: 0 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-color: #cad4df;
-    background-color: #f8fafc;
-    color: #556274;
-    font-weight: 500;
-    line-height: 1;
-    flex: 0 0 92px;
 }
 
-#formulari_acces .input-group .btn:hover,
-#formulari_acces .input-group .btn:focus {
-    background-color: #eef4fb;
-    color: #243447;
-    border-color: #397ac9;
-    box-shadow: none;
+#formulari_acces .input-group .form-control {
+    border-radius: 14px 0 0 14px;
 }
 
-#formulari_acces .invalid-feedback {
-    font-size: 0.85rem;
-}
-
-@media (min-width:768px) {
-    .login-layout {
-        grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
-        gap: 2rem;
-    }
-
-    .login-intro {
+@media (min-width: 768px) {
+    .login-info {
         padding: 2.5rem;
     }
 
+    .login-form-shell {
+        padding: 2.5rem;
+    }
 }
 
-@media (min-width:992px) {
-    .login-shell {
-        padding-top: 2rem !important;
-        padding-bottom: 2rem !important;
+@media (min-width: 992px) {
+    .login-section h1 {
+        font-size: 3.2rem;
     }
 
-    .login-intro {
-        padding: 3rem;
+    .login-copy {
+        font-size: 1.15rem;
     }
 }

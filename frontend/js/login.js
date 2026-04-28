@@ -1,135 +1,166 @@
-// ===== ELEMENTS DEL FORMULARI =====
-const formulariAcces = document.getElementById("formulari_acces");
-const estatAcces = document.getElementById("estat_acces");
-const campIdentificador = document.getElementById("identificador");
-const campContrasenya = document.getElementById("contrasenya");
-const botoEntrar = document.getElementById("boto_entrar");
-const botoMostrarContrasenya = document.getElementById("mostrar_contrasenya");
-const checkRecordarSessio = document.getElementById("recordar_sessio");
-const errorIdentificador = document.getElementById("error_identificador");
-const errorContrasenya = document.getElementById("error_contrasenya");
-
-const sessioActiva = AuthSession.loadSession();
-if (sessioActiva?.user?.rol) {
-  AuthSession.redirectByRole(sessioActiva.user.rol);
-}
+const formulariAcces = document.getElementById('formulari_acces');
+const estatAcces = document.getElementById('estat_acces');
+const campCorreu = document.getElementById('correu');
+const campContrasenya = document.getElementById('contrasenya');
+const botoEntrar = document.getElementById('boto_entrar');
+const botoMostrarContrasenya = document.getElementById('mostrar_contrasenya');
+const errorContrasenya = document.getElementById('error_contrasenya');
+const campRecordarSessio = document.getElementById('recordar_sessio');
+const estatSessioLogin = document.getElementById('estat_sessio_login');
+const estatSessioText = document.getElementById('estat_sessio_text');
+const botoAnarSessio = document.getElementById('boto_anar_sessio');
+const botoTancarSessioLogin = document.getElementById('boto_tancar_sessio_login');
 
 function mostrarEstat(missatge, tipus) {
-  estatAcces.className = `login-status mt-4 alert alert-${tipus}`;
+  estatAcces.className = `alert alert-${tipus} mt-3`;
   estatAcces.textContent = missatge;
 }
 
-function validarIdentificador() {
-  const valor = campIdentificador.value.trim();
-  const semblaCorreu = valor.includes("@");
-  const correuValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
-  const usuariValid = valor.length >= 3;
-  const esValid = semblaCorreu ? correuValid : usuariValid;
-
-  let missatge = "";
-  if (!valor) {
-    missatge = "Introdueix el teu usuari o correu electronic.";
-  } else if (semblaCorreu && !correuValid) {
-    missatge = "El format del correu electronic no es valid.";
-  } else if (!semblaCorreu && !usuariValid) {
-    missatge = "El nom d usuari ha de tenir minim 3 caracters.";
-  }
-
-  errorIdentificador.textContent = missatge;
-  campIdentificador.classList.toggle("is-invalid", !esValid);
+function validarCorreu() {
+  const valor = campCorreu.value.trim();
+  const esValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+  campCorreu.classList.toggle('is-invalid', !esValid);
   return esValid;
 }
 
 function validarContrasenya() {
-  const valor = campContrasenya.value.trim();
-  const valida = valor.length >= 6;
-
-  let missatge = "";
-  if (!valor) {
-    missatge = "Introdueix la contrasenya.";
-  } else if (!valida) {
-    missatge = "La contrasenya ha de tenir minim 6 caracters.";
-  }
-
-  errorContrasenya.textContent = missatge;
-  campContrasenya.classList.toggle("is-invalid", !valida);
-  return valida;
+  const esValida = campContrasenya.value.trim().length >= 6;
+  errorContrasenya.textContent = esValida ? '' : 'La contrasenya ha de tenir com a minim 6 caracters.';
+  campContrasenya.classList.toggle('is-invalid', !esValida);
+  return esValida;
 }
 
-async function enviarCredencials() {
-  const resposta = await fetch(`${AuthSession.API_BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      identificador: campIdentificador.value.trim(),
-      password: campContrasenya.value
-    })
-  });
-
-  const dades = await resposta.json().catch(() => ({}));
-
-  if (!resposta.ok) {
-    throw new Error(dades.message || "No s ha pogut iniciar la sessio.");
-  }
-
-  return dades;
+function obtenirDestiPerRol(rol) {
+  return rol === 'admin' ? './admin.html' : './profile.html';
 }
 
-botoMostrarContrasenya.addEventListener("click", () => {
-  const esText = campContrasenya.type === "text";
-  campContrasenya.type = esText ? "password" : "text";
-  botoMostrarContrasenya.textContent = esText ? "Mostrar" : "Ocultar";
+function mostrarSessioActiva(sessio) {
+  estatSessioText.textContent = `Has iniciat sessio com ${sessio.user.nom} ${sessio.user.cognoms} (${sessio.user.rol}).`;
+  estatSessioLogin.classList.remove('d-none');
+  formulariAcces.classList.add('d-none');
+}
+
+async function tancarSessioActiva() {
+  try {
+    await fetch(`${window.PARELLES_AUTH.API_BASE}/auth/logout`, {
+      method: 'POST',
+      headers: window.PARELLES_AUTH.obtenirCapcaleresAutenticades()
+    });
+  } catch (error) {
+    // No cal bloquejar el tancament local si l API no respon.
+  }
+
+  window.PARELLES_AUTH.esborrarSessio();
+  estatSessioLogin.classList.add('d-none');
+  formulariAcces.classList.remove('d-none');
+  mostrarEstat('Sessio tancada correctament.', 'success');
+}
+
+async function redirigirSiJaHiHaSessio() {
+  const sessio = window.PARELLES_AUTH.obtenirSessio();
+  if (!sessio?.token) {
+    return;
+  }
+
+  try {
+    const resposta = await fetch(`${window.PARELLES_AUTH.API_BASE}/auth/me`, {
+      headers: window.PARELLES_AUTH.obtenirCapcaleresAutenticades()
+    });
+
+    if (!resposta.ok) {
+      window.PARELLES_AUTH.esborrarSessio();
+      return;
+    }
+
+    const dades = await resposta.json();
+    mostrarSessioActiva({
+      ...sessio,
+      user: dades.user
+    });
+  } catch (error) {
+    mostrarEstat('No s ha pogut comprovar la sessio actual. Assegura t que l API estigui activa.', 'warning');
+  }
+}
+
+botoMostrarContrasenya.addEventListener('click', () => {
+  const esText = campContrasenya.type === 'text';
+  campContrasenya.type = esText ? 'password' : 'text';
+  botoMostrarContrasenya.textContent = esText ? 'Mostrar' : 'Ocultar';
 });
 
-campIdentificador.addEventListener("input", () => {
-  if (campIdentificador.classList.contains("is-invalid")) {
-    validarIdentificador();
+botoAnarSessio.addEventListener('click', () => {
+  const sessio = window.PARELLES_AUTH.obtenirSessio();
+  if (!sessio?.user?.rol) {
+    return;
+  }
+
+  window.location.href = obtenirDestiPerRol(sessio.user.rol);
+});
+
+botoTancarSessioLogin.addEventListener('click', tancarSessioActiva);
+
+campCorreu.addEventListener('input', () => {
+  if (campCorreu.classList.contains('is-invalid')) {
+    validarCorreu();
   }
 });
 
-campContrasenya.addEventListener("input", () => {
-  if (campContrasenya.classList.contains("is-invalid")) {
+campContrasenya.addEventListener('input', () => {
+  if (campContrasenya.classList.contains('is-invalid')) {
     validarContrasenya();
   }
 });
 
-formulariAcces.addEventListener("submit", async (esdeveniment) => {
-  esdeveniment.preventDefault();
+formulariAcces.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-  const identificadorValid = validarIdentificador();
+  const correuValid = validarCorreu();
   const contrasenyaValida = validarContrasenya();
 
-  if (!identificadorValid || !contrasenyaValida) {
-    mostrarEstat("Revisa els camps obligatoris abans d entrar.", "warning");
+  if (!correuValid || !contrasenyaValida) {
+    mostrarEstat('Revisa els camps obligatoris abans d entrar.', 'warning');
     return;
   }
 
   botoEntrar.disabled = true;
-  botoEntrar.textContent = "Verificant...";
-  mostrarEstat("Validant les credencials...", "info");
+  botoEntrar.textContent = 'Verificant...';
 
   try {
-    const dades = await enviarCredencials();
+    const resposta = await fetch(`${window.PARELLES_AUTH.API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        identificador: campCorreu.value.trim(),
+        password: campContrasenya.value,
+        recordarSessio: campRecordarSessio.checked
+      })
+    });
 
-    AuthSession.saveSession(
+    const dades = await resposta.json().catch(() => ({}));
+
+    if (!resposta.ok) {
+      mostrarEstat(dades.message || 'No s ha pogut iniciar la sessio.', 'danger');
+      return;
+    }
+
+    window.PARELLES_AUTH.desarSessio(
       {
         token: dades.token,
-        user: dades.user
+        user: dades.user,
+        expiresAt: dades.expiresAt || null
       },
-      checkRecordarSessio.checked
+      campRecordarSessio.checked
     );
 
-    mostrarEstat("Sessio iniciada correctament. Redirigint...", "success");
+    mostrarEstat('Inici de sessio correcte. Redirigint...', 'success');
     window.setTimeout(() => {
-      AuthSession.redirectByRole(dades.user.rol);
-    }, 350);
+      window.location.href = obtenirDestiPerRol(dades.user.rol);
+    }, 400);
   } catch (error) {
-    mostrarEstat(error.message, "danger");
+    mostrarEstat('No s ha pogut connectar amb l API. Revisa que el servidor backend estigui actiu.', 'danger');
   } finally {
     botoEntrar.disabled = false;
-    botoEntrar.textContent = "Entrar";
+    botoEntrar.textContent = 'Entrar';
   }
 });
 

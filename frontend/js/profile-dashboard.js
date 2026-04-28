@@ -1,37 +1,38 @@
+document.addEventListener('DOMContentLoaded', () => {
+    carregarPerfil();
+});
 
-console.log("JS carregat");
-window.onload = function(){
-    getDades();
-    
-}
+async function carregarPerfil() {
+    const sessio = window.PARELLES_AUTH?.obtenirSessio();
+    if (!sessio?.token) {
+        window.location.href = './login.html';
+        return;
+    }
 
-//Funció per accedir a les dades a partir de l'usuari que ha fet el login.
-async function getDades(){
-    let resposta;
-    let dades;
+    try {
+        const resposta = await fetch(`${window.PARELLES_AUTH.API_BASE}/profile/me`, {
+            headers: window.PARELLES_AUTH.obtenirCapcaleresAutenticades()
+        });
 
-    try{
-        resposta = await fetch("http://localhost:3000/api/profile/me");
-        if (resposta.ok){
-            dades = await resposta.json();
-            console.log(dades);
-            showDades(dades);
-        } else {
-        console.error("Error en la resposta: ", resposta.status, resposta.statusText);
+        const dades = await resposta.json().catch(() => ({}));
+
+        if (!resposta.ok) {
+            throw new Error(dades.message || 'No s ha pogut carregar el perfil.');
         }
-    }catch (error){
-        console.error("Error de connexió: ", error);
-    }  
+
+        mostrarDades(dades.data || {});
+    } catch (error) {
+        console.error('Error en carregar el perfil:', error);
+    }
 }
 
-//Funció per mostrar les dades de l'usuari actiu.
-function showDades(dades){
-    document.getElementById("nom").textContent = dades.nom;
-    document.getElementById("cognoms").textContent = dades.cognoms;
-    document.getElementById("email").textContent = dades.email;
-    document.getElementById("telefon").textContent = dades.telefon;
-    document.getElementById("parroquia").textContent = dades.parroquia;
-    document.getElementById("data_naixement").textContent = dades.data_naixement;
-    document.getElementById("disponibilitat").textContent = dades.disponibilitat;
-    document.getElementById("observacions").textContent = dades.observacions;
+function mostrarDades(dades) {
+    document.getElementById('nom').textContent = dades.nom || '';
+    document.getElementById('cognoms').textContent = dades.cognoms || '';
+    document.getElementById('email').textContent = dades.email || '';
+    document.getElementById('telefon').textContent = dades.telefon || '';
+    document.getElementById('parroquia').textContent = dades.parroquia || '';
+    document.getElementById('data_naixement').textContent = dades.data_naixement ? String(dades.data_naixement).slice(0, 10) : '';
+    document.getElementById('disponibilitat').textContent = dades.disponibilitat || '';
+    document.getElementById('observacions').textContent = dades.observacions || '';
 }

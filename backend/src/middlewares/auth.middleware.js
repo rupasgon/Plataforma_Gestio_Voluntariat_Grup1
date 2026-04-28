@@ -18,6 +18,7 @@ module.exports = (req, res, next) => {
       nom: payload.nom,
       cognoms: payload.cognoms
     };
+    req.tokenExpiresAt = payload.exp ? payload.exp * 1000 : null;
 
     return next();
   } catch (error) {
