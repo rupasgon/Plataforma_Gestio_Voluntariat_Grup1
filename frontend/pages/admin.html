@@ -119,103 +119,9 @@
         <div class="col-12 col-lg-6">
           <section class="card h-100 admin-panel-card">
             <div class="card-body">
-              <h5 class="card-title">Assignacio de parelles</h5>
-              <p class="card-text">Crear noves parelles i gestionar-ne l estat des del panell.</p>
-              <button class="btn btn-outline-primary" id="carregar_parelles">Actualitzar parelles</button>
-              <div class="table-responsive mt-3">
-                <table class="table table-sm align-middle mb-0">
-                  <thead>
-                    <tr>
-                      <th scope="col">Voluntari</th>
-                      <th scope="col">Aprenent</th>
-                      <th scope="col">Estat</th>
-                      <th scope="col" class="text-end">Accions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="taula_parelles_actives">
-                    <tr>
-                      <td colspan="4" class="text-muted">Encara no s'han carregat parelles.</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <hr class="my-4" />
-
-              <div class="mb-3">
-                <h6 class="mb-1">Nova parella</h6>
-                <p class="small text-muted mb-0">Selecciona un voluntari i un aprenent per crear una nova assignacio.</p>
-              </div>
-
-              <form id="formulari_nova_parella">
-                <div class="row g-3">
-                  <div class="col-12">
-                    <label class="form-label" for="pair_voluntari">Voluntari</label>
-                    <select class="form-select" id="pair_voluntari" required>
-                      <option value="">Selecciona un voluntari</option>
-                    </select>
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label" for="pair_aprenent">Aprenent</label>
-                    <select class="form-select" id="pair_aprenent" required>
-                      <option value="">Selecciona un aprenent</option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label" for="pair_data_inici">Data d inici</label>
-                    <input class="form-control" id="pair_data_inici" type="date" required />
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label" for="pair_estat">Estat inicial</label>
-                    <select class="form-select" id="pair_estat">
-                      <option value="activa">activa</option>
-                      <option value="pausada">pausada</option>
-                      <option value="tancada">tancada</option>
-                    </select>
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label" for="pair_observacions">Observacions</label>
-                    <textarea class="form-control" id="pair_observacions" rows="2"></textarea>
-                  </div>
-                </div>
-
-                <div class="mt-3 d-flex gap-2 flex-wrap">
-                  <button class="btn btn-primary" type="submit" id="boto_crear_parella">Crear parella</button>
-                </div>
-              </form>
-
-              <hr class="my-4" />
-
-              <div class="mb-3">
-                <h6 class="mb-1">Canvi d estat</h6>
-                <p class="small text-muted mb-0" id="parella_seleccionada_text">Cap parella seleccionada.</p>
-              </div>
-
-              <form id="formulari_estat_parella">
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <label class="form-label" for="pair_estat_nou">Nou estat</label>
-                    <select class="form-select" id="pair_estat_nou" required>
-                      <option value="activa">activa</option>
-                      <option value="pausada">pausada</option>
-                      <option value="tancada">tancada</option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label" for="pair_data_fi">Data de finalitzacio</label>
-                    <input class="form-control" id="pair_data_fi" type="date" />
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label" for="pair_observacions_estat">Observacions</label>
-                    <textarea class="form-control" id="pair_observacions_estat" rows="2"></textarea>
-                  </div>
-                </div>
-
-                <div class="mt-3 d-flex gap-2 flex-wrap">
-                  <button class="btn btn-primary" type="submit" id="boto_actualitzar_parella" disabled>Actualitzar estat</button>
-                  <button class="btn btn-outline-secondary" type="button" id="boto_cancelar_parella">Cancelar seleccio</button>
-                </div>
-              </form>
+              <h5 class="card-title">Gestio de parelles</h5>
+              <p class="card-text">La creacio i el seguiment de parelles es gestionen en una pagina propia.</p>
+              <a class="btn btn-primary" href="./parelles.html">Obrir gestio de parelles</a>
             </div>
           </section>
         </div>
@@ -259,15 +165,45 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="edit_telefon">Telefon</label>
-                <input class="form-control" id="edit_telefon" />
+                <input class="form-control" id="edit_telefon" pattern="^[0-9]{6,15}$" />
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="edit_parroquia">Parroquia</label>
-                <input class="form-control" id="edit_parroquia" />
+                <select class="form-select" id="edit_parroquia">
+                  <option value="">Selecciona una opcio</option>
+                  <option value="canillo">Canillo</option>
+                  <option value="encamp">Encamp</option>
+                  <option value="ordino">Ordino</option>
+                  <option value="la_massana">La Massana</option>
+                  <option value="andorra_la_vella">Andorra la Vella</option>
+                  <option value="sant_julia">Sant Julia de Loria</option>
+                  <option value="escaldes">Escaldes-Engordany</option>
+                </select>
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="edit_data_naixement">Data de naixement</label>
                 <input class="form-control" id="edit_data_naixement" type="date" />
+              </div>
+              <div class="col-md-6 d-none" data-edit-camp-aprenent>
+                <label class="form-label" for="edit_nivell_catala">Nivell de catala</label>
+                <select class="form-select" id="edit_nivell_catala">
+                  <option value="">Selecciona una opcio</option>
+                  <option value="inicial">Inicial</option>
+                  <option value="intermedi">Intermedi</option>
+                  <option value="avancat">Avancat</option>
+                </select>
+              </div>
+              <div class="col-md-6 d-none" data-edit-camp-aprenent>
+                <label class="form-label" for="edit_objectiu_principal">Objectiu principal</label>
+                <input class="form-control" id="edit_objectiu_principal" minlength="4" />
+              </div>
+              <div class="col-md-6 d-none" data-edit-camp-aprenent>
+                <label class="form-label" for="edit_pot_conversar">Pots mantenir una conversa?</label>
+                <select class="form-select" id="edit_pot_conversar">
+                  <option value="">Selecciona una opcio</option>
+                  <option value="si">Si</option>
+                  <option value="no">No</option>
+                </select>
               </div>
               <div class="col-12">
                 <label class="form-label" for="edit_disponibilitat">Disponibilitat</label>

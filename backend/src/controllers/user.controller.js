@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 const { hashPassword } = require('../utils/password');
-const { obtenirUsuariAmbPerfil, sincronitzarPerfilUsuari } = require('../utils/user-profile');
+const { obtenirUsuariAmbPerfil, sincronitzarPerfilUsuari, validarDadesPerfil } = require('../utils/user-profile');
 const { updateSessionUser } = require('../utils/session-store');
 
 const ROLS_VALIDS = ['admin', 'voluntari', 'aprenent'];
@@ -118,6 +118,12 @@ exports.createUser = async (req, res, next) => {
       return res.status(400).json({ message: 'Cal informar un correu electronic valid.' });
     }
 
+    const errorPerfil = validarDadesPerfil(rol, req.body);
+    if (errorPerfil) {
+      connection.release();
+      return res.status(400).json({ message: errorPerfil });
+    }
+
     const [duplicats] = await connection.execute('SELECT id FROM users WHERE email = ?', [emailNormalitzat]);
     if (duplicats.length > 0) {
       connection.release();
@@ -171,6 +177,12 @@ exports.updateUser = async (req, res, next) => {
     if (!correuElectronicValid(emailNormalitzat)) {
       connection.release();
       return res.status(400).json({ message: 'Cal informar un correu electronic valid.' });
+    }
+
+    const errorPerfil = validarDadesPerfil(rol, req.body);
+    if (errorPerfil) {
+      connection.release();
+      return res.status(400).json({ message: errorPerfil });
     }
 
     const [existents] = await connection.execute('SELECT id FROM users WHERE id = ?', [userId]);

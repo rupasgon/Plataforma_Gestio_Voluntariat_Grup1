@@ -15,10 +15,10 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS voluntaris (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
-  telefon VARCHAR(30),
-  parroquia VARCHAR(150),
-  data_naixement DATE,
-  disponibilitat VARCHAR(255),
+  telefon VARCHAR(30) NOT NULL,
+  parroquia VARCHAR(150) NOT NULL,
+  data_naixement DATE NOT NULL,
+  disponibilitat VARCHAR(255) NOT NULL,
   observacions TEXT,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -26,13 +26,13 @@ CREATE TABLE IF NOT EXISTS voluntaris (
 CREATE TABLE IF NOT EXISTS aprenents (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
-  telefon VARCHAR(30),
-  parroquia VARCHAR(150),
-  data_naixement DATE,
-  nivell_catala VARCHAR(30),
-  objectiu_principal VARCHAR(255),
-  pot_conversar ENUM('si','no'),
-  disponibilitat VARCHAR(255),
+  telefon VARCHAR(30) NOT NULL,
+  parroquia VARCHAR(150) NOT NULL,
+  data_naixement DATE NOT NULL,
+  nivell_catala VARCHAR(30) NOT NULL,
+  objectiu_principal VARCHAR(255) NOT NULL,
+  pot_conversar ENUM('si','no') NOT NULL,
+  disponibilitat VARCHAR(255) NOT NULL,
   observacions TEXT,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -45,6 +45,9 @@ CREATE TABLE IF NOT EXISTS parelles (
   data_fi DATE,
   estat ENUM('activa','tancada','pausada') DEFAULT 'activa',
   observacions TEXT,
+  INDEX idx_parelles_voluntari_estat (voluntari_id, estat),
+  INDEX idx_parelles_aprenent_estat (aprenent_id, estat),
+  INDEX idx_parelles_estat_data (estat, data_inici),
   FOREIGN KEY (voluntari_id) REFERENCES voluntaris(id),
   FOREIGN KEY (aprenent_id) REFERENCES aprenents(id)
 );

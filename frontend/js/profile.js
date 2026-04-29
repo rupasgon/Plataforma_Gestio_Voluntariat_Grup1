@@ -10,9 +10,15 @@ const campsPerfil = {
   telefon: document.getElementById('telefon'),
   parroquia: document.getElementById('parroquia'),
   data_naixement: document.getElementById('data_naixement'),
+  nivell_catala: document.getElementById('nivell_catala'),
+  objectiu_principal: document.getElementById('objectiu_principal'),
+  pot_conversar: document.getElementById('pot_conversar'),
   disponibilitat: document.getElementById('disponibilitat'),
   observacions: document.getElementById('observacions')
 };
+
+const campsAprenent = Array.from(document.querySelectorAll('[data-camp-aprenent]'));
+let rolPerfilActual = null;
 
 function mostrarEstat(missatge, tipus) {
   estatPerfil.className = `alert alert-${tipus} mt-3`;
@@ -33,13 +39,45 @@ async function tancarSessio() {
   window.location.href = './login.html';
 }
 
+function actualitzarCampsPerRol(rol) {
+  rolPerfilActual = rol;
+  const esAprenent = rol === 'aprenent';
+
+  campsAprenent.forEach((element) => {
+    element.classList.toggle('d-none', !esAprenent);
+  });
+
+  [campsPerfil.nivell_catala, campsPerfil.objectiu_principal, campsPerfil.pot_conversar].forEach((camp) => {
+    camp.required = esAprenent;
+    if (!esAprenent) {
+      camp.value = '';
+      camp.setCustomValidity('');
+    }
+  });
+}
+
+function assignarValorSelect(select, valor) {
+  const valorNormalitzat = valor || '';
+  const existeixOpcio = Array.from(select.options).some((option) => option.value === valorNormalitzat);
+
+  if (valorNormalitzat && !existeixOpcio) {
+    select.add(new Option(valorNormalitzat, valorNormalitzat));
+  }
+
+  select.value = valorNormalitzat;
+}
+
 function emplenarFormulari(perfil) {
+  actualitzarCampsPerRol(perfil.rol);
   campsPerfil.nom.value = perfil.nom || '';
   campsPerfil.cognoms.value = perfil.cognoms || '';
   campsPerfil.correu.value = perfil.email || '';
   campsPerfil.telefon.value = perfil.telefon || '';
-  campsPerfil.parroquia.value = perfil.parroquia || '';
+  assignarValorSelect(campsPerfil.parroquia, perfil.parroquia);
   campsPerfil.data_naixement.value = perfil.data_naixement ? String(perfil.data_naixement).slice(0, 10) : '';
+  assignarValorSelect(campsPerfil.nivell_catala, perfil.nivell_catala);
+  campsPerfil.objectiu_principal.value = perfil.objectiu_principal || '';
+  assignarValorSelect(campsPerfil.pot_conversar, perfil.pot_conversar);
   campsPerfil.disponibilitat.value = perfil.disponibilitat || '';
   campsPerfil.observacions.value = perfil.observacions || '';
   badgeRol.textContent = `Rol: ${perfil.rol}`;
@@ -95,20 +133,28 @@ formulariPerfil.addEventListener('submit', async (event) => {
   botoGuardar.disabled = true;
   botoGuardar.textContent = 'Guardant...';
 
+  const payload = {
+    nom: campsPerfil.nom.value.trim(),
+    cognoms: campsPerfil.cognoms.value.trim(),
+    email: campsPerfil.correu.value.trim(),
+    telefon: campsPerfil.telefon.value.trim(),
+    parroquia: campsPerfil.parroquia.value.trim(),
+    data_naixement: campsPerfil.data_naixement.value,
+    disponibilitat: campsPerfil.disponibilitat.value.trim(),
+    observacions: campsPerfil.observacions.value.trim()
+  };
+
+  if (rolPerfilActual === 'aprenent') {
+    payload.nivell_catala = campsPerfil.nivell_catala.value;
+    payload.objectiu_principal = campsPerfil.objectiu_principal.value.trim();
+    payload.pot_conversar = campsPerfil.pot_conversar.value;
+  }
+
   try {
     const resposta = await fetch(`${window.PARELLES_AUTH.API_BASE}/profile/me`, {
       method: 'PUT',
       headers: window.PARELLES_AUTH.obtenirCapcaleresAutenticades(),
-      body: JSON.stringify({
-        nom: campsPerfil.nom.value.trim(),
-        cognoms: campsPerfil.cognoms.value.trim(),
-        email: campsPerfil.correu.value.trim(),
-        telefon: campsPerfil.telefon.value.trim(),
-        parroquia: campsPerfil.parroquia.value.trim(),
-        data_naixement: campsPerfil.data_naixement.value,
-        disponibilitat: campsPerfil.disponibilitat.value.trim(),
-        observacions: campsPerfil.observacions.value.trim()
-      })
+      body: JSON.stringify(payload)
     });
 
     const dades = await resposta.json();

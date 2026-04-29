@@ -11,10 +11,12 @@ function inicialitzarNavegacioSessio() {
   const sessio = window.PARELLES_AUTH.obtenirSessio();
   const teSessio = Boolean(sessio?.token);
 
+  actualitzarEnllacAreaPrivada(sessio, loginItem, logoutItem, loginLink);
+
   logoutButton.className = loginLink.className;
   loginItem.classList.toggle('d-none', teSessio);
   logoutItem.classList.toggle('d-none', !teSessio);
-  logoutItem.classList.toggle('ms-md-auto', teSessio);
+  logoutItem.classList.toggle('ms-md-auto', teSessio && !document.getElementById('nav_area_privada_item'));
 
   if (logoutButton.dataset.logoutInicialitzat === 'true') {
     return;
@@ -37,6 +39,50 @@ function inicialitzarNavegacioSessio() {
     window.PARELLES_AUTH.esborrarSessio();
     window.location.href = loginItem.dataset.loginHref || './login.html';
   });
+}
+
+function obtenirPrefixPages(loginItem) {
+  const loginHref = loginItem.dataset.loginHref || './login.html';
+  return loginHref.includes('pages/') ? 'pages/' : './';
+}
+
+function obtenirDestiAreaPrivada(sessio, loginItem) {
+  const prefix = obtenirPrefixPages(loginItem);
+  const pagina = sessio?.user?.rol === 'admin' ? 'admin.html' : 'profile.html';
+  return `${prefix}${pagina}`;
+}
+
+function obtenirTextAreaPrivada(sessio) {
+  return sessio?.user?.rol === 'admin' ? 'Administracio' : 'El meu perfil';
+}
+
+function actualitzarEnllacAreaPrivada(sessio, loginItem, logoutItem, loginLink) {
+  const idEnllac = 'nav_area_privada_item';
+  const existent = document.getElementById(idEnllac);
+
+  if (!sessio?.token) {
+    existent?.remove();
+    return;
+  }
+
+  const item = existent || document.createElement('li');
+  let link = item.querySelector('a');
+
+  item.id = idEnllac;
+  item.className = loginItem.className.replace(/\bd-none\b/g, '').trim();
+
+  if (!link) {
+    link = document.createElement('a');
+    item.appendChild(link);
+  }
+
+  link.className = loginLink.className;
+  link.href = obtenirDestiAreaPrivada(sessio, loginItem);
+  link.textContent = obtenirTextAreaPrivada(sessio);
+
+  if (!existent) {
+    logoutItem.before(item);
+  }
 }
 
 if (document.readyState === 'loading') {

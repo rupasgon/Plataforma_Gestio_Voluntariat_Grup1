@@ -1,5 +1,5 @@
 const pool = require('../config/db');
-const { obtenirUsuariAmbPerfil, sincronitzarPerfilUsuari } = require('../utils/user-profile');
+const { obtenirUsuariAmbPerfil, sincronitzarPerfilUsuari, validarDadesPerfil } = require('../utils/user-profile');
 
 function correuElectronicValid(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -26,7 +26,19 @@ exports.updateMyProfile = async (req, res, next) => {
   const connection = await pool.getConnection();
 
   try {
-    const { nom, cognoms, email, telefon, parroquia, data_naixement, disponibilitat, observacions } = req.body;
+    const {
+      nom,
+      cognoms,
+      email,
+      telefon,
+      parroquia,
+      data_naixement,
+      nivell_catala,
+      objectiu_principal,
+      pot_conversar,
+      disponibilitat,
+      observacions
+    } = req.body;
     const emailNormalitzat = String(email || '').trim().toLowerCase();
 
     if (!nom || !cognoms || !emailNormalitzat) {
@@ -37,6 +49,12 @@ exports.updateMyProfile = async (req, res, next) => {
     if (!correuElectronicValid(emailNormalitzat)) {
       connection.release();
       return res.status(400).json({ message: 'Cal informar un correu electronic valid.' });
+    }
+
+    const errorPerfil = validarDadesPerfil(req.user.rol, req.body);
+    if (errorPerfil) {
+      connection.release();
+      return res.status(400).json({ message: errorPerfil });
     }
 
     await connection.beginTransaction();
@@ -61,6 +79,9 @@ exports.updateMyProfile = async (req, res, next) => {
       telefon,
       parroquia,
       data_naixement,
+      nivell_catala,
+      objectiu_principal,
+      pot_conversar,
       disponibilitat,
       observacions
     });
