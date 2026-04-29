@@ -73,19 +73,49 @@
             </div>
             <div class="col-md-6">
               <label class="form-label" for="telefon">Telefon</label>
-              <input class="form-control" id="telefon" />
+              <input class="form-control" id="telefon" required pattern="^[0-9]{6,15}$" />
             </div>
             <div class="col-md-6">
               <label class="form-label" for="parroquia">Parroquia</label>
-              <input class="form-control" id="parroquia" />
+              <select class="form-select" id="parroquia" required>
+                <option value="">Selecciona una opcio</option>
+                <option value="canillo">Canillo</option>
+                <option value="encamp">Encamp</option>
+                <option value="ordino">Ordino</option>
+                <option value="la_massana">La Massana</option>
+                <option value="andorra_la_vella">Andorra la Vella</option>
+                <option value="sant_julia">Sant Julia de Loria</option>
+                <option value="escaldes">Escaldes-Engordany</option>
+              </select>
             </div>
             <div class="col-md-6">
               <label class="form-label" for="data_naixement">Data de naixement</label>
-              <input class="form-control" id="data_naixement" type="date" />
+              <input class="form-control" id="data_naixement" type="date" required />
+            </div>
+            <div class="col-md-6 d-none" data-camp-aprenent>
+              <label class="form-label" for="nivell_catala">Nivell de catala</label>
+              <select class="form-select" id="nivell_catala">
+                <option value="">Selecciona una opcio</option>
+                <option value="inicial">Inicial</option>
+                <option value="intermedi">Intermedi</option>
+                <option value="avancat">Avancat</option>
+              </select>
+            </div>
+            <div class="col-md-6 d-none" data-camp-aprenent>
+              <label class="form-label" for="objectiu_principal">Objectiu principal</label>
+              <input class="form-control" id="objectiu_principal" minlength="4" />
+            </div>
+            <div class="col-md-6 d-none" data-camp-aprenent>
+              <label class="form-label" for="pot_conversar">Pots mantenir una conversa?</label>
+              <select class="form-select" id="pot_conversar">
+                <option value="">Selecciona una opcio</option>
+                <option value="si">Si</option>
+                <option value="no">No</option>
+              </select>
             </div>
             <div class="col-12">
               <label class="form-label" for="disponibilitat">Disponibilitat</label>
-              <input class="form-control" id="disponibilitat" />
+              <input class="form-control" id="disponibilitat" required />
             </div>
             <div class="col-12">
               <label class="form-label" for="observacions">Observacions</label>

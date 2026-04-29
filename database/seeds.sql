@@ -10,9 +10,19 @@ INSERT INTO voluntaris (user_id, telefon, parroquia, data_naixement, disponibili
 VALUES
   (2, '600111222', 'Sant Pere', '1990-05-10', 'Dilluns i dimecres', 'Cap');
 
-INSERT INTO aprenents (user_id, telefon, parroquia, data_naixement, disponibilitat, observacions)
+INSERT INTO aprenents (
+  user_id,
+  telefon,
+  parroquia,
+  data_naixement,
+  nivell_catala,
+  objectiu_principal,
+  pot_conversar,
+  disponibilitat,
+  observacions
+)
 VALUES
-  (3, '600333444', 'Santa Maria', '1995-09-21', 'Dimarts i dijous', 'Cap');
+  (3, '600333444', 'Santa Maria', '1995-09-21', 'inicial', 'Millorar la conversa oral', 'si', 'Dimarts i dijous', 'Cap');
 
 INSERT INTO parelles (voluntari_id, aprenent_id, data_inici, estat, observacions)
 VALUES

@@ -24,9 +24,46 @@ function construirDadesPerfil(payload = {}) {
     telefon: normalitzarText(payload.telefon),
     parroquia: normalitzarText(payload.parroquia),
     data_naixement: payload.data_naixement || null,
+    nivell_catala: normalitzarText(payload.nivell_catala),
+    objectiu_principal: normalitzarText(payload.objectiu_principal),
+    pot_conversar: normalitzarText(payload.pot_conversar),
     disponibilitat: normalitzarText(payload.disponibilitat),
     observacions: normalitzarText(payload.observacions)
   };
+}
+
+function validarDadesPerfil(rol, payload = {}) {
+  if (rol === 'admin') {
+    return null;
+  }
+
+  const perfil = construirDadesPerfil(payload);
+  const campsBaseObligatoris = [
+    ['telefon', perfil.telefon],
+    ['parroquia', perfil.parroquia],
+    ['data_naixement', perfil.data_naixement],
+    ['disponibilitat', perfil.disponibilitat]
+  ];
+
+  const campsObligatoris = rol === 'aprenent'
+    ? [
+        ...campsBaseObligatoris,
+        ['nivell_catala', perfil.nivell_catala],
+        ['objectiu_principal', perfil.objectiu_principal],
+        ['pot_conversar', perfil.pot_conversar]
+      ]
+    : campsBaseObligatoris;
+
+  const campFaltant = campsObligatoris.find(([, valor]) => !valor);
+  if (campFaltant) {
+    return `El camp ${campFaltant[0]} es obligatori per al rol ${rol}.`;
+  }
+
+  if (rol === 'aprenent' && !['si', 'no'].includes(perfil.pot_conversar)) {
+    return 'El camp pot_conversar ha de ser "si" o "no".';
+  }
+
+  return null;
 }
 
 async function obtenirUsuariAmbPerfil(executor, userId) {
@@ -60,6 +97,18 @@ async function obtenirUsuariAmbPerfil(executor, userId) {
          ELSE NULL
        END AS data_naixement,
        CASE
+         WHEN u.rol = 'aprenent' THEN a.nivell_catala
+         ELSE NULL
+       END AS nivell_catala,
+       CASE
+         WHEN u.rol = 'aprenent' THEN a.objectiu_principal
+         ELSE NULL
+       END AS objectiu_principal,
+       CASE
+         WHEN u.rol = 'aprenent' THEN a.pot_conversar
+         ELSE NULL
+       END AS pot_conversar,
+       CASE
          WHEN u.rol = 'voluntari' THEN v.disponibilitat
          WHEN u.rol = 'aprenent' THEN a.disponibilitat
          ELSE NULL
@@ -91,17 +140,45 @@ async function sincronitzarPerfilUsuari(connection, userId, rol, payload = {}) {
   }
 
   const [rows] = await connection.execute(`SELECT id FROM ${taulaPerfil} WHERE user_id = ?`, [userId]);
-  const values = [
-    perfil.telefon,
-    perfil.parroquia,
-    perfil.data_naixement,
-    perfil.disponibilitat,
-    perfil.observacions
-  ];
+
+  if (rol === 'aprenent') {
+    const values = [
+      perfil.telefon,
+      perfil.parroquia,
+      perfil.data_naixement,
+      perfil.nivell_catala,
+      perfil.objectiu_principal,
+      perfil.pot_conversar,
+      perfil.disponibilitat,
+      perfil.observacions
+    ];
+
+    if (rows.length > 0) {
+      await connection.execute(
+        `UPDATE aprenents
+         SET telefon = ?, parroquia = ?, data_naixement = ?, nivell_catala = ?,
+             objectiu_principal = ?, pot_conversar = ?, disponibilitat = ?, observacions = ?
+         WHERE user_id = ?`,
+        [...values, userId]
+      );
+      return;
+    }
+
+    await connection.execute(
+      `INSERT INTO aprenents (
+         telefon, parroquia, data_naixement, nivell_catala, objectiu_principal,
+         pot_conversar, disponibilitat, observacions, user_id
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [...values, userId]
+    );
+    return;
+  }
+
+  const values = [perfil.telefon, perfil.parroquia, perfil.data_naixement, perfil.disponibilitat, perfil.observacions];
 
   if (rows.length > 0) {
     await connection.execute(
-      `UPDATE ${taulaPerfil}
+      `UPDATE voluntaris
        SET telefon = ?, parroquia = ?, data_naixement = ?, disponibilitat = ?, observacions = ?
        WHERE user_id = ?`,
       [...values, userId]
@@ -110,7 +187,7 @@ async function sincronitzarPerfilUsuari(connection, userId, rol, payload = {}) {
   }
 
   await connection.execute(
-    `INSERT INTO ${taulaPerfil} (telefon, parroquia, data_naixement, disponibilitat, observacions, user_id)
+    `INSERT INTO voluntaris (telefon, parroquia, data_naixement, disponibilitat, observacions, user_id)
      VALUES (?, ?, ?, ?, ?, ?)`,
     [...values, userId]
   );
@@ -119,6 +196,7 @@ async function sincronitzarPerfilUsuari(connection, userId, rol, payload = {}) {
 module.exports = {
   obtenirTaulaPerfilPerRol,
   construirDadesPerfil,
+  validarDadesPerfil,
   obtenirUsuariAmbPerfil,
   sincronitzarPerfilUsuari
 };

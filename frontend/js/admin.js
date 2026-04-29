@@ -28,9 +28,14 @@ const campsEdicio = {
   telefon: document.getElementById('edit_telefon'),
   parroquia: document.getElementById('edit_parroquia'),
   data_naixement: document.getElementById('edit_data_naixement'),
+  nivell_catala: document.getElementById('edit_nivell_catala'),
+  objectiu_principal: document.getElementById('edit_objectiu_principal'),
+  pot_conversar: document.getElementById('edit_pot_conversar'),
   disponibilitat: document.getElementById('edit_disponibilitat'),
   observacions: document.getElementById('edit_observacions')
 };
+
+const campsEdicioAprenent = Array.from(document.querySelectorAll('[data-edit-camp-aprenent]'));
 
 let parellesActives = [];
 let usuaris = [];
@@ -75,8 +80,29 @@ function omplirTaulaBuida(element, missatge, columnes = 3) {
   element.innerHTML = `<tr><td colspan="${columnes}" class="text-muted">${missatge}</td></tr>`;
 }
 
+function formatData(data) {
+  if (!data) {
+    return '-';
+  }
+
+  return String(data).slice(0, 10);
+}
+
+function classeBadgeEstat(estat) {
+  if (estat === 'activa') {
+    return 'text-bg-success';
+  }
+
+  if (estat === 'pausada') {
+    return 'text-bg-warning';
+  }
+
+  return 'text-bg-secondary';
+}
+
 function netejarFormulariEdicio() {
   formulariEdicioUsuari.reset();
+  actualitzarCampsEdicioPerRol(campsEdicio.rol.value);
   usuariSeleccionatId = null;
   botoGuardarUsuari.disabled = true;
   usuariEdicioActual.textContent = 'Cap usuari seleccionat.';
@@ -93,17 +119,63 @@ function establirDataIniciAvui() {
   campsNovaParella.data_inici.value = new Date().toISOString().slice(0, 10);
 }
 
+function actualitzarCampsEdicioPerRol(rol) {
+  const esPerfil = rol === 'voluntari' || rol === 'aprenent';
+  const esAprenent = rol === 'aprenent';
+
+  [campsEdicio.telefon, campsEdicio.parroquia, campsEdicio.data_naixement, campsEdicio.disponibilitat].forEach((camp) => {
+    camp.required = esPerfil;
+  });
+
+  [campsEdicio.nivell_catala, campsEdicio.objectiu_principal, campsEdicio.pot_conversar].forEach((camp) => {
+    camp.required = esAprenent;
+    if (!esAprenent) {
+      camp.value = '';
+      camp.setCustomValidity('');
+    }
+  });
+
+  campsEdicioAprenent.forEach((element) => {
+    element.classList.toggle('d-none', !esAprenent);
+  });
+}
+
+function assignarValorSelect(select, valor) {
+  const valorNormalitzat = valor || '';
+  const existeixOpcio = Array.from(select.options).some((option) => option.value === valorNormalitzat);
+
+  if (valorNormalitzat && !existeixOpcio) {
+    select.add(new Option(valorNormalitzat, valorNormalitzat));
+  }
+
+  select.value = valorNormalitzat;
+}
+
 function emplenarFormulariEdicio(usuari) {
   campsEdicio.nom.value = usuari.nom || '';
   campsEdicio.cognoms.value = usuari.cognoms || '';
   campsEdicio.email.value = usuari.email || '';
   campsEdicio.rol.value = usuari.rol || 'voluntari';
+  actualitzarCampsEdicioPerRol(campsEdicio.rol.value);
   campsEdicio.password.value = '';
   campsEdicio.telefon.value = usuari.telefon || '';
-  campsEdicio.parroquia.value = usuari.parroquia || '';
+  assignarValorSelect(campsEdicio.parroquia, usuari.parroquia);
   campsEdicio.data_naixement.value = usuari.data_naixement ? String(usuari.data_naixement).slice(0, 10) : '';
+  assignarValorSelect(campsEdicio.nivell_catala, usuari.nivell_catala);
+  campsEdicio.objectiu_principal.value = usuari.objectiu_principal || '';
+  assignarValorSelect(campsEdicio.pot_conversar, usuari.pot_conversar);
   campsEdicio.disponibilitat.value = usuari.disponibilitat || '';
   campsEdicio.observacions.value = usuari.observacions || '';
+}
+
+function participantTeParellaOberta(usuari) {
+  return parellesActives.some((parella) => {
+    if (!['activa', 'pausada'].includes(parella.estat)) {
+      return false;
+    }
+
+    return parella.voluntari_id === usuari.perfil_id || parella.aprenent_id === usuari.perfil_id;
+  });
 }
 
 function construirOpcionsUsuari(usuarisRol, placeholder) {
@@ -111,10 +183,12 @@ function construirOpcionsUsuari(usuarisRol, placeholder) {
     return `<option value="">${placeholder}</option>`;
   }
 
+  const disponibles = usuarisRol.filter((usuari) => !participantTeParellaOberta(usuari));
+
   return [
     `<option value="">${placeholder}</option>`,
-    ...usuarisRol.map(
-      (usuari) => `<option value="${usuari.perfil_id}">${usuari.nom} ${usuari.cognoms}</option>`
+    ...disponibles.map(
+      (usuari) => `<option value="${usuari.perfil_id}">${usuari.nom} ${usuari.cognoms} - ${usuari.disponibilitat || 'sense disponibilitat'}</option>`
     )
   ].join('');
 }
@@ -201,7 +275,7 @@ function renderitzarUltimsUsuaris(llistat = []) {
 
 function renderitzarParellesActives(parelles = []) {
   if (!parelles.length) {
-    omplirTaulaBuida(taulaParellesActives, 'No hi ha parelles actives disponibles.', 4);
+    omplirTaulaBuida(taulaParellesActives, 'No hi ha parelles disponibles.', 6);
     return;
   }
 
@@ -209,9 +283,17 @@ function renderitzarParellesActives(parelles = []) {
     .map(
       (parella) => `
         <tr>
-          <td>${parella.voluntari_nom_complet}</td>
-          <td>${parella.aprenent_nom_complet}</td>
-          <td><span class="badge text-bg-success text-uppercase">${parella.estat}</span></td>
+          <td>
+            <div>${parella.voluntari_nom_complet}</div>
+            <small class="text-muted">${parella.voluntari_disponibilitat || ''}</small>
+          </td>
+          <td>
+            <div>${parella.aprenent_nom_complet}</div>
+            <small class="text-muted">${parella.aprenent_disponibilitat || ''}</small>
+          </td>
+          <td>${formatData(parella.data_inici)}</td>
+          <td>${formatData(parella.data_fi)}</td>
+          <td><span class="badge ${classeBadgeEstat(parella.estat)} text-uppercase">${parella.estat}</span></td>
           <td class="text-end">
             <button class="btn btn-sm btn-outline-primary" type="button" data-editar-parella="${parella.id}">Gestionar</button>
             <button class="btn btn-sm btn-outline-danger ms-1" type="button" data-eliminar-parella="${parella.id}">Eliminar</button>
@@ -241,6 +323,7 @@ async function carregarParellesActives() {
   const dades = await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/pairings`);
   parellesActives = dades.data || [];
   renderitzarParellesActives(parellesActives);
+  actualitzarSelectorsParelles();
   registrarAccio('Parelles actualitzades');
 }
 
@@ -471,6 +554,12 @@ formulariEdicioUsuari.addEventListener('submit', async (event) => {
     observacions: campsEdicio.observacions.value.trim()
   };
 
+  if (campsEdicio.rol.value === 'aprenent') {
+    payload.nivell_catala = campsEdicio.nivell_catala.value;
+    payload.objectiu_principal = campsEdicio.objectiu_principal.value.trim();
+    payload.pot_conversar = campsEdicio.pot_conversar.value;
+  }
+
   const password = campsEdicio.password.value;
   if (password.trim()) {
     payload.password = password;
@@ -503,6 +592,10 @@ botoCancelarEdicio.addEventListener('click', () => {
 botoCancelarParella.addEventListener('click', () => {
   netejarSeleccioParella();
   mostrarEstat('S ha cancelat la seleccio de la parella.', 'secondary');
+});
+
+campsEdicio.rol.addEventListener('change', () => {
+  actualitzarCampsEdicioPerRol(campsEdicio.rol.value);
 });
 
 botoCarregarUsuaris.addEventListener('click', async () => {

@@ -128,6 +128,8 @@
                     <tr>
                       <th scope="col">Voluntari</th>
                       <th scope="col">Aprenent</th>
+                      <th scope="col">Inici</th>
+                      <th scope="col">Fi</th>
                       <th scope="col">Estat</th>
                       <th scope="col" class="text-end">Accions</th>
                     </tr>
@@ -259,15 +261,45 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="edit_telefon">Telefon</label>
-                <input class="form-control" id="edit_telefon" />
+                <input class="form-control" id="edit_telefon" pattern="^[0-9]{6,15}$" />
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="edit_parroquia">Parroquia</label>
-                <input class="form-control" id="edit_parroquia" />
+                <select class="form-select" id="edit_parroquia">
+                  <option value="">Selecciona una opcio</option>
+                  <option value="canillo">Canillo</option>
+                  <option value="encamp">Encamp</option>
+                  <option value="ordino">Ordino</option>
+                  <option value="la_massana">La Massana</option>
+                  <option value="andorra_la_vella">Andorra la Vella</option>
+                  <option value="sant_julia">Sant Julia de Loria</option>
+                  <option value="escaldes">Escaldes-Engordany</option>
+                </select>
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="edit_data_naixement">Data de naixement</label>
                 <input class="form-control" id="edit_data_naixement" type="date" />
+              </div>
+              <div class="col-md-6 d-none" data-edit-camp-aprenent>
+                <label class="form-label" for="edit_nivell_catala">Nivell de catala</label>
+                <select class="form-select" id="edit_nivell_catala">
+                  <option value="">Selecciona una opcio</option>
+                  <option value="inicial">Inicial</option>
+                  <option value="intermedi">Intermedi</option>
+                  <option value="avancat">Avancat</option>
+                </select>
+              </div>
+              <div class="col-md-6 d-none" data-edit-camp-aprenent>
+                <label class="form-label" for="edit_objectiu_principal">Objectiu principal</label>
+                <input class="form-control" id="edit_objectiu_principal" minlength="4" />
+              </div>
+              <div class="col-md-6 d-none" data-edit-camp-aprenent>
+                <label class="form-label" for="edit_pot_conversar">Pots mantenir una conversa?</label>
+                <select class="form-select" id="edit_pot_conversar">
+                  <option value="">Selecciona una opcio</option>
+                  <option value="si">Si</option>
+                  <option value="no">No</option>
+                </select>
               </div>
               <div class="col-12">
                 <label class="form-label" for="edit_disponibilitat">Disponibilitat</label>

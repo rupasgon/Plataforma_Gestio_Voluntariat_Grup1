@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
 const { hashPassword } = require('../utils/password');
-const { sincronitzarPerfilUsuari } = require('../utils/user-profile');
+const { sincronitzarPerfilUsuari, validarDadesPerfil } = require('../utils/user-profile');
 
 function normalitzarIdentificador(identificador = '') {
   return identificador.trim().toLowerCase();
@@ -24,7 +24,21 @@ exports.register = async (req, res) => {
   const connection = await pool.getConnection();
 
   try {
-    const { nom, cognoms, email, password, rol, telefon, parroquia, data_naixement, disponibilitat, observacions } = req.body;
+    const {
+      nom,
+      cognoms,
+      email,
+      password,
+      rol,
+      telefon,
+      parroquia,
+      data_naixement,
+      nivell_catala,
+      objectiu_principal,
+      pot_conversar,
+      disponibilitat,
+      observacions
+    } = req.body;
     const correuNormalitzat = String(email || '').trim().toLowerCase();
 
     if (!nom || !cognoms || !correuNormalitzat || !password || !rol) {
@@ -47,6 +61,12 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: 'La contrasenya ha de tenir minim 6 caracters.' });
     }
 
+    const errorPerfil = validarDadesPerfil(rol, req.body);
+    if (errorPerfil) {
+      connection.release();
+      return res.status(400).json({ message: errorPerfil });
+    }
+
     const [duplicats] = await connection.execute('SELECT id FROM users WHERE email = ? LIMIT 1', [correuNormalitzat]);
     if (duplicats.length > 0) {
       connection.release();
@@ -64,6 +84,9 @@ exports.register = async (req, res) => {
       telefon,
       parroquia,
       data_naixement,
+      nivell_catala,
+      objectiu_principal,
+      pot_conversar,
       disponibilitat,
       observacions
     });

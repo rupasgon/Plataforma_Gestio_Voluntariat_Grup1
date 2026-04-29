@@ -4,134 +4,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma de Gestió del Voluntariat Lingüístic</title>
+    <title>Plataforma de Gestio del Voluntariat Linguistic</title>
 
-    <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- CSS PROPI -->
     <link rel="stylesheet" href="../css/voluntari.css">
-
-    <!-- FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-
-    <!-- CONTENIDOR PRINCIPAL -->
     <div class="container-fluid mt-4 px-2 px-md-5">
-
-        <!-- HEADER -->
         <header>
-
-            <!-- MENÚ -->
-            <nav class="row menu-celeste shadow p-3 mb-3" aria-label="Navegació principal">
+            <nav class="row menu-celeste shadow p-3 mb-3" aria-label="Navegacio principal">
                 <div class="col-12">
                     <ul class="nav nav-pills d-flex w-100">
-
                         <li class="nav-item">
                             <a class="nav-link" href="../index.html">Inici</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="voluntari.html">Voluntaris</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="aprenent.html">Aprenents</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="disponibilitat.html">Disponibilitat</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="parelles.html">Parelles</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="contacte.html">Contacte</a>
                         </li>
-
                         <li class="nav-item ms-lg-auto" id="nav_login_item" data-login-href="login.html">
                             <a class="nav-link" href="login.html">Login</a>
                         </li>
-
                         <li class="nav-item ms-md-auto d-none" id="nav_logout_item">
                             <a class="nav-link" href="login.html" id="nav_logout_button">Tancar sessio</a>
                         </li>
-
                     </ul>
                 </div>
             </nav>
 
-            <!-- IMATGE HEADER -->
             <div class="row">
                 <div class="col-12 p-3">
-                    <img src="../img/header.webp" class="img-fluid"
-                        alt="Capçalera de la plataforma de voluntariat lingüístic">
+                    <img src="../img/header.webp" class="img-fluid" alt="Capcalera de la plataforma de voluntariat linguistic">
                 </div>
             </div>
-
         </header>
 
-        <!-- CONTINGUT PRINCIPAL -->
         <main>
-
             <section aria-labelledby="titol-parelles">
                 <div class="container">
-
                     <div class="row">
-
                         <div class="col-12 p-4">
+                            <h1 id="titol-parelles" class="text-center mb-5">Parelles linguistiques</h1>
 
-                            <h1 id="titol-parelles" class="text-center  mb-5">Parelles Lingüístiques</h1>
+                            <div class="col-12 col-md-10 col-lg-11 mx-auto mb-4">
+                                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-3">
+                                    <div>
+                                        <p class="text-muted mb-1" id="parelles_sessio">Carregant sessio...</p>
+                                        <p class="text-muted mb-0" id="parelles_resum">Sense dades carregades.</p>
+                                    </div>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <select class="form-select" id="filtre_estat_parelles" aria-label="Filtrar per estat">
+                                            <option value="">Tots els estats</option>
+                                            <option value="activa">Actives</option>
+                                            <option value="pausada">Pausades</option>
+                                            <option value="tancada">Tancades</option>
+                                        </select>
+                                        <button class="btn btn-outline-primary" type="button" id="boto_recarregar_parelles">Actualitzar</button>
+                                        <a class="btn btn-primary" href="./admin.html">Gestionar</a>
+                                    </div>
+                                </div>
 
-                            <!-- PARELLES -->
-                            <div class="col-12 col-md-8 col-lg-10 mx-auto mb-4">
+                                <div class="alert alert-info d-none" id="estat_parelles" role="status"></div>
 
-                                <p class="text-center text-muted mb-4">Bla Bla Bla</p>
-
-                                <!-- Començem a codificar aqui -->
-
+                                <div class="table-responsive">
+                                    <table class="table table-sm align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Voluntari</th>
+                                                <th scope="col">Aprenent</th>
+                                                <th scope="col">Inici</th>
+                                                <th scope="col">Fi</th>
+                                                <th scope="col">Estat</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="taula_parelles">
+                                            <tr>
+                                                <td colspan="5" class="text-muted">Encara no s han carregat parelles.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
             </section>
-
         </main>
 
-        <!-- FOOTER -->
         <footer class="footer text-black mt-5 p-1">
-
             <div class="row">
                 <div class="col-12 text-start footer-text">
-
-                    <p class="mb-1 fw-bold">Plataforma de Gestió</p>
+                    <p class="mb-1 fw-bold">Plataforma de Gestio</p>
                     <p class="mb-1 fw-bold">del</p>
-                    <p class="mb-1 fw-bold">Voluntariat Lingüístic</p>
-
+                    <p class="mb-1 fw-bold">Voluntariat Linguistic</p>
                     <br><br>
-
-                    <p class="mb-1">© 2026 Tots els drets reservats</p>
+                    <p class="mb-1">&copy; 2026 Tots els drets reservats</p>
                     <p class="mb-0">Contacte: info@voluntariatlinguistic.cat</p>
-
                 </div>
             </div>
-
         </footer>
-
     </div>
 
     <script src="../js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/auth-session.js"></script>
     <script src="../js/nav-session.js"></script>
-
+    <script src="../js/parelles.js"></script>
 </body>
 
 </html>
