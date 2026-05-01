@@ -1,154 +1,154 @@
 <!doctype html>
 <html lang="ca">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>El meu perfil</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../css/styles.css" />
-  </head>
-  <body>
-    <div class="container-fluid mt-4 px-2 px-md-5">
-      <header>
-        <nav class="row menu-celeste shadow p-3 mb-3" aria-label="Navegacio principal">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>El meu perfil</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+
+<body>
+  <div class="container-fluid mt-4 px-2 px-md-5">
+    <header>
+      <nav class="row menu-celeste shadow p-3 mb-3" aria-label="Navegacio principal">
+        <div class="col-12">
+          <ul class="nav nav-pills d-flex w-100">
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html">Inici</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="voluntari.html">Voluntaris</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="aprenent.html">Aprenents</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="parelles.html">Parelles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contacte.html">Contacte</a>
+            </li>
+            <li class="nav-item ms-md-auto" id="nav_login_item" data-login-href="./login.html">
+              <a class="nav-link" href="./login.html">Login</a>
+            </li>
+            <li class="nav-item ms-md-auto d-none" id="nav_logout_item">
+              <a class="nav-link" href="./login.html" id="nav_logout_button">Tancar sessio</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="row">
+        <div class="col-12 p-3">
+          <img src="../img/header.webp" class="img-fluid" alt="Capcalera de la plataforma de voluntariat linguistic" />
+        </div>
+      </div>
+    </header>
+
+    <main class="container py-5">
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+        <div>
+          <h1 class="mb-1">El meu perfil</h1>
+          <p class="text-muted mb-0">Consulta i actualitza les teves dades personals</p>
+        </div>
+        <div class="badge text-bg-light border fs-6" id="rol_usuari">Carregant rol...</div>
+      </div>
+
+      <form class="card p-4" id="formulari_perfil">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" for="nom">Nom</label>
+            <input class="form-control" id="nom" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="cognoms">Cognoms</label>
+            <input class="form-control" id="cognoms" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="correu">Correu electronic</label>
+            <input class="form-control" id="correu" type="email" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="telefon">Telefon</label>
+            <input class="form-control" id="telefon" required pattern="^[0-9]{6,15}$" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="parroquia">Parroquia</label>
+            <select class="form-select" id="parroquia" required>
+              <option value="">Selecciona una opcio</option>
+              <option value="canillo">Canillo</option>
+              <option value="encamp">Encamp</option>
+              <option value="ordino">Ordino</option>
+              <option value="la_massana">La Massana</option>
+              <option value="andorra_la_vella">Andorra la Vella</option>
+              <option value="sant_julia">Sant Julia de Loria</option>
+              <option value="escaldes">Escaldes-Engordany</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="data_naixement">Data de naixement</label>
+            <input class="form-control" id="data_naixement" type="date" required />
+          </div>
+          <div class="col-md-6 d-none" data-camp-aprenent>
+            <label class="form-label" for="nivell_catala">Nivell de catala</label>
+            <select class="form-select" id="nivell_catala">
+              <option value="">Selecciona una opcio</option>
+              <option value="inicial">Inicial</option>
+              <option value="intermedi">Intermedi</option>
+              <option value="avancat">Avancat</option>
+            </select>
+          </div>
+          <div class="col-md-6 d-none" data-camp-aprenent>
+            <label class="form-label" for="objectiu_principal">Objectiu principal</label>
+            <input class="form-control" id="objectiu_principal" minlength="4" />
+          </div>
+          <div class="col-md-6 d-none" data-camp-aprenent>
+            <label class="form-label" for="pot_conversar">Pots mantenir una conversa?</label>
+            <select class="form-select" id="pot_conversar">
+              <option value="">Selecciona una opcio</option>
+              <option value="si">Si</option>
+              <option value="no">No</option>
+            </select>
+          </div>
           <div class="col-12">
-            <ul class="nav nav-pills d-flex w-100">
-              <li class="nav-item">
-                <a class="nav-link" href="../index.html">Inici</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="voluntari.html">Voluntaris</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="aprenent.html">Aprenents</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="disponibilitat.html">Disponibilitat</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="parelles.html">Parelles</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contacte.html">Contacte</a>
-              </li>
-              <li class="nav-item ms-md-auto" id="nav_login_item" data-login-href="./login.html">
-                <a class="nav-link" href="./login.html">Login</a>
-              </li>
-              <li class="nav-item ms-md-auto d-none" id="nav_logout_item">
-                <a class="nav-link" href="./login.html" id="nav_logout_button">Tancar sessio</a>
-              </li>
-            </ul>
+            <label class="form-label" for="disponibilitat">Disponibilitat</label>
+            <input class="form-control" id="disponibilitat" required />
           </div>
-        </nav>
-
-        <div class="row">
-          <div class="col-12 p-3">
-            <img src="../img/header.webp" class="img-fluid" alt="Capcalera de la plataforma de voluntariat linguistic" />
+          <div class="col-12">
+            <label class="form-label" for="observacions">Observacions</label>
+            <textarea class="form-control" id="observacions" rows="3"></textarea>
           </div>
         </div>
-      </header>
-
-      <main class="container py-5">
-        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
-          <div>
-            <h1 class="mb-1">El meu perfil</h1>
-            <p class="text-muted mb-0">Consulta i actualitza les teves dades personals</p>
-          </div>
-          <div class="badge text-bg-light border fs-6" id="rol_usuari">Carregant rol...</div>
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+          <button class="btn btn-primary" type="submit" id="boto_guardar">Guardar canvis</button>
+          <a class="btn btn-link" href="../index.html">Tornar</a>
         </div>
+      </form>
+      <div class="mt-3" id="estat_perfil" role="status" aria-live="polite"></div>
+    </main>
 
-        <form class="card p-4" id="formulari_perfil">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label" for="nom">Nom</label>
-              <input class="form-control" id="nom" required />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label" for="cognoms">Cognoms</label>
-              <input class="form-control" id="cognoms" required />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label" for="correu">Correu electronic</label>
-              <input class="form-control" id="correu" type="email" required />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label" for="telefon">Telefon</label>
-              <input class="form-control" id="telefon" required pattern="^[0-9]{6,15}$" />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label" for="parroquia">Parroquia</label>
-              <select class="form-select" id="parroquia" required>
-                <option value="">Selecciona una opcio</option>
-                <option value="canillo">Canillo</option>
-                <option value="encamp">Encamp</option>
-                <option value="ordino">Ordino</option>
-                <option value="la_massana">La Massana</option>
-                <option value="andorra_la_vella">Andorra la Vella</option>
-                <option value="sant_julia">Sant Julia de Loria</option>
-                <option value="escaldes">Escaldes-Engordany</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label" for="data_naixement">Data de naixement</label>
-              <input class="form-control" id="data_naixement" type="date" required />
-            </div>
-            <div class="col-md-6 d-none" data-camp-aprenent>
-              <label class="form-label" for="nivell_catala">Nivell de catala</label>
-              <select class="form-select" id="nivell_catala">
-                <option value="">Selecciona una opcio</option>
-                <option value="inicial">Inicial</option>
-                <option value="intermedi">Intermedi</option>
-                <option value="avancat">Avancat</option>
-              </select>
-            </div>
-            <div class="col-md-6 d-none" data-camp-aprenent>
-              <label class="form-label" for="objectiu_principal">Objectiu principal</label>
-              <input class="form-control" id="objectiu_principal" minlength="4" />
-            </div>
-            <div class="col-md-6 d-none" data-camp-aprenent>
-              <label class="form-label" for="pot_conversar">Pots mantenir una conversa?</label>
-              <select class="form-select" id="pot_conversar">
-                <option value="">Selecciona una opcio</option>
-                <option value="si">Si</option>
-                <option value="no">No</option>
-              </select>
-            </div>
-            <div class="col-12">
-              <label class="form-label" for="disponibilitat">Disponibilitat</label>
-              <input class="form-control" id="disponibilitat" required />
-            </div>
-            <div class="col-12">
-              <label class="form-label" for="observacions">Observacions</label>
-              <textarea class="form-control" id="observacions" rows="3"></textarea>
-            </div>
-          </div>
-          <div class="mt-3 d-flex gap-2 flex-wrap">
-            <button class="btn btn-primary" type="submit" id="boto_guardar">Guardar canvis</button>
-            <a class="btn btn-link" href="../index.html">Tornar</a>
-          </div>
-        </form>
-        <div class="mt-3" id="estat_perfil" role="status" aria-live="polite"></div>
-      </main>
+    <footer class="footer text-black mt-5 p-1">
+      <div class="row">
+        <div class="col-12 text-start footer-text">
+          <p class="mb-1 fw-bold">Plataforma de Gestio</p>
+          <p class="mb-1 fw-bold">del</p>
+          <p class="mb-1 fw-bold">Voluntariat Linguistic</p>
 
-      <footer class="footer text-black mt-5 p-1">
-        <div class="row">
-          <div class="col-12 text-start footer-text">
-            <p class="mb-1 fw-bold">Plataforma de Gestio</p>
-            <p class="mb-1 fw-bold">del</p>
-            <p class="mb-1 fw-bold">Voluntariat Linguistic</p>
+          <br><br>
 
-            <br><br>
-
-            <p class="mb-1">Â© 2026 Tots els drets reservats</p>
-            <p class="mb-0">Contacte: info@voluntariatlinguistic.cat</p>
-          </div>
+          <p class="mb-1">Â© 2026 Tots els drets reservats</p>
+          <p class="mb-0">Contacte: info@voluntariatlinguistic.cat</p>
         </div>
-      </footer>
-    </div>
+      </div>
+    </footer>
+  </div>
 
-    <script src="../js/script.js"></script>
-    <script src="../js/auth-session.js"></script>
-    <script src="../js/nav-session.js"></script>
-    <script src="../js/profile.js"></script>
-  </body>
+  <script src="../js/script.js"></script>
+  <script src="../js/auth-session.js"></script>
+  <script src="../js/nav-session.js"></script>
+  <script src="../js/profile.js"></script>
+</body>
+
 </html>
