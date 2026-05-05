@@ -2,6 +2,7 @@ const taulaParelles = document.getElementById('taula_parelles');
 const estatParelles = document.getElementById('estat_parelles');
 const filtreEstatParelles = document.getElementById('filtre_estat_parelles');
 const botoRecarregarParelles = document.getElementById('boto_recarregar_parelles');
+const botoInformeParelles = document.getElementById('boto_informe_parelles');
 const parellesSessio = document.getElementById('parelles_sessio');
 const parellesResum = document.getElementById('parelles_resum');
 const statParellesTotal = document.getElementById('stat_parelles_total');
@@ -48,6 +49,28 @@ function formatData(data) {
   return data ? String(data).slice(0, 10) : '-';
 }
 
+function formatDataInforme(data) {
+  if (!data) {
+    return '-';
+  }
+
+  const dataNormalitzada = new Date(data);
+  if (Number.isNaN(dataNormalitzada.getTime())) {
+    return formatData(data);
+  }
+
+  return dataNormalitzada.toLocaleDateString('ca-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+}
+
+function obtenirText(valor, alternativa = '-') {
+  const text = valor === null || valor === undefined ? '' : String(valor).trim();
+  return text || alternativa;
+}
+
 function classeBadgeEstat(estat) {
   if (estat === 'activa') {
     return 'text-bg-success';
@@ -87,6 +110,24 @@ function actualitzarResumEstats() {
   statParellesTancades.textContent = String(resum.tancades);
 }
 
+function obtenirResumEstats() {
+  return parelles.reduce(
+    (acumulat, parella) => {
+      acumulat.total += 1;
+      if (parella.estat === 'activa') {
+        acumulat.actives += 1;
+      } else if (parella.estat === 'pausada') {
+        acumulat.pausades += 1;
+      } else if (parella.estat === 'tancada') {
+        acumulat.tancades += 1;
+      }
+
+      return acumulat;
+    },
+    { total: 0, actives: 0, pausades: 0, tancades: 0 }
+  );
+}
+
 function renderitzarParelles(llistat = []) {
   if (!llistat.length) {
     omplirTaulaBuida('No hi ha parelles per mostrar.');
@@ -119,6 +160,141 @@ function renderitzarParelles(llistat = []) {
     .join('');
 
   parellesResum.textContent = `${llistat.length} parelles trobades.`;
+}
+
+function dibuixarPeuInforme(doc) {
+  const totalPagines = doc.internal.getNumberOfPages();
+
+  for (let numeroPagina = 1; numeroPagina <= totalPagines; numeroPagina += 1) {
+    doc.setPage(numeroPagina);
+    doc.setDrawColor(214, 222, 230);
+    doc.line(14, 199, 283, 199);
+    doc.setFontSize(8);
+    doc.setTextColor(82, 97, 111);
+    doc.text('Plataforma de Gestio del Voluntariat Linguistic', 14, 204);
+    doc.text(`Pagina ${numeroPagina} de ${totalPagines}`, 283, 204, { align: 'right' });
+  }
+}
+
+function generarInformeParelles() {
+  const jsPDF = window.jspdf?.jsPDF;
+  if (!jsPDF || typeof window.jspdf === 'undefined') {
+    mostrarEstatParelles('No s ha pogut carregar el modul de generacio de PDF.', 'danger');
+    return;
+  }
+
+  if (!parelles.length) {
+    mostrarEstatParelles('No hi ha parelles registrades per generar l informe.', 'warning');
+    return;
+  }
+
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  if (typeof doc.autoTable !== 'function') {
+    mostrarEstatParelles('No s ha pogut carregar la taula de l informe PDF.', 'danger');
+    return;
+  }
+
+  const resum = obtenirResumEstats();
+  const dataEmissio = new Date();
+  const dataInforme = dataEmissio.toLocaleDateString('ca-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+  const horaInforme = dataEmissio.toLocaleTimeString('ca-ES', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  doc.setFillColor(16, 42, 67);
+  doc.rect(0, 0, 297, 30, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.text('Informe de parelles registrades', 14, 15);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text('Plataforma de Gestio del Voluntariat Linguistic', 14, 23);
+  doc.text(`Emes el ${dataInforme} a les ${horaInforme}`, 283, 15, { align: 'right' });
+
+  doc.setTextColor(16, 42, 67);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('Resum general', 14, 42);
+
+  const targetes = [
+    ['Total', resum.total],
+    ['Actives', resum.actives],
+    ['Pausades', resum.pausades],
+    ['Tancades', resum.tancades]
+  ];
+
+  targetes.forEach(([etiqueta, valor], index) => {
+    const x = 14 + index * 34;
+    doc.setFillColor(247, 250, 252);
+    doc.setDrawColor(214, 222, 230);
+    doc.roundedRect(x, 47, 28, 18, 2, 2, 'FD');
+    doc.setTextColor(82, 97, 111);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.text(etiqueta, x + 3, 54);
+    doc.setTextColor(16, 42, 67);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.text(String(valor), x + 3, 62);
+  });
+
+  const filesInforme = parelles.map((parella, index) => [
+    String(index + 1),
+    obtenirText(parella.voluntari_nom_complet),
+    obtenirText(parella.voluntari_disponibilitat, 'Sense disponibilitat'),
+    obtenirText(parella.aprenent_nom_complet),
+    obtenirText(parella.aprenent_disponibilitat, 'Sense disponibilitat'),
+    formatDataInforme(parella.data_inici),
+    formatDataInforme(parella.data_fi),
+    obtenirText(parella.estat),
+    obtenirText(parella.observacions)
+  ]);
+
+  doc.autoTable({
+    startY: 74,
+    head: [['#', 'Voluntari', 'Disp. voluntari', 'Aprenent', 'Disp. aprenent', 'Inici', 'Fi', 'Estat', 'Observacions']],
+    body: filesInforme,
+    theme: 'grid',
+    styles: {
+      font: 'helvetica',
+      fontSize: 8,
+      cellPadding: 2,
+      lineColor: [226, 232, 240],
+      lineWidth: 0.15,
+      textColor: [31, 41, 51],
+      valign: 'middle'
+    },
+    headStyles: {
+      fillColor: [16, 42, 67],
+      textColor: [255, 255, 255],
+      fontStyle: 'bold'
+    },
+    alternateRowStyles: {
+      fillColor: [247, 250, 252]
+    },
+    columnStyles: {
+      0: { cellWidth: 9, halign: 'center' },
+      1: { cellWidth: 34 },
+      2: { cellWidth: 34 },
+      3: { cellWidth: 34 },
+      4: { cellWidth: 34 },
+      5: { cellWidth: 20 },
+      6: { cellWidth: 20 },
+      7: { cellWidth: 18, halign: 'center' },
+      8: { cellWidth: 58 }
+    },
+    margin: { left: 14, right: 14, bottom: 16 }
+  });
+
+  dibuixarPeuInforme(doc);
+  doc.save(`informe-parelles-${dataEmissio.toISOString().slice(0, 10)}.pdf`);
+  mostrarEstatParelles('Informe PDF generat correctament.', 'success');
 }
 
 function participantTeParellaOberta(usuari) {
@@ -368,6 +544,7 @@ botoCancelarParella.addEventListener('click', () => {
 
 filtreEstatParelles.addEventListener('change', carregarParelles);
 botoRecarregarParelles.addEventListener('click', carregarParelles);
+botoInformeParelles.addEventListener('click', generarInformeParelles);
 
 netejarSeleccioParella();
 establirDataIniciAvui();
