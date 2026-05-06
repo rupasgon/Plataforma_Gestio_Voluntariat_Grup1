@@ -1,3 +1,12 @@
+/**
+ * @file nav-sessions.js 
+ * @author Grup1
+ * @description Gestió de la navegació segons la sessió - login, logout i accés a l'àrea privada.
+ */
+
+/**
+ * Inicialitza la navegació segons l'estat de la sessió
+ */
 function inicialitzarNavegacioSessio() {
   const loginItem = document.getElementById('nav_login_item');
   const logoutItem = document.getElementById('nav_logout_item');
@@ -24,6 +33,9 @@ function inicialitzarNavegacioSessio() {
 
   logoutButton.dataset.logoutInicialitzat = 'true';
 
+  /**
+  * Gestor del botó de logout
+  */
   logoutButton.addEventListener('click', async (event) => {
     event.preventDefault();
 
@@ -41,21 +53,44 @@ function inicialitzarNavegacioSessio() {
   });
 }
 
+/**
+ * Obté el prefix de ruta per a les pàgines
+ * @param {HTMLElement} loginItem
+ * @returns {string}
+ */
 function obtenirPrefixPages(loginItem) {
   const loginHref = loginItem.dataset.loginHref || './login.html';
   return loginHref.includes('pages/') ? 'pages/' : './';
 }
 
+/**
+ * Determina la destinació de l'àrea privada segons el rol
+ * @param {Object} sessio
+ * @param {HTMLElement} loginItem
+ * @returns {string}
+ */
 function obtenirDestiAreaPrivada(sessio, loginItem) {
   const prefix = obtenirPrefixPages(loginItem);
   const pagina = sessio?.user?.rol === 'admin' ? 'admin.html' : 'profile.html';
   return `${prefix}${pagina}`;
 }
 
+/**
+ * Retorna el text de l'enllaç d'àrea privada
+ * @param {Object} sessio
+ * @returns {string}
+ */
 function obtenirTextAreaPrivada(sessio) {
   return sessio?.user?.rol === 'admin' ? 'Administracio' : 'El meu perfil';
 }
 
+/**
+ * Actualitza o crea l'enllaç a l'àrea privada al menú
+ * @param {Object} sessio
+ * @param {HTMLElement} loginItem
+ * @param {HTMLElement} logoutItem
+ * @param {HTMLAnchorElement} loginLink
+ */
 function actualitzarEnllacAreaPrivada(sessio, loginItem, logoutItem, loginLink) {
   const idEnllac = 'nav_area_privada_item';
   const existent = document.getElementById(idEnllac);
@@ -85,6 +120,9 @@ function actualitzarEnllacAreaPrivada(sessio, loginItem, logoutItem, loginLink) 
   }
 }
 
+/**
+ * Inicialització automàtica segons l'estat del DOM
+ */
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', inicialitzarNavegacioSessio);
 } else {

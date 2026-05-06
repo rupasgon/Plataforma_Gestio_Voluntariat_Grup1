@@ -1,8 +1,37 @@
+/**
+ * @file voluntari-form.js 
+ * @author Grup1
+ * @description Registre de voluntaris - Gestió del formulari amb validacions i enviament a API.
+ */
+
+/**
+ * Formulari de registre de voluntaris
+ * @type {HTMLFormElement}
+ */
 const formulariVoluntari = document.getElementById('formulari_voluntari');
+
+/**
+ * Element on es mostra l'estat (missatges) del formulari
+ * @type {HTMLElement}
+ */
 const estatVoluntari = document.getElementById('estat_voluntari');
+
+/**
+ * Botó d'enviament del formulari
+ * @type {HTMLButtonElement}
+ */
 const botoEnviar = document.getElementById('boto_enviar_voluntari');
+
+/**
+ * URL base de l'API de registre
+ * @type {string}
+ */
 const API_BASE_REGISTRE = window.PARELLES_AUTH?.API_BASE || 'http://localhost:3000/api';
 
+/**
+ * Objecte amb referències als camps del formulari
+ * @type {Object<string, HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>}
+ */
 const camps = {
   nom: document.getElementById('nom'),
   cognoms: document.getElementById('cognoms'),
@@ -17,17 +46,30 @@ const camps = {
   observacions: document.getElementById('observacions')
 };
 
+/**
+ * Mostra un missatge d'estat a l'usuari
+ * @param {string} missatge - Text del missatge a mostrar
+ * @param {'success'|'danger'|'warning'|'info'} tipus - Tipus d'alerta (Bootstrap)
+ */
 function mostrarEstat(missatge, tipus) {
   estatVoluntari.className = `mt-3 alert alert-${tipus}`;
   estatVoluntari.textContent = missatge;
 }
 
+/**
+ * Valida el format del correu electrònic
+ * @returns {boolean}
+ */
 function validarCorreu() {
   const esValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(camps.correu.value.trim());
   camps.correu.setCustomValidity(esValid ? '' : 'Correu electronic no valid');
   return esValid;
 }
 
+/**
+ * Valida el número de telèfon (6 a 15 dígits)
+ * @returns {boolean}
+ */
 function validarTelefon() {
   const valor = camps.telefon.value.trim();
   if (!valor) {
@@ -40,6 +82,10 @@ function validarTelefon() {
   return esValid;
 }
 
+/**
+ * Valida que la data de naixement no sigui futura
+ * @returns {boolean}
+ */
 function validarDataNaixement() {
   const valor = camps.dataNaixement.value;
   if (!valor) {
@@ -53,6 +99,10 @@ function validarDataNaixement() {
   return esValid;
 }
 
+/**
+ * Valida la contrasenya i la seva confirmació
+ * @returns {boolean}
+ */
 function validarContrasenya() {
   const passwordValida = camps.password.value.trim().length >= 6;
   const confirmacioValida = camps.passwordConfirm.value === camps.password.value;
@@ -63,12 +113,35 @@ function validarContrasenya() {
   return passwordValida && confirmacioValida;
 }
 
+/**
+ * Event: Validació en temps real del correu
+ */
 camps.correu.addEventListener('input', validarCorreu);
+
+/**
+ * Event: Validació en temps real del telèfon
+ */
 camps.telefon.addEventListener('input', validarTelefon);
+
+/**
+ * Event: Validació de la data de naixement
+ */
 camps.dataNaixement.addEventListener('change', validarDataNaixement);
+
+/**
+ * Event: Validació de la contrasenya
+ */
 camps.password.addEventListener('input', validarContrasenya);
+
+/**
+ * Event: Validació de la confirmació de contrasenya
+ */
 camps.passwordConfirm.addEventListener('input', validarContrasenya);
 
+/**
+ * Gestor d'enviament del formulari voluntari
+ * @param {SubmitEvent} event
+ */
 formulariVoluntari.addEventListener('submit', async (event) => {
   event.preventDefault();
 

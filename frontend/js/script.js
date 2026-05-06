@@ -1,9 +1,9 @@
 /**
  * @file script.js
+ * @author Grup1
  * @description Controla les interaccions de la pàgina:
  * - Funció 1: Efecte actiu del menú de navegació quan l'usuari passa el ratolí.
  * - Funció 2: Reproducció de sons quan l'usuari clica els perfils Voluntari o Aprenent.
- * @author Antoni Castillo Llauradó
  */
 
 
@@ -64,8 +64,6 @@ window.onload = function () {
 
     });
 
-
-
     /**
      * =====================================================
      * FUNCIÓ 2 - SONS DELS PERFILS
@@ -112,7 +110,6 @@ window.onload = function () {
         });
 
     }
-
 
     /**
      * Afegeix un esdeveniment click a la imatge de l'aprenent

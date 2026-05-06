@@ -1,8 +1,37 @@
+/**
+ * @file profile.js 
+ * @author Grup1
+ * @description Gestió del perfil d'usuari - càrrega, edició i actualització de dades amb API.
+ */
+
+/**
+ * Formulari de perfil
+ * @type {HTMLFormElement}
+ */
 const formulariPerfil = document.getElementById('formulari_perfil');
+
+/**
+ * Element per mostrar missatges d'estat
+ * @type {HTMLElement}
+ */
 const estatPerfil = document.getElementById('estat_perfil');
+
+/**
+ * Botó per guardar canvis
+ * @type {HTMLButtonElement}
+ */
 const botoGuardar = document.getElementById('boto_guardar');
+
+/**
+ * Element que mostra el rol de l'usuari
+ * @type {HTMLElement}
+ */
 const badgeRol = document.getElementById('rol_usuari');
 
+/**
+ * Camps del formulari de perfil
+ * @type {Object<string, HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>}
+ */
 const campsPerfil = {
   nom: document.getElementById('nom'),
   cognoms: document.getElementById('cognoms'),
@@ -17,14 +46,32 @@ const campsPerfil = {
   observacions: document.getElementById('observacions')
 };
 
+/**
+ * Camps exclusius per a usuaris amb rol "aprenent"
+ * @type {HTMLElement[]}
+ */
 const campsAprenent = Array.from(document.querySelectorAll('[data-camp-aprenent]'));
+
+/**
+ * Rol actual del perfil
+ * @type {string|null}
+ */
 let rolPerfilActual = null;
 
+/**
+ * Mostra un missatge d'estat
+ * @param {string} missatge
+ * @param {'success'|'danger'|'warning'|'info'} tipus
+ */
 function mostrarEstat(missatge, tipus) {
   estatPerfil.className = `alert alert-${tipus} mt-3`;
   estatPerfil.textContent = missatge;
 }
 
+/**
+ * Tanca la sessió de l'usuari
+ * @returns {Promise<void>}
+ */
 async function tancarSessio() {
   try {
     await fetch(`${window.PARELLES_AUTH.API_BASE}/auth/logout`, {
@@ -39,6 +86,10 @@ async function tancarSessio() {
   window.location.href = './login.html';
 }
 
+/**
+ * Mostra o amaga camps segons el rol
+ * @param {string} rol - Rol de l'usuari
+ */
 function actualitzarCampsPerRol(rol) {
   rolPerfilActual = rol;
   const esAprenent = rol === 'aprenent';
@@ -56,6 +107,11 @@ function actualitzarCampsPerRol(rol) {
   });
 }
 
+/**
+ * Assigna un valor a un select assegurant que existeixi
+ * @param {HTMLSelectElement} select
+ * @param {string} valor
+ */
 function assignarValorSelect(select, valor) {
   const valorNormalitzat = valor || '';
   const existeixOpcio = Array.from(select.options).some((option) => option.value === valorNormalitzat);
@@ -67,6 +123,10 @@ function assignarValorSelect(select, valor) {
   select.value = valorNormalitzat;
 }
 
+/**
+ * Omple el formulari amb dades del perfil
+ * @param {Object} perfil
+ */
 function emplenarFormulari(perfil) {
   actualitzarCampsPerRol(perfil.rol);
   campsPerfil.nom.value = perfil.nom || '';
@@ -83,6 +143,10 @@ function emplenarFormulari(perfil) {
   badgeRol.textContent = `Rol: ${perfil.rol}`;
 }
 
+/**
+ * Carrega el perfil des de l'API
+ * @returns {Promise<void>}
+ */
 async function carregarPerfil() {
   const sessio = window.PARELLES_AUTH.obtenirSessio();
   if (!sessio?.token) {
@@ -122,6 +186,10 @@ async function carregarPerfil() {
   }
 }
 
+/**
+ * Gestor d'enviament del formulari de perfil
+ * @param {SubmitEvent} event
+ */
 formulariPerfil.addEventListener('submit', async (event) => {
   event.preventDefault();
 
@@ -190,4 +258,7 @@ formulariPerfil.addEventListener('submit', async (event) => {
   }
 });
 
+/**
+ * Inicialització: carrega el perfil en carregar la pàgina
+ */
 carregarPerfil();

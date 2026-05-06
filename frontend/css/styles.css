@@ -828,6 +828,7 @@ header img {
     /* Aplica estil a tots els elements <h3> que estan dins .informacio-plataforma */
     .informacio-plataforma h3 {
         font-size: 2rem;
+        /* mida del text */
     }
 
     /* Selecciona tots els paràgrafs dins la secció informacio-plataforma */

@@ -1,7 +1,23 @@
+/**
+ * @file profile-dashboard.js 
+ * @author Grup1
+ * @description Visualització del perfil d'usuari - càrrega i mostra de dades des de l'API.
+ */
+
+/**
+ * Inicialització de la pàgina: carrega el perfil quan el DOM està llest
+ */
 document.addEventListener('DOMContentLoaded', () => {
     carregarPerfil();
 });
 
+/**
+ * Carrega el perfil de l'usuari des de l'API
+ * - Comprova si hi ha sessió activa
+ * - Fa una petició autenticada
+ * - Mostra les dades al DOM
+ * @returns {Promise<void>}
+ */
 async function carregarPerfil() {
     const sessio = window.PARELLES_AUTH?.obtenirSessio();
     if (!sessio?.token) {
@@ -26,6 +42,18 @@ async function carregarPerfil() {
     }
 }
 
+/**
+ * Mostra les dades del perfil a la interfície
+ * @param {Object} dades - Dades del perfil de l'usuari
+ * @param {string} [dades.nom]
+ * @param {string} [dades.cognoms]
+ * @param {string} [dades.email]
+ * @param {string} [dades.telefon]
+ * @param {string} [dades.parroquia]
+ * @param {string|Date} [dades.data_naixement]
+ * @param {string} [dades.disponibilitat]
+ * @param {string} [dades.observacions]
+ */
 function mostrarDades(dades) {
     document.getElementById('nom').textContent = dades.nom || '';
     document.getElementById('cognoms').textContent = dades.cognoms || '';

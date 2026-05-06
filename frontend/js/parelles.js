@@ -1,20 +1,72 @@
+/**
+ * @file parelles.js 
+ * @author Grup1
+ * @description Gestió de parelles (admin) - creació, consulta, filtratge, actualització d'estat i eliminació.
+ */
+
+/**
+ * Taula de parelles
+ * @type {HTMLElement}
+ */
 const taulaParelles = document.getElementById('taula_parelles');
+
+/**
+ * Element de missatges d'estat
+ * @type {HTMLElement}
+ */
 const estatParelles = document.getElementById('estat_parelles');
+
+/**
+ * Filtre per estat de parelles
+ * @type {HTMLSelectElement}
+ */
 const filtreEstatParelles = document.getElementById('filtre_estat_parelles');
+
+/**
+ * Botó de recàrrega
+ * @type {HTMLButtonElement}
+ */
 const botoRecarregarParelles = document.getElementById('boto_recarregar_parelles');
+
+/**
+ * Element de sessió
+ * @type {HTMLElement}
+ */
 const parellesSessio = document.getElementById('parelles_sessio');
+
+/**
+ * Text resum
+ * @type {HTMLElement}
+ */
 const parellesResum = document.getElementById('parelles_resum');
+
+/**
+ * Estadístiques
+ */
 const statParellesTotal = document.getElementById('stat_parelles_total');
 const statParellesActives = document.getElementById('stat_parelles_actives');
 const statParellesPausades = document.getElementById('stat_parelles_pausades');
 const statParellesTancades = document.getElementById('stat_parelles_tancades');
+
+/**
+ * Formularis i botons
+ */
 const formulariNovaParella = document.getElementById('formulari_nova_parella');
 const formulariEstatParella = document.getElementById('formulari_estat_parella');
 const botoCrearParella = document.getElementById('boto_crear_parella');
 const botoActualitzarParella = document.getElementById('boto_actualitzar_parella');
 const botoCancelarParella = document.getElementById('boto_cancelar_parella');
+
+/**
+ * Text de parella seleccionada
+ * @type {HTMLElement}
+ */
 const parellaSeleccionadaText = document.getElementById('parella_seleccionada_text');
 
+/**
+ * Camps del formulari de nova parella
+ * @type {Object<string, HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>}
+ */
 const campsNovaParella = {
   voluntari: document.getElementById('pair_voluntari'),
   aprenent: document.getElementById('pair_aprenent'),
@@ -23,31 +75,61 @@ const campsNovaParella = {
   observacions: document.getElementById('pair_observacions')
 };
 
+/**
+ * Camps del formulari d'estat de parella
+ */
 const campsEstatParella = {
   estat: document.getElementById('pair_estat_nou'),
   data_fi: document.getElementById('pair_data_fi'),
   observacions: document.getElementById('pair_observacions_estat')
 };
 
+/**
+ * Llistes de dades
+ * @type {Array}
+ */
 let parelles = [];
 let usuaris = [];
+
+/**
+ * ID de la parella seleccionada
+ * @type {number|null}
+ */
 let parellaSeleccionadaId = null;
 
+/**
+ * Mostra un missatge d'estat
+ * @param {string} missatge
+ * @param {'success'|'danger'|'warning'|'info'|'secondary'} [tipus='info']
+ */
 function mostrarEstatParelles(missatge, tipus = 'info') {
   estatParelles.className = `alert alert-${tipus}`;
   estatParelles.textContent = missatge;
   estatParelles.classList.remove('d-none');
 }
 
+/**
+ * Amaga el missatge d'estat
+ */
 function amagarEstatParelles() {
   estatParelles.classList.add('d-none');
   estatParelles.textContent = '';
 }
 
+/**
+ * Formata una data
+ * @param {string|Date} data
+ * @returns {string}
+ */
 function formatData(data) {
   return data ? String(data).slice(0, 10) : '-';
 }
 
+/**
+ * Retorna la classe CSS segons l'estat
+ * @param {string} estat
+ * @returns {string}
+ */
 function classeBadgeEstat(estat) {
   if (estat === 'activa') {
     return 'text-bg-success';
@@ -60,10 +142,17 @@ function classeBadgeEstat(estat) {
   return 'text-bg-secondary';
 }
 
+/**
+ * Mostra una taula buida
+ * @param {string} missatge
+ */
 function omplirTaulaBuida(missatge) {
   taulaParelles.innerHTML = `<tr><td colspan="6" class="text-muted">${missatge}</td></tr>`;
 }
 
+/**
+ * Actualitza les estadístiques
+ */
 function actualitzarResumEstats() {
   const resum = parelles.reduce(
     (acumulat, parella) => {
@@ -87,6 +176,10 @@ function actualitzarResumEstats() {
   statParellesTancades.textContent = String(resum.tancades);
 }
 
+/**
+ * Renderitza les parelles a la taula
+ * @param {Array} [llistat=[]]
+ */
 function renderitzarParelles(llistat = []) {
   if (!llistat.length) {
     omplirTaulaBuida('No hi ha parelles per mostrar.');
@@ -121,6 +214,11 @@ function renderitzarParelles(llistat = []) {
   parellesResum.textContent = `${llistat.length} parelles trobades.`;
 }
 
+/**
+ * Comprova si un usuari ja té parella activa o pausada
+ * @param {Object} usuari
+ * @returns {boolean}
+ */
 function participantTeParellaOberta(usuari) {
   return parelles.some((parella) => {
     if (!['activa', 'pausada'].includes(parella.estat)) {
@@ -131,6 +229,12 @@ function participantTeParellaOberta(usuari) {
   });
 }
 
+/**
+ * Construeix opcions d'un select
+ * @param {Array} usuarisRol
+ * @param {string} placeholder
+ * @returns {string}
+ */
 function construirOpcionsUsuari(usuarisRol, placeholder) {
   const disponibles = usuarisRol.filter((usuari) => !participantTeParellaOberta(usuari));
 
@@ -142,6 +246,9 @@ function construirOpcionsUsuari(usuarisRol, placeholder) {
   ].join('');
 }
 
+/**
+ * Actualitza els selectors de voluntaris i aprenents disponibles
+ */
 function actualitzarSelectorsParelles() {
   const voluntaris = usuaris.filter((usuari) => usuari.rol === 'voluntari' && usuari.perfil_id);
   const aprenents = usuaris.filter((usuari) => usuari.rol === 'aprenent' && usuari.perfil_id);
@@ -150,10 +257,16 @@ function actualitzarSelectorsParelles() {
   campsNovaParella.aprenent.innerHTML = construirOpcionsUsuari(aprenents, 'Selecciona un aprenent');
 }
 
+/**
+ * Estableix la data d'inici per defecte al dia actual
+ */
 function establirDataIniciAvui() {
   campsNovaParella.data_inici.value = new Date().toISOString().slice(0, 10);
 }
 
+/**
+ * Neteja la selecció actual de parella
+ */
 function netejarSeleccioParella() {
   formulariEstatParella.reset();
   parellaSeleccionadaId = null;
@@ -161,6 +274,12 @@ function netejarSeleccioParella() {
   parellaSeleccionadaText.textContent = 'Cap parella seleccionada.';
 }
 
+/**
+ * Fa una petició autenticada i retorna JSON
+ * @param {string} url
+ * @param {RequestInit} [options]
+ * @returns {Promise<Object>}
+ */
 async function obtenirJSONProtegit(url, options = {}) {
   const resposta = await fetch(url, {
     ...options,
@@ -178,12 +297,20 @@ async function obtenirJSONProtegit(url, options = {}) {
   return dades;
 }
 
+/**
+ * Carrega la llista d'usuaris des de l'API
+ * @returns {Promise<void>}
+ */
 async function carregarUsuaris() {
   const dades = await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/users`);
   usuaris = dades.data || [];
   actualitzarSelectorsParelles();
 }
 
+/**
+ * Carrega les parelles des de l'API i aplica filtres
+ * @returns {Promise<void>}
+ */
 async function carregarParelles() {
   const estat = filtreEstatParelles.value;
 
@@ -209,11 +336,19 @@ async function carregarParelles() {
   }
 }
 
+/**
+ * Carrega tota la vista (usuaris + parelles)
+ * @returns {Promise<void>}
+ */
 async function carregarVistaCompleta() {
   await carregarUsuaris();
   await carregarParelles();
 }
 
+/**
+ * Selecciona una parella per editar
+ * @param {number} pairingId
+ */
 function seleccionarParella(pairingId) {
   const parella = parelles.find((item) => item.id === pairingId);
   if (!parella) {
@@ -229,6 +364,11 @@ function seleccionarParella(pairingId) {
   parellaSeleccionadaText.textContent = `Parella seleccionada: ${parella.voluntari_nom_complet} amb ${parella.aprenent_nom_complet}.`;
 }
 
+/**
+ * Elimina una parella
+ * @param {number} pairingId
+ * @returns {Promise<void>}
+ */
 async function eliminarParella(pairingId) {
   const parella = parelles.find((item) => item.id === pairingId);
   const textParella = parella ? `${parella.voluntari_nom_complet} amb ${parella.aprenent_nom_complet}` : 'aquesta parella';
@@ -253,6 +393,10 @@ async function eliminarParella(pairingId) {
   }
 }
 
+/**
+ * Valida que l'usuari tingui accés d'administrador
+ * @returns {Promise<boolean>}
+ */
 async function validarAccesParelles() {
   const sessio = window.PARELLES_AUTH.obtenirSessio();
   if (!sessio?.token) {
@@ -276,6 +420,9 @@ async function validarAccesParelles() {
   }
 }
 
+/**
+ * Gestió de clics a la taula de parelles (editar / eliminar)
+ */
 taulaParelles.addEventListener('click', (event) => {
   const botoGestionar = event.target.closest('[data-editar-parella]');
   if (botoGestionar) {
@@ -289,6 +436,10 @@ taulaParelles.addEventListener('click', (event) => {
   }
 });
 
+/**
+ * Enviament del formulari de nova parella
+ * @param {SubmitEvent} event
+ */
 formulariNovaParella.addEventListener('submit', async (event) => {
   event.preventDefault();
 
@@ -324,6 +475,10 @@ formulariNovaParella.addEventListener('submit', async (event) => {
   }
 });
 
+/**
+ * Enviament del formulari d'actualització d'estat
+ * @param {SubmitEvent} event
+ */
 formulariEstatParella.addEventListener('submit', async (event) => {
   event.preventDefault();
 
@@ -361,17 +516,29 @@ formulariEstatParella.addEventListener('submit', async (event) => {
   }
 });
 
+/**
+ * Cancel·la la selecció de parella
+ */
 botoCancelarParella.addEventListener('click', () => {
   netejarSeleccioParella();
   mostrarEstatParelles('S ha cancelat la seleccio de la parella.', 'secondary');
 });
 
+/**
+ * Events de filtre i recàrrega
+ */
 filtreEstatParelles.addEventListener('change', carregarParelles);
 botoRecarregarParelles.addEventListener('click', carregarParelles);
 
+/**
+ * Inicialització de valors per defecte
+ */
 netejarSeleccioParella();
 establirDataIniciAvui();
 
+/**
+ * Inicialització principal amb validació d'accés
+ */
 (async () => {
   const teAcces = await validarAccesParelles();
   if (teAcces) {

@@ -1,8 +1,37 @@
+/**
+ * @file aprenent-form.js
+ * @author Grup1
+ * @description Gestió del formulari de registre d'aprenents, validacions de camps i enviament de dades a l'API.
+ */
+
+/**
+ * Formulari de registre d'aprenent
+ * @type {HTMLFormElement}
+ */
 const formulariAprenent = document.getElementById('formulari_aprenent');
+
+/**
+ * Contenidor per mostrar missatges d'estat
+ * @type {HTMLElement}
+ */
 const estatAprenent = document.getElementById('estat_aprenent');
+
+/**
+ * Botó per enviar el formulari
+ * @type {HTMLButtonElement}
+ */
 const botoEnviar = document.getElementById('boto_enviar_aprenent');
+
+/**
+ * URL base de l'API per al registre
+ * @type {string}
+ */
 const API_BASE_REGISTRE = window.PARELLES_AUTH?.API_BASE || 'http://localhost:3000/api';
 
+/**
+ * Objecte amb tots els camps del formulari
+ * @type {Object}
+ */
 const camps = {
   nom: document.getElementById('nom'),
   cognoms: document.getElementById('cognoms'),
@@ -19,17 +48,30 @@ const camps = {
   observacions: document.getElementById('observacions')
 };
 
+/**
+ * Mostra un missatge d'estat a l'usuari.
+ * @param {string} missatge - Missatge a mostrar.
+ * @param {string} tipus - Tipus d'alerta (success, danger, warning...).
+ */
 function mostrarEstat(missatge, tipus) {
   estatAprenent.className = `mt-3 alert alert-${tipus}`;
   estatAprenent.textContent = missatge;
 }
 
+/**
+ * Valida el format del correu electrònic.
+ * @returns {boolean} True si és vàlid, false si no.
+ */
 function validarCorreu() {
   const esValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(camps.correu.value.trim());
   camps.correu.setCustomValidity(esValid ? '' : 'Correu electronic no valid');
   return esValid;
 }
 
+/**
+ * Valida el número de telèfon.
+ * @returns {boolean} True si és vàlid, false si no.
+ */
 function validarTelefon() {
   const valor = camps.telefon.value.trim();
   if (!valor) {
@@ -42,6 +84,10 @@ function validarTelefon() {
   return esValid;
 }
 
+/**
+ * Valida la data de naixement (no pot ser futura).
+ * @returns {boolean} True si és vàlida, false si no.
+ */
 function validarDataNaixement() {
   const valor = camps.dataNaixement.value;
   if (!valor) {
@@ -55,6 +101,10 @@ function validarDataNaixement() {
   return esValid;
 }
 
+/**
+ * Valida la contrasenya i la seva confirmació.
+ * @returns {boolean} True si ambdues són vàlides.
+ */
 function validarContrasenya() {
   const passwordValida = camps.password.value.trim().length >= 6;
   const confirmacioValida = camps.passwordConfirm.value === camps.password.value;
@@ -65,12 +115,35 @@ function validarContrasenya() {
   return passwordValida && confirmacioValida;
 }
 
+/**
+ * Event: Validació en temps real del correu
+ */
 camps.correu.addEventListener('input', validarCorreu);
+
+/**
+ * Event: Validació en temps real del telèfon
+ */
 camps.telefon.addEventListener('input', validarTelefon);
+
+/**
+ * Event: Validació de la data de naixement
+ */
 camps.dataNaixement.addEventListener('change', validarDataNaixement);
+
+/**
+ * Event: Validació de la contrasenya
+ */
 camps.password.addEventListener('input', validarContrasenya);
+
+/**
+ * Event: Validació de la confirmació de contrasenya
+ */
 camps.passwordConfirm.addEventListener('input', validarContrasenya);
 
+/**
+ * Gestor d'enviament del formulari aprenent
+ * @param {SubmitEvent} event
+ */
 formulariAprenent.addEventListener('submit', async (event) => {
   event.preventDefault();
 
