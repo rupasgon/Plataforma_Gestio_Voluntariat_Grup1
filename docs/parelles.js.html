@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: parelles.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: parelles.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file parelles.js 
+ * @author Grup1
+ * @description Gestió de parelles (admin) - creació, consulta, filtratge, actualització d'estat i eliminació.
+ */
+
+/**
+ * Taula de parelles
+ * @type {HTMLElement}
+ */
+const taulaParelles = document.getElementById('taula_parelles');
+
+/**
+ * Element de missatges d'estat
+ * @type {HTMLElement}
+ */
+const estatParelles = document.getElementById('estat_parelles');
+
+/**
+ * Filtre per estat de parelles
+ * @type {HTMLSelectElement}
+ */
+const filtreEstatParelles = document.getElementById('filtre_estat_parelles');
+
+/**
+ * Botó de recàrrega
+ * @type {HTMLButtonElement}
+ */
+const botoRecarregarParelles = document.getElementById('boto_recarregar_parelles');
+
+
+/**
+ * Botó per generar o mostrar l'informe de parelles
+ * @type {HTMLButtonElement}
+ */
+const botoInformeParelles = document.getElementById('boto_informe_parelles');
+
+/**
+ * Contenidor de la informació de parelles de la sessió
+ * @type {HTMLElement}
+ */
+const parellesSessio = document.getElementById('parelles_sessio');
+
+/**
+ * Text resum
+ * @type {HTMLElement}
+ */
+const parellesResum = document.getElementById('parelles_resum');
+
+/**
+ * Estadístiques
+ */
+const statParellesTotal = document.getElementById('stat_parelles_total');
+const statParellesActives = document.getElementById('stat_parelles_actives');
+const statParellesPausades = document.getElementById('stat_parelles_pausades');
+const statParellesTancades = document.getElementById('stat_parelles_tancades');
+
+/**
+ * Formularis i botons
+ */
+const formulariNovaParella = document.getElementById('formulari_nova_parella');
+const formulariEstatParella = document.getElementById('formulari_estat_parella');
+const botoCrearParella = document.getElementById('boto_crear_parella');
+const botoActualitzarParella = document.getElementById('boto_actualitzar_parella');
+const botoCancelarParella = document.getElementById('boto_cancelar_parella');
+
+/**
+ * Text de parella seleccionada
+ * @type {HTMLElement}
+ */
+const parellaSeleccionadaText = document.getElementById('parella_seleccionada_text');
+
+/**
+ * Camps del formulari de nova parella
+ * @type {Object&lt;string, HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>}
+ */
+const campsNovaParella = {
+  voluntari: document.getElementById('pair_voluntari'),
+  aprenent: document.getElementById('pair_aprenent'),
+  data_inici: document.getElementById('pair_data_inici'),
+  estat: document.getElementById('pair_estat'),
+  observacions: document.getElementById('pair_observacions')
+};
+
+/**
+ * Camps del formulari d'estat de parella
+ */
+const campsEstatParella = {
+  estat: document.getElementById('pair_estat_nou'),
+  data_fi: document.getElementById('pair_data_fi'),
+  observacions: document.getElementById('pair_observacions_estat')
+};
+
+/**
+ * Llistes de dades
+ * @type {Array}
+ */
+let parelles = [];
+let usuaris = [];
+
+/**
+ * ID de la parella seleccionada
+ * @type {number|null}
+ */
+let parellaSeleccionadaId = null;
+
+/**
+ * Mostra un missatge d'estat
+ * @param {string} missatge
+ * @param {'success'|'danger'|'warning'|'info'|'secondary'} [tipus='info']
+ */
+function mostrarEstatParelles(missatge, tipus = 'info') {
+  estatParelles.className = `alert alert-${tipus}`;
+  estatParelles.textContent = missatge;
+  estatParelles.classList.remove('d-none');
+}
+
+/**
+ * Amaga el missatge d'estat
+ */
+function amagarEstatParelles() {
+  estatParelles.classList.add('d-none');
+  estatParelles.textContent = '';
+}
+
+/**
+ * Formata una data
+ * @param {string|Date} data
+ * @returns {string}
+ */
+function formatData(data) {
+  return data ? String(data).slice(0, 10) : '-';
+}
+
+/**
+ * Formata una data per a l'informe en format català (dd/mm/yyyy)
+ * @param {string|Date} data - Data a formatar
+ * @returns {string} Data formatada o '-' si no és vàlida
+ */
+function formatDataInforme(data) {
+  if (!data) {
+    return '-';
+  }
+
+  const dataNormalitzada = new Date(data);
+  if (Number.isNaN(dataNormalitzada.getTime())) {
+    return formatData(data);
+  }
+
+  return dataNormalitzada.toLocaleDateString('ca-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+}
+
+/**
+ * Retorna un text vàlid o una alternativa si està buit
+ * @param {*} valor - Valor a convertir en text
+ * @param {string} [alternativa='-'] - Text alternatiu si el valor és buit
+ * @returns {string} Text final
+ */
+function obtenirText(valor, alternativa = '-') {
+  const text = valor === null || valor === undefined ? '' : String(valor).trim();
+  return text || alternativa;
+}
+
+/**
+ * Retorna la classe CSS per al badge segons l'estat
+ * @param {string} estat - Estat de la parella (activa, pausada...)
+ * @returns {string} Classe CSS corresponent
+ */
+function classeBadgeEstat(estat) {
+  if (estat === 'activa') {
+    return 'text-bg-success';
+  }
+
+  if (estat === 'pausada') {
+    return 'text-bg-warning';
+  }
+
+  return 'text-bg-secondary';
+}
+
+/**
+ * Mostra una taula buida
+ * @param {string} missatge
+ */
+function omplirTaulaBuida(missatge) {
+  taulaParelles.innerHTML = `&lt;tr>&lt;td colspan="6" class="text-muted">${missatge}&lt;/td>&lt;/tr>`;
+}
+
+/**
+ * Actualitza les estadístiques
+ */
+function actualitzarResumEstats() {
+  const resum = parelles.reduce(
+    (acumulat, parella) => {
+      acumulat.total += 1;
+      if (parella.estat === 'activa') {
+        acumulat.actives += 1;
+      } else if (parella.estat === 'pausada') {
+        acumulat.pausades += 1;
+      } else if (parella.estat === 'tancada') {
+        acumulat.tancades += 1;
+      }
+
+      return acumulat;
+    },
+    { total: 0, actives: 0, pausades: 0, tancades: 0 }
+  );
+
+  statParellesTotal.textContent = String(resum.total);
+  statParellesActives.textContent = String(resum.actives);
+  statParellesPausades.textContent = String(resum.pausades);
+  statParellesTancades.textContent = String(resum.tancades);
+}
+
+/**
+ * Calcula el resum d'estats de les parelles
+ * @returns {Object} Objecte amb el recompte d'estats
+ * @returns {number} returns.total - Nombre total de parelles
+ * @returns {number} returns.actives - Nombre de parelles actives
+ * @returns {number} returns.pausades - Nombre de parelles pausades
+ * @returns {number} returns.tancades - Nombre de parelles tancades
+ */
+function obtenirResumEstats() {
+  return parelles.reduce(
+    (acumulat, parella) => {
+      acumulat.total += 1;
+      if (parella.estat === 'activa') {
+        acumulat.actives += 1;
+      } else if (parella.estat === 'pausada') {
+        acumulat.pausades += 1;
+      } else if (parella.estat === 'tancada') {
+        acumulat.tancades += 1;
+      }
+
+      return acumulat;
+    },
+    { total: 0, actives: 0, pausades: 0, tancades: 0 }
+  );
+}
+
+/**
+ * Renderitza les parelles a la taula
+ * @param {Array} [llistat=[]]
+ */
+function renderitzarParelles(llistat = []) {
+  if (!llistat.length) {
+    omplirTaulaBuida('No hi ha parelles per mostrar.');
+    parellesResum.textContent = '0 parelles trobades.';
+    return;
+  }
+
+  taulaParelles.innerHTML = llistat
+    .map(
+      (parella) => `
+        &lt;tr>
+          &lt;td>
+            &lt;div>${parella.voluntari_nom_complet}&lt;/div>
+            &lt;small class="text-muted">${parella.voluntari_disponibilitat || ''}&lt;/small>
+          &lt;/td>
+          &lt;td>
+            &lt;div>${parella.aprenent_nom_complet}&lt;/div>
+            &lt;small class="text-muted">${parella.aprenent_disponibilitat || ''}&lt;/small>
+          &lt;/td>
+          &lt;td>${formatData(parella.data_inici)}&lt;/td>
+          &lt;td>${formatData(parella.data_fi)}&lt;/td>
+          &lt;td>&lt;span class="badge ${classeBadgeEstat(parella.estat)} text-uppercase">${parella.estat}&lt;/span>&lt;/td>
+          &lt;td class="text-end">
+            &lt;button class="btn btn-sm btn-outline-primary" type="button" data-editar-parella="${parella.id}">Canviar estat&lt;/button>
+            &lt;button class="btn btn-sm btn-outline-danger ms-1" type="button" data-eliminar-parella="${parella.id}">Eliminar&lt;/button>
+          &lt;/td>
+        &lt;/tr>
+      `
+    )
+    .join('');
+
+  parellesResum.textContent = `${llistat.length} parelles trobades.`;
+}
+
+/**
+ * Dibuixa el peu de pàgina de l'informe PDF amb numeració
+ * @param {Object} doc - Instància de jsPDF
+ */
+function dibuixarPeuInforme(doc) {
+  const totalPagines = doc.internal.getNumberOfPages();
+
+  for (let numeroPagina = 1; numeroPagina &lt;= totalPagines; numeroPagina += 1) {
+    doc.setPage(numeroPagina);
+    doc.setDrawColor(214, 222, 230);
+    doc.line(14, 199, 283, 199);
+    doc.setFontSize(8);
+    doc.setTextColor(82, 97, 111);
+    doc.text('Plataforma de Gestio del Voluntariat Linguistic', 14, 204);
+    doc.text(`Pagina ${numeroPagina} de ${totalPagines}`, 283, 204, { align: 'right' });
+  }
+}
+
+/**
+ * Genera un informe PDF amb la llista de parelles
+ * Inclou resum d'estats i taula detallada
+ */
+function generarInformeParelles() {
+  const jsPDF = window.jspdf?.jsPDF;
+  if (!jsPDF || typeof window.jspdf === 'undefined') {
+    mostrarEstatParelles('No s ha pogut carregar el modul de generacio de PDF.', 'danger');
+    return;
+  }
+
+  if (!parelles.length) {
+    mostrarEstatParelles('No hi ha parelles registrades per generar l informe.', 'warning');
+    return;
+  }
+
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  if (typeof doc.autoTable !== 'function') {
+    mostrarEstatParelles('No s ha pogut carregar la taula de l informe PDF.', 'danger');
+    return;
+  }
+
+  const resum = obtenirResumEstats();
+  const dataEmissio = new Date();
+  const dataInforme = dataEmissio.toLocaleDateString('ca-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+  const horaInforme = dataEmissio.toLocaleTimeString('ca-ES', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  doc.setFillColor(16, 42, 67);
+  doc.rect(0, 0, 297, 30, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.text('Informe de parelles registrades', 14, 15);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text('Plataforma de Gestio del Voluntariat Linguistic', 14, 23);
+  doc.text(`Emes el ${dataInforme} a les ${horaInforme}`, 283, 15, { align: 'right' });
+
+  doc.setTextColor(16, 42, 67);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('Resum general', 14, 42);
+
+  const targetes = [
+    ['Total', resum.total],
+    ['Actives', resum.actives],
+    ['Pausades', resum.pausades],
+    ['Tancades', resum.tancades]
+  ];
+
+  targetes.forEach(([etiqueta, valor], index) => {
+    const x = 14 + index * 34;
+    doc.setFillColor(247, 250, 252);
+    doc.setDrawColor(214, 222, 230);
+    doc.roundedRect(x, 47, 28, 18, 2, 2, 'FD');
+    doc.setTextColor(82, 97, 111);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.text(etiqueta, x + 3, 54);
+    doc.setTextColor(16, 42, 67);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.text(String(valor), x + 3, 62);
+  });
+
+  const filesInforme = parelles.map((parella, index) => [
+    String(index + 1),
+    obtenirText(parella.voluntari_nom_complet),
+    obtenirText(parella.voluntari_disponibilitat, 'Sense disponibilitat'),
+    obtenirText(parella.aprenent_nom_complet),
+    obtenirText(parella.aprenent_disponibilitat, 'Sense disponibilitat'),
+    formatDataInforme(parella.data_inici),
+    formatDataInforme(parella.data_fi),
+    obtenirText(parella.estat),
+    obtenirText(parella.observacions)
+  ]);
+
+  doc.autoTable({
+    startY: 74,
+    head: [['#', 'Voluntari', 'Disp. voluntari', 'Aprenent', 'Disp. aprenent', 'Inici', 'Fi', 'Estat', 'Observacions']],
+    body: filesInforme,
+    theme: 'grid',
+    styles: {
+      font: 'helvetica',
+      fontSize: 8,
+      cellPadding: 2,
+      lineColor: [226, 232, 240],
+      lineWidth: 0.15,
+      textColor: [31, 41, 51],
+      valign: 'middle'
+    },
+    headStyles: {
+      fillColor: [16, 42, 67],
+      textColor: [255, 255, 255],
+      fontStyle: 'bold'
+    },
+    alternateRowStyles: {
+      fillColor: [247, 250, 252]
+    },
+    columnStyles: {
+      0: { cellWidth: 9, halign: 'center' },
+      1: { cellWidth: 34 },
+      2: { cellWidth: 34 },
+      3: { cellWidth: 34 },
+      4: { cellWidth: 34 },
+      5: { cellWidth: 20 },
+      6: { cellWidth: 20 },
+      7: { cellWidth: 18, halign: 'center' },
+      8: { cellWidth: 58 }
+    },
+    margin: { left: 14, right: 14, bottom: 16 }
+  });
+
+  dibuixarPeuInforme(doc);
+  doc.save(`informe-parelles-${dataEmissio.toISOString().slice(0, 10)}.pdf`);
+  mostrarEstatParelles('Informe PDF generat correctament.', 'success');
+}
+
+/**
+ * Comprova si un usuari té una parella oberta (activa o pausada)
+ * @param {Object} usuari - Usuari a comprovar
+ * @param {number|string} usuari.perfil_id - Identificador del perfil de l'usuari
+ * @returns {boolean} True si té una parella oberta, false en cas contrari
+ */
+function participantTeParellaOberta(usuari) {
+  return parelles.some((parella) => {
+    if (!['activa', 'pausada'].includes(parella.estat)) {
+      return false;
+    }
+
+    return parella.voluntari_id === usuari.perfil_id || parella.aprenent_id === usuari.perfil_id;
+  });
+}
+
+/**
+ * Construeix opcions d'un select
+ * @param {Array} usuarisRol
+ * @param {string} placeholder
+ * @returns {string}
+ */
+function construirOpcionsUsuari(usuarisRol, placeholder) {
+  const disponibles = usuarisRol.filter((usuari) => !participantTeParellaOberta(usuari));
+
+  return [
+    `&lt;option value="">${placeholder}&lt;/option>`,
+    ...disponibles.map(
+      (usuari) => `&lt;option value="${usuari.perfil_id}">${usuari.nom} ${usuari.cognoms} - ${usuari.disponibilitat || 'sense disponibilitat'}&lt;/option>`
+    )
+  ].join('');
+}
+
+/**
+ * Actualitza els selectors de voluntaris i aprenents disponibles
+ */
+function actualitzarSelectorsParelles() {
+  const voluntaris = usuaris.filter((usuari) => usuari.rol === 'voluntari' &amp;&amp; usuari.perfil_id);
+  const aprenents = usuaris.filter((usuari) => usuari.rol === 'aprenent' &amp;&amp; usuari.perfil_id);
+
+  campsNovaParella.voluntari.innerHTML = construirOpcionsUsuari(voluntaris, 'Selecciona un voluntari');
+  campsNovaParella.aprenent.innerHTML = construirOpcionsUsuari(aprenents, 'Selecciona un aprenent');
+}
+
+/**
+ * Estableix la data d'inici per defecte al dia actual
+ */
+function establirDataIniciAvui() {
+  campsNovaParella.data_inici.value = new Date().toISOString().slice(0, 10);
+}
+
+/**
+ * Neteja la selecció actual de parella
+ */
+function netejarSeleccioParella() {
+  formulariEstatParella.reset();
+  parellaSeleccionadaId = null;
+  botoActualitzarParella.disabled = true;
+  parellaSeleccionadaText.textContent = 'Cap parella seleccionada.';
+}
+
+/**
+ * Fa una petició autenticada i retorna JSON
+ * @param {string} url
+ * @param {RequestInit} [options]
+ * @returns {Promise&lt;Object>}
+ */
+async function obtenirJSONProtegit(url, options = {}) {
+  const resposta = await fetch(url, {
+    ...options,
+    headers: {
+      ...window.PARELLES_AUTH.obtenirCapcaleresAutenticades(),
+      ...(options.headers || {})
+    }
+  });
+
+  const dades = await resposta.json().catch(() => ({}));
+  if (!resposta.ok) {
+    throw new Error(dades.message || 'La peticio no s ha pogut completar correctament.');
+  }
+
+  return dades;
+}
+
+/**
+ * Carrega la llista d'usuaris des de l'API
+ * @returns {Promise&lt;void>}
+ */
+async function carregarUsuaris() {
+  const dades = await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/users`);
+  usuaris = dades.data || [];
+  actualitzarSelectorsParelles();
+}
+
+/**
+ * Carrega les parelles des de l'API i aplica filtres
+ * @returns {Promise&lt;void>}
+ */
+async function carregarParelles() {
+  const estat = filtreEstatParelles.value;
+
+  botoRecarregarParelles.disabled = true;
+  botoRecarregarParelles.textContent = 'Carregant...';
+  amagarEstatParelles();
+
+  try {
+    const dades = await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/pairings`);
+    parelles = dades.data || [];
+    actualitzarResumEstats();
+    const parellesFiltrades = estat ? parelles.filter((parella) => parella.estat === estat) : parelles;
+    renderitzarParelles(parellesFiltrades);
+    actualitzarSelectorsParelles();
+  } catch (error) {
+    parelles = [];
+    actualitzarResumEstats();
+    renderitzarParelles([]);
+    mostrarEstatParelles(error.message || 'No s han pogut carregar les parelles.', 'danger');
+  } finally {
+    botoRecarregarParelles.disabled = false;
+    botoRecarregarParelles.textContent = 'Actualitzar';
+  }
+}
+
+/**
+ * Carrega tota la vista (usuaris + parelles)
+ * @returns {Promise&lt;void>}
+ */
+async function carregarVistaCompleta() {
+  await carregarUsuaris();
+  await carregarParelles();
+}
+
+/**
+ * Selecciona una parella per editar
+ * @param {number} pairingId
+ */
+function seleccionarParella(pairingId) {
+  const parella = parelles.find((item) => item.id === pairingId);
+  if (!parella) {
+    mostrarEstatParelles('No s ha pogut carregar la parella seleccionada.', 'warning');
+    return;
+  }
+
+  parellaSeleccionadaId = parella.id;
+  campsEstatParella.estat.value = parella.estat || 'activa';
+  campsEstatParella.data_fi.value = parella.data_fi ? String(parella.data_fi).slice(0, 10) : '';
+  campsEstatParella.observacions.value = parella.observacions || '';
+  botoActualitzarParella.disabled = false;
+  parellaSeleccionadaText.textContent = `Parella seleccionada: ${parella.voluntari_nom_complet} amb ${parella.aprenent_nom_complet}.`;
+}
+
+/**
+ * Elimina una parella
+ * @param {number} pairingId
+ * @returns {Promise&lt;void>}
+ */
+async function eliminarParella(pairingId) {
+  const parella = parelles.find((item) => item.id === pairingId);
+  const textParella = parella ? `${parella.voluntari_nom_complet} amb ${parella.aprenent_nom_complet}` : 'aquesta parella';
+
+  if (!window.confirm(`Vols eliminar ${textParella}?`)) {
+    return;
+  }
+
+  try {
+    await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/pairings/${pairingId}`, {
+      method: 'DELETE'
+    });
+
+    if (parellaSeleccionadaId === pairingId) {
+      netejarSeleccioParella();
+    }
+
+    await carregarVistaCompleta();
+    mostrarEstatParelles('Parella eliminada correctament.', 'success');
+  } catch (error) {
+    mostrarEstatParelles(error.message || 'No s ha pogut eliminar la parella seleccionada.', 'danger');
+  }
+}
+
+/**
+ * Valida que l'usuari tingui accés d'administrador
+ * @returns {Promise&lt;boolean>}
+ */
+async function validarAccesParelles() {
+  const sessio = window.PARELLES_AUTH.obtenirSessio();
+  if (!sessio?.token) {
+    window.location.href = './login.html';
+    return false;
+  }
+
+  try {
+    const dades = await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/auth/me`);
+    if (dades.user.rol !== 'admin') {
+      window.location.href = './profile.html';
+      return false;
+    }
+
+    parellesSessio.textContent = `${dades.user.nom} (${dades.user.rol})`;
+    return true;
+  } catch (error) {
+    window.PARELLES_AUTH.esborrarSessio();
+    window.location.href = './login.html';
+    return false;
+  }
+}
+
+/**
+ * Gestió de clics a la taula de parelles (editar / eliminar)
+ */
+taulaParelles.addEventListener('click', (event) => {
+  const botoGestionar = event.target.closest('[data-editar-parella]');
+  if (botoGestionar) {
+    seleccionarParella(Number(botoGestionar.dataset.editarParella));
+    return;
+  }
+
+  const botoEliminar = event.target.closest('[data-eliminar-parella]');
+  if (botoEliminar) {
+    eliminarParella(Number(botoEliminar.dataset.eliminarParella));
+  }
+});
+
+/**
+ * Enviament del formulari de nova parella
+ * @param {SubmitEvent} event
+ */
+formulariNovaParella.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  if (!formulariNovaParella.checkValidity()) {
+    mostrarEstatParelles('Revisa els camps obligatoris del formulari de nova parella.', 'warning');
+    return;
+  }
+
+  botoCrearParella.disabled = true;
+  botoCrearParella.textContent = 'Creant...';
+
+  try {
+    await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/pairings`, {
+      method: 'POST',
+      body: JSON.stringify({
+        voluntari_id: Number(campsNovaParella.voluntari.value),
+        aprenent_id: Number(campsNovaParella.aprenent.value),
+        data_inici: campsNovaParella.data_inici.value,
+        estat: campsNovaParella.estat.value,
+        observacions: campsNovaParella.observacions.value.trim()
+      })
+    });
+
+    formulariNovaParella.reset();
+    establirDataIniciAvui();
+    await carregarVistaCompleta();
+    mostrarEstatParelles('Parella creada correctament.', 'success');
+  } catch (error) {
+    mostrarEstatParelles(error.message || 'No s ha pogut crear la parella.', 'danger');
+  } finally {
+    botoCrearParella.disabled = false;
+    botoCrearParella.textContent = 'Crear parella';
+  }
+});
+
+/**
+ * Enviament del formulari d'actualització d'estat
+ * @param {SubmitEvent} event
+ */
+formulariEstatParella.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  if (!parellaSeleccionadaId) {
+    mostrarEstatParelles('Primer has de seleccionar una parella del llistat.', 'warning');
+    return;
+  }
+
+  if (!formulariEstatParella.checkValidity()) {
+    mostrarEstatParelles('Revisa els camps obligatoris del canvi d estat.', 'warning');
+    return;
+  }
+
+  botoActualitzarParella.disabled = true;
+  botoActualitzarParella.textContent = 'Actualitzant...';
+
+  try {
+    await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/pairings/${parellaSeleccionadaId}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        estat: campsEstatParella.estat.value,
+        data_fi: campsEstatParella.data_fi.value || null,
+        observacions: campsEstatParella.observacions.value.trim()
+      })
+    });
+
+    await carregarVistaCompleta();
+    netejarSeleccioParella();
+    mostrarEstatParelles('Estat de la parella actualitzat correctament.', 'success');
+  } catch (error) {
+    mostrarEstatParelles(error.message || 'No s ha pogut actualitzar la parella.', 'danger');
+  } finally {
+    botoActualitzarParella.disabled = false;
+    botoActualitzarParella.textContent = 'Actualitzar estat';
+  }
+});
+
+/**
+ * Cancel·la la selecció de parella
+ */
+botoCancelarParella.addEventListener('click', () => {
+  netejarSeleccioParella();
+  mostrarEstatParelles('S ha cancelat la seleccio de la parella.', 'secondary');
+});
+
+/**
+ * Events de filtre i recàrrega
+ */
+filtreEstatParelles.addEventListener('change', carregarParelles);
+botoRecarregarParelles.addEventListener('click', carregarParelles);
+botoInformeParelles.addEventListener('click', generarInformeParelles);
+
+/**
+ * Inicialització de valors per defecte
+ */
+netejarSeleccioParella();
+establirDataIniciAvui();
+
+/**
+ * Inicialització principal amb validació d'accés
+ */
+(async () => {
+  const teAcces = await validarAccesParelles();
+  if (teAcces) {
+    await carregarVistaCompleta();
+  }
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:mouseout">mouseout</a></li><li><a href="global.html#event:mouseover">mouseover</a></li></ul><h3>Global</h3><ul><li><a href="global.html#API_BASE">API_BASE</a></li><li><a href="global.html#API_BASE_REGISTRE">API_BASE_REGISTRE</a></li><li><a href="global.html#CLAU_LOCAL">CLAU_LOCAL</a></li><li><a href="global.html#CLAU_SESSIO">CLAU_SESSIO</a></li><li><a href="global.html#actualitzarCampsPerRol">actualitzarCampsPerRol</a></li><li><a href="global.html#actualitzarEnllacAreaPrivada">actualitzarEnllacAreaPrivada</a></li><li><a href="global.html#actualitzarResumEstats">actualitzarResumEstats</a></li><li><a href="global.html#actualitzarSelectorsParelles">actualitzarSelectorsParelles</a></li><li><a href="global.html#amagarEstatParelles">amagarEstatParelles</a></li><li><a href="global.html#assignarValorSelect">assignarValorSelect</a></li><li><a href="global.html#badgeRol">badgeRol</a></li><li><a href="global.html#botoAnarSessio">botoAnarSessio</a></li><li><a href="global.html#botoEntrar">botoEntrar</a></li><li><a href="global.html#botoEnviar">botoEnviar</a></li><li><a href="global.html#botoGuardar">botoGuardar</a></li><li><a href="global.html#botoInformeParelles">botoInformeParelles</a></li><li><a href="global.html#botoMostrarContrasenya">botoMostrarContrasenya</a></li><li><a href="global.html#botoRecarregarParelles">botoRecarregarParelles</a></li><li><a href="global.html#botoTancarSessioLogin">botoTancarSessioLogin</a></li><li><a href="global.html#campContrasenya">campContrasenya</a></li><li><a href="global.html#campCorreu">campCorreu</a></li><li><a href="global.html#campRecordarSessio">campRecordarSessio</a></li><li><a href="global.html#camps">camps</a></li><li><a href="global.html#campsAprenent">campsAprenent</a></li><li><a href="global.html#campsEstatParella">campsEstatParella</a></li><li><a href="global.html#campsNovaParella">campsNovaParella</a></li><li><a href="global.html#campsPerfil">campsPerfil</a></li><li><a href="global.html#carregarParelles">carregarParelles</a></li><li><a href="global.html#carregarPerfil">carregarPerfil</a></li><li><a href="global.html#carregarUsuaris">carregarUsuaris</a></li><li><a href="global.html#carregarVistaCompleta">carregarVistaCompleta</a></li><li><a href="global.html#classeBadgeEstat">classeBadgeEstat</a></li><li><a href="global.html#construirOpcionsUsuari">construirOpcionsUsuari</a></li><li><a href="global.html#desarSessio">desarSessio</a></li><li><a href="global.html#dibuixarPeuInforme">dibuixarPeuInforme</a></li><li><a href="global.html#eliminarParella">eliminarParella</a></li><li><a href="global.html#emplenarFormulari">emplenarFormulari</a></li><li><a href="global.html#errorContrasenya">errorContrasenya</a></li><li><a href="global.html#esborrarSessio">esborrarSessio</a></li><li><a href="global.html#establirDataIniciAvui">establirDataIniciAvui</a></li><li><a href="global.html#estatAcces">estatAcces</a></li><li><a href="global.html#estatAprenent">estatAprenent</a></li><li><a href="global.html#estatParelles">estatParelles</a></li><li><a href="global.html#estatPerfil">estatPerfil</a></li><li><a href="global.html#estatSessioLogin">estatSessioLogin</a></li><li><a href="global.html#estatSessioText">estatSessioText</a></li><li><a href="global.html#estatVoluntari">estatVoluntari</a></li><li><a href="global.html#filtreEstatParelles">filtreEstatParelles</a></li><li><a href="global.html#formatData">formatData</a></li><li><a href="global.html#formatDataInforme">formatDataInforme</a></li><li><a href="global.html#formulariAcces">formulariAcces</a></li><li><a href="global.html#formulariAprenent">formulariAprenent</a></li><li><a href="global.html#formulariNovaParella">formulariNovaParella</a></li><li><a href="global.html#formulariPerfil">formulariPerfil</a></li><li><a href="global.html#formulariVoluntari">formulariVoluntari</a></li><li><a href="global.html#generarInformeParelles">generarInformeParelles</a></li><li><a href="global.html#inicialitzarNavegacioSessio">inicialitzarNavegacioSessio</a></li><li><a href="global.html#llegirStorage">llegirStorage</a></li><li><a href="global.html#mostrarDades">mostrarDades</a></li><li><a href="global.html#mostrarEstat">mostrarEstat</a></li><li><a href="global.html#mostrarEstatParelles">mostrarEstatParelles</a></li><li><a href="global.html#mostrarSessioActiva">mostrarSessioActiva</a></li><li><a href="global.html#netejarSeleccioParella">netejarSeleccioParella</a></li><li><a href="global.html#obtenirCapcaleresAutenticades">obtenirCapcaleresAutenticades</a></li><li><a href="global.html#obtenirClauStorage">obtenirClauStorage</a></li><li><a href="global.html#obtenirDestiAreaPrivada">obtenirDestiAreaPrivada</a></li><li><a href="global.html#obtenirDestiPerRol">obtenirDestiPerRol</a></li><li><a href="global.html#obtenirJSONProtegit">obtenirJSONProtegit</a></li><li><a href="global.html#obtenirPrefixPages">obtenirPrefixPages</a></li><li><a href="global.html#obtenirResumEstats">obtenirResumEstats</a></li><li><a href="global.html#obtenirSessio">obtenirSessio</a></li><li><a href="global.html#obtenirText">obtenirText</a></li><li><a href="global.html#obtenirTextAreaPrivada">obtenirTextAreaPrivada</a></li><li><a href="global.html#omplirTaulaBuida">omplirTaulaBuida</a></li><li><a href="global.html#parellaSeleccionadaId">parellaSeleccionadaId</a></li><li><a href="global.html#parellaSeleccionadaText">parellaSeleccionadaText</a></li><li><a href="global.html#parelles">parelles</a></li><li><a href="global.html#parellesResum">parellesResum</a></li><li><a href="global.html#parellesSessio">parellesSessio</a></li><li><a href="global.html#participantTeParellaOberta">participantTeParellaOberta</a></li><li><a href="global.html#redirigirSiJaHiHaSessio">redirigirSiJaHiHaSessio</a></li><li><a href="global.html#renderitzarParelles">renderitzarParelles</a></li><li><a href="global.html#rolPerfilActual">rolPerfilActual</a></li><li><a href="global.html#seleccionarParella">seleccionarParella</a></li><li><a href="global.html#sessioHaCaducat">sessioHaCaducat</a></li><li><a href="global.html#statParellesTotal">statParellesTotal</a></li><li><a href="global.html#tancarSessio">tancarSessio</a></li><li><a href="global.html#tancarSessioActiva">tancarSessioActiva</a></li><li><a href="global.html#taulaParelles">taulaParelles</a></li><li><a href="global.html#teSessioRecordada">teSessioRecordada</a></li><li><a href="global.html#validarAccesParelles">validarAccesParelles</a></li><li><a href="global.html#validarContrasenya">validarContrasenya</a></li><li><a href="global.html#validarCorreu">validarCorreu</a></li><li><a href="global.html#validarDataNaixement">validarDataNaixement</a></li><li><a href="global.html#validarTelefon">validarTelefon</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed May 06 2026 13:30:50 GMT+0200 (Hora d’estiu d’Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

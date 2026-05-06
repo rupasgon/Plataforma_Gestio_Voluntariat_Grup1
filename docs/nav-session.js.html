@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: nav-session.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: nav-session.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file nav-sessions.js 
+ * @author Grup1
+ * @description Gestió de la navegació segons la sessió - login, logout i accés a l'àrea privada.
+ */
+
+/**
+ * Inicialitza la navegació segons l'estat de la sessió
+ */
+function inicialitzarNavegacioSessio() {
+  const loginItem = document.getElementById('nav_login_item');
+  const logoutItem = document.getElementById('nav_logout_item');
+  const logoutButton = document.getElementById('nav_logout_button');
+  const loginLink = loginItem?.querySelector('a');
+
+  if (!loginItem || !logoutItem || !logoutButton || !loginLink || !window.PARELLES_AUTH) {
+    return;
+  }
+
+  const sessio = window.PARELLES_AUTH.obtenirSessio();
+  const teSessio = Boolean(sessio?.token);
+
+  actualitzarEnllacAreaPrivada(sessio, loginItem, logoutItem, loginLink);
+
+  logoutButton.className = loginLink.className;
+  loginItem.classList.toggle('d-none', teSessio);
+  logoutItem.classList.toggle('d-none', !teSessio);
+  logoutItem.classList.toggle('ms-md-auto', teSessio &amp;&amp; !document.getElementById('nav_area_privada_item'));
+
+  if (logoutButton.dataset.logoutInicialitzat === 'true') {
+    return;
+  }
+
+  logoutButton.dataset.logoutInicialitzat = 'true';
+
+  /**
+  * Gestor del botó de logout
+  */
+  logoutButton.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    try {
+      await fetch(`${window.PARELLES_AUTH.API_BASE}/auth/logout`, {
+        method: 'POST',
+        headers: window.PARELLES_AUTH.obtenirCapcaleresAutenticades()
+      });
+    } catch (error) {
+      // El tancament local ha de funcionar encara que l API no respongui.
+    }
+
+    window.PARELLES_AUTH.esborrarSessio();
+    window.location.href = loginItem.dataset.loginHref || './login.html';
+  });
+}
+
+/**
+ * Obté el prefix de ruta per a les pàgines
+ * @param {HTMLElement} loginItem
+ * @returns {string}
+ */
+function obtenirPrefixPages(loginItem) {
+  const loginHref = loginItem.dataset.loginHref || './login.html';
+  return loginHref.includes('pages/') ? 'pages/' : './';
+}
+
+/**
+ * Determina la destinació de l'àrea privada segons el rol
+ * @param {Object} sessio
+ * @param {HTMLElement} loginItem
+ * @returns {string}
+ */
+function obtenirDestiAreaPrivada(sessio, loginItem) {
+  const prefix = obtenirPrefixPages(loginItem);
+  const pagina = sessio?.user?.rol === 'admin' ? 'admin.html' : 'profile.html';
+  return `${prefix}${pagina}`;
+}
+
+/**
+ * Retorna el text de l'enllaç d'àrea privada
+ * @param {Object} sessio
+ * @returns {string}
+ */
+function obtenirTextAreaPrivada(sessio) {
+  return sessio?.user?.rol === 'admin' ? 'Administracio' : 'El meu perfil';
+}
+
+/**
+ * Actualitza o crea l'enllaç a l'àrea privada al menú
+ * @param {Object} sessio
+ * @param {HTMLElement} loginItem
+ * @param {HTMLElement} logoutItem
+ * @param {HTMLAnchorElement} loginLink
+ */
+function actualitzarEnllacAreaPrivada(sessio, loginItem, logoutItem, loginLink) {
+  const idEnllac = 'nav_area_privada_item';
+  const existent = document.getElementById(idEnllac);
+
+  if (!sessio?.token) {
+    existent?.remove();
+    return;
+  }
+
+  const item = existent || document.createElement('li');
+  let link = item.querySelector('a');
+
+  item.id = idEnllac;
+  item.className = loginItem.className.replace(/\bd-none\b/g, '').trim();
+
+  if (!link) {
+    link = document.createElement('a');
+    item.appendChild(link);
+  }
+
+  link.className = loginLink.className;
+  link.href = obtenirDestiAreaPrivada(sessio, loginItem);
+  link.textContent = obtenirTextAreaPrivada(sessio);
+
+  if (!existent) {
+    logoutItem.before(item);
+  }
+}
+
+/**
+ * Inicialització automàtica segons l'estat del DOM
+ */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', inicialitzarNavegacioSessio);
+} else {
+  inicialitzarNavegacioSessio();
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:mouseout">mouseout</a></li><li><a href="global.html#event:mouseover">mouseover</a></li></ul><h3>Global</h3><ul><li><a href="global.html#API_BASE">API_BASE</a></li><li><a href="global.html#API_BASE_REGISTRE">API_BASE_REGISTRE</a></li><li><a href="global.html#CLAU_LOCAL">CLAU_LOCAL</a></li><li><a href="global.html#CLAU_SESSIO">CLAU_SESSIO</a></li><li><a href="global.html#actualitzarCampsPerRol">actualitzarCampsPerRol</a></li><li><a href="global.html#actualitzarEnllacAreaPrivada">actualitzarEnllacAreaPrivada</a></li><li><a href="global.html#actualitzarResumEstats">actualitzarResumEstats</a></li><li><a href="global.html#actualitzarSelectorsParelles">actualitzarSelectorsParelles</a></li><li><a href="global.html#amagarEstatParelles">amagarEstatParelles</a></li><li><a href="global.html#assignarValorSelect">assignarValorSelect</a></li><li><a href="global.html#badgeRol">badgeRol</a></li><li><a href="global.html#botoAnarSessio">botoAnarSessio</a></li><li><a href="global.html#botoEntrar">botoEntrar</a></li><li><a href="global.html#botoEnviar">botoEnviar</a></li><li><a href="global.html#botoGuardar">botoGuardar</a></li><li><a href="global.html#botoInformeParelles">botoInformeParelles</a></li><li><a href="global.html#botoMostrarContrasenya">botoMostrarContrasenya</a></li><li><a href="global.html#botoRecarregarParelles">botoRecarregarParelles</a></li><li><a href="global.html#botoTancarSessioLogin">botoTancarSessioLogin</a></li><li><a href="global.html#campContrasenya">campContrasenya</a></li><li><a href="global.html#campCorreu">campCorreu</a></li><li><a href="global.html#campRecordarSessio">campRecordarSessio</a></li><li><a href="global.html#camps">camps</a></li><li><a href="global.html#campsAprenent">campsAprenent</a></li><li><a href="global.html#campsEstatParella">campsEstatParella</a></li><li><a href="global.html#campsNovaParella">campsNovaParella</a></li><li><a href="global.html#campsPerfil">campsPerfil</a></li><li><a href="global.html#carregarParelles">carregarParelles</a></li><li><a href="global.html#carregarPerfil">carregarPerfil</a></li><li><a href="global.html#carregarUsuaris">carregarUsuaris</a></li><li><a href="global.html#carregarVistaCompleta">carregarVistaCompleta</a></li><li><a href="global.html#classeBadgeEstat">classeBadgeEstat</a></li><li><a href="global.html#construirOpcionsUsuari">construirOpcionsUsuari</a></li><li><a href="global.html#desarSessio">desarSessio</a></li><li><a href="global.html#dibuixarPeuInforme">dibuixarPeuInforme</a></li><li><a href="global.html#eliminarParella">eliminarParella</a></li><li><a href="global.html#emplenarFormulari">emplenarFormulari</a></li><li><a href="global.html#errorContrasenya">errorContrasenya</a></li><li><a href="global.html#esborrarSessio">esborrarSessio</a></li><li><a href="global.html#establirDataIniciAvui">establirDataIniciAvui</a></li><li><a href="global.html#estatAcces">estatAcces</a></li><li><a href="global.html#estatAprenent">estatAprenent</a></li><li><a href="global.html#estatParelles">estatParelles</a></li><li><a href="global.html#estatPerfil">estatPerfil</a></li><li><a href="global.html#estatSessioLogin">estatSessioLogin</a></li><li><a href="global.html#estatSessioText">estatSessioText</a></li><li><a href="global.html#estatVoluntari">estatVoluntari</a></li><li><a href="global.html#filtreEstatParelles">filtreEstatParelles</a></li><li><a href="global.html#formatData">formatData</a></li><li><a href="global.html#formatDataInforme">formatDataInforme</a></li><li><a href="global.html#formulariAcces">formulariAcces</a></li><li><a href="global.html#formulariAprenent">formulariAprenent</a></li><li><a href="global.html#formulariNovaParella">formulariNovaParella</a></li><li><a href="global.html#formulariPerfil">formulariPerfil</a></li><li><a href="global.html#formulariVoluntari">formulariVoluntari</a></li><li><a href="global.html#generarInformeParelles">generarInformeParelles</a></li><li><a href="global.html#inicialitzarNavegacioSessio">inicialitzarNavegacioSessio</a></li><li><a href="global.html#llegirStorage">llegirStorage</a></li><li><a href="global.html#mostrarDades">mostrarDades</a></li><li><a href="global.html#mostrarEstat">mostrarEstat</a></li><li><a href="global.html#mostrarEstatParelles">mostrarEstatParelles</a></li><li><a href="global.html#mostrarSessioActiva">mostrarSessioActiva</a></li><li><a href="global.html#netejarSeleccioParella">netejarSeleccioParella</a></li><li><a href="global.html#obtenirCapcaleresAutenticades">obtenirCapcaleresAutenticades</a></li><li><a href="global.html#obtenirClauStorage">obtenirClauStorage</a></li><li><a href="global.html#obtenirDestiAreaPrivada">obtenirDestiAreaPrivada</a></li><li><a href="global.html#obtenirDestiPerRol">obtenirDestiPerRol</a></li><li><a href="global.html#obtenirJSONProtegit">obtenirJSONProtegit</a></li><li><a href="global.html#obtenirPrefixPages">obtenirPrefixPages</a></li><li><a href="global.html#obtenirResumEstats">obtenirResumEstats</a></li><li><a href="global.html#obtenirSessio">obtenirSessio</a></li><li><a href="global.html#obtenirText">obtenirText</a></li><li><a href="global.html#obtenirTextAreaPrivada">obtenirTextAreaPrivada</a></li><li><a href="global.html#omplirTaulaBuida">omplirTaulaBuida</a></li><li><a href="global.html#parellaSeleccionadaId">parellaSeleccionadaId</a></li><li><a href="global.html#parellaSeleccionadaText">parellaSeleccionadaText</a></li><li><a href="global.html#parelles">parelles</a></li><li><a href="global.html#parellesResum">parellesResum</a></li><li><a href="global.html#parellesSessio">parellesSessio</a></li><li><a href="global.html#participantTeParellaOberta">participantTeParellaOberta</a></li><li><a href="global.html#redirigirSiJaHiHaSessio">redirigirSiJaHiHaSessio</a></li><li><a href="global.html#renderitzarParelles">renderitzarParelles</a></li><li><a href="global.html#rolPerfilActual">rolPerfilActual</a></li><li><a href="global.html#seleccionarParella">seleccionarParella</a></li><li><a href="global.html#sessioHaCaducat">sessioHaCaducat</a></li><li><a href="global.html#statParellesTotal">statParellesTotal</a></li><li><a href="global.html#tancarSessio">tancarSessio</a></li><li><a href="global.html#tancarSessioActiva">tancarSessioActiva</a></li><li><a href="global.html#taulaParelles">taulaParelles</a></li><li><a href="global.html#teSessioRecordada">teSessioRecordada</a></li><li><a href="global.html#validarAccesParelles">validarAccesParelles</a></li><li><a href="global.html#validarContrasenya">validarContrasenya</a></li><li><a href="global.html#validarCorreu">validarCorreu</a></li><li><a href="global.html#validarDataNaixement">validarDataNaixement</a></li><li><a href="global.html#validarTelefon">validarTelefon</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed May 06 2026 13:30:50 GMT+0200 (Hora d’estiu d’Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

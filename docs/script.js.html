@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: script.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: script.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file script.js
+ * @author Grup1
+ * @description Controla les interaccions de la pàgina:
+ * - Funció 1: Efecte actiu del menú de navegació quan l'usuari passa el ratolí.
+ * - Funció 2: Reproducció de sons quan l'usuari clica els perfils Voluntari o Aprenent.
+ */
+
+
+/**
+ * Funció principal que s'executa quan el DOM ha carregat completament.
+ * Inicialitza els esdeveniments del menú de navegació i dels perfils d'usuari.
+ *
+ * @function window.onload
+ * @returns {void}
+ */
+window.onload = function () {
+
+    /**
+     * =====================================================
+     * FUNCIÓ 1 - EFECTE ACTIU AL MENÚ DE NAVEGACIÓ
+     * =====================================================
+     */
+
+    /**
+     * Selecciona tots els enllaços del menú amb la classe nav-link.
+     * @type {NodeListOf&lt;HTMLAnchorElement>}
+     */
+    const navLinks = document.querySelectorAll('.nav-pills .nav-link');
+
+    /**
+     * Recorre cada enllaç del menú i afegeix esdeveniments
+     * per activar o desactivar la classe "active".
+     */
+    navLinks.forEach(link => {
+
+        /**
+         * Esdeveniment que s'activa quan el ratolí passa per sobre del link.
+         * Activa visualment l'enllaç actual.
+         *
+         * @event mouseover
+         */
+        link.addEventListener('mouseover', function () {
+
+            // elimina la classe active de tots els links
+            navLinks.forEach(l => l.classList.remove('active'));
+
+            // afegeix la classe active al link actual
+            this.classList.add('active');
+        });
+
+
+        /**
+         * Esdeveniment que s'activa quan el ratolí surt del link.
+         * Desactiva l'estil visual.
+         *
+         * @event mouseout
+         */
+        link.addEventListener('mouseout', function () {
+
+            // elimina la classe active
+            this.classList.remove('active');
+        });
+
+    });
+
+    /**
+     * =====================================================
+     * FUNCIÓ 2 - SONS DELS PERFILS
+     * =====================================================
+     */
+
+    /**
+     * Element HTML de la imatge del perfil voluntari.
+     * @type {HTMLElement|null}
+     */
+    const voluntari = document.getElementById("voluntari");
+
+    /**
+     * Element HTML de la imatge del perfil aprenent.
+     * @type {HTMLElement|null}
+     */
+    const aprenent = document.getElementById("aprenent");
+
+    /**
+     * Element d'àudio per al so del voluntari.
+     * @type {HTMLAudioElement|null}
+     */
+    const soVoluntari = document.getElementById("soVoluntari");
+
+    /**
+     * Element d'àudio per al so de l'aprenent.
+     * @type {HTMLAudioElement|null}
+     */
+    const soAprenent = document.getElementById("soAprenent");
+
+    /**
+     * Afegeix un esdeveniment click a la imatge del voluntari
+     * per reproduir el seu so corresponent.
+     */
+    if (voluntari) {
+
+        voluntari.addEventListener("click", function () {
+
+            // reinicia el temps del so
+            soVoluntari.currentTime = 0;
+
+            // reprodueix el so
+            soVoluntari.play();
+        });
+
+    }
+
+    /**
+     * Afegeix un esdeveniment click a la imatge de l'aprenent
+     * per reproduir el seu so corresponent.
+     */
+    if (aprenent) {
+
+        aprenent.addEventListener("click", function () {
+
+            // reinicia el temps del so
+            soAprenent.currentTime = 0;
+
+            // reprodueix el so
+            soAprenent.play();
+        });
+
+    }
+
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:mouseout">mouseout</a></li><li><a href="global.html#event:mouseover">mouseover</a></li></ul><h3>Global</h3><ul><li><a href="global.html#API_BASE">API_BASE</a></li><li><a href="global.html#API_BASE_REGISTRE">API_BASE_REGISTRE</a></li><li><a href="global.html#CLAU_LOCAL">CLAU_LOCAL</a></li><li><a href="global.html#CLAU_SESSIO">CLAU_SESSIO</a></li><li><a href="global.html#actualitzarCampsPerRol">actualitzarCampsPerRol</a></li><li><a href="global.html#actualitzarEnllacAreaPrivada">actualitzarEnllacAreaPrivada</a></li><li><a href="global.html#actualitzarResumEstats">actualitzarResumEstats</a></li><li><a href="global.html#actualitzarSelectorsParelles">actualitzarSelectorsParelles</a></li><li><a href="global.html#amagarEstatParelles">amagarEstatParelles</a></li><li><a href="global.html#assignarValorSelect">assignarValorSelect</a></li><li><a href="global.html#badgeRol">badgeRol</a></li><li><a href="global.html#botoAnarSessio">botoAnarSessio</a></li><li><a href="global.html#botoEntrar">botoEntrar</a></li><li><a href="global.html#botoEnviar">botoEnviar</a></li><li><a href="global.html#botoGuardar">botoGuardar</a></li><li><a href="global.html#botoInformeParelles">botoInformeParelles</a></li><li><a href="global.html#botoMostrarContrasenya">botoMostrarContrasenya</a></li><li><a href="global.html#botoRecarregarParelles">botoRecarregarParelles</a></li><li><a href="global.html#botoTancarSessioLogin">botoTancarSessioLogin</a></li><li><a href="global.html#campContrasenya">campContrasenya</a></li><li><a href="global.html#campCorreu">campCorreu</a></li><li><a href="global.html#campRecordarSessio">campRecordarSessio</a></li><li><a href="global.html#camps">camps</a></li><li><a href="global.html#campsAprenent">campsAprenent</a></li><li><a href="global.html#campsEstatParella">campsEstatParella</a></li><li><a href="global.html#campsNovaParella">campsNovaParella</a></li><li><a href="global.html#campsPerfil">campsPerfil</a></li><li><a href="global.html#carregarParelles">carregarParelles</a></li><li><a href="global.html#carregarPerfil">carregarPerfil</a></li><li><a href="global.html#carregarUsuaris">carregarUsuaris</a></li><li><a href="global.html#carregarVistaCompleta">carregarVistaCompleta</a></li><li><a href="global.html#classeBadgeEstat">classeBadgeEstat</a></li><li><a href="global.html#construirOpcionsUsuari">construirOpcionsUsuari</a></li><li><a href="global.html#desarSessio">desarSessio</a></li><li><a href="global.html#dibuixarPeuInforme">dibuixarPeuInforme</a></li><li><a href="global.html#eliminarParella">eliminarParella</a></li><li><a href="global.html#emplenarFormulari">emplenarFormulari</a></li><li><a href="global.html#errorContrasenya">errorContrasenya</a></li><li><a href="global.html#esborrarSessio">esborrarSessio</a></li><li><a href="global.html#establirDataIniciAvui">establirDataIniciAvui</a></li><li><a href="global.html#estatAcces">estatAcces</a></li><li><a href="global.html#estatAprenent">estatAprenent</a></li><li><a href="global.html#estatParelles">estatParelles</a></li><li><a href="global.html#estatPerfil">estatPerfil</a></li><li><a href="global.html#estatSessioLogin">estatSessioLogin</a></li><li><a href="global.html#estatSessioText">estatSessioText</a></li><li><a href="global.html#estatVoluntari">estatVoluntari</a></li><li><a href="global.html#filtreEstatParelles">filtreEstatParelles</a></li><li><a href="global.html#formatData">formatData</a></li><li><a href="global.html#formatDataInforme">formatDataInforme</a></li><li><a href="global.html#formulariAcces">formulariAcces</a></li><li><a href="global.html#formulariAprenent">formulariAprenent</a></li><li><a href="global.html#formulariNovaParella">formulariNovaParella</a></li><li><a href="global.html#formulariPerfil">formulariPerfil</a></li><li><a href="global.html#formulariVoluntari">formulariVoluntari</a></li><li><a href="global.html#generarInformeParelles">generarInformeParelles</a></li><li><a href="global.html#inicialitzarNavegacioSessio">inicialitzarNavegacioSessio</a></li><li><a href="global.html#llegirStorage">llegirStorage</a></li><li><a href="global.html#mostrarDades">mostrarDades</a></li><li><a href="global.html#mostrarEstat">mostrarEstat</a></li><li><a href="global.html#mostrarEstatParelles">mostrarEstatParelles</a></li><li><a href="global.html#mostrarSessioActiva">mostrarSessioActiva</a></li><li><a href="global.html#netejarSeleccioParella">netejarSeleccioParella</a></li><li><a href="global.html#obtenirCapcaleresAutenticades">obtenirCapcaleresAutenticades</a></li><li><a href="global.html#obtenirClauStorage">obtenirClauStorage</a></li><li><a href="global.html#obtenirDestiAreaPrivada">obtenirDestiAreaPrivada</a></li><li><a href="global.html#obtenirDestiPerRol">obtenirDestiPerRol</a></li><li><a href="global.html#obtenirJSONProtegit">obtenirJSONProtegit</a></li><li><a href="global.html#obtenirPrefixPages">obtenirPrefixPages</a></li><li><a href="global.html#obtenirResumEstats">obtenirResumEstats</a></li><li><a href="global.html#obtenirSessio">obtenirSessio</a></li><li><a href="global.html#obtenirText">obtenirText</a></li><li><a href="global.html#obtenirTextAreaPrivada">obtenirTextAreaPrivada</a></li><li><a href="global.html#omplirTaulaBuida">omplirTaulaBuida</a></li><li><a href="global.html#parellaSeleccionadaId">parellaSeleccionadaId</a></li><li><a href="global.html#parellaSeleccionadaText">parellaSeleccionadaText</a></li><li><a href="global.html#parelles">parelles</a></li><li><a href="global.html#parellesResum">parellesResum</a></li><li><a href="global.html#parellesSessio">parellesSessio</a></li><li><a href="global.html#participantTeParellaOberta">participantTeParellaOberta</a></li><li><a href="global.html#redirigirSiJaHiHaSessio">redirigirSiJaHiHaSessio</a></li><li><a href="global.html#renderitzarParelles">renderitzarParelles</a></li><li><a href="global.html#rolPerfilActual">rolPerfilActual</a></li><li><a href="global.html#seleccionarParella">seleccionarParella</a></li><li><a href="global.html#sessioHaCaducat">sessioHaCaducat</a></li><li><a href="global.html#statParellesTotal">statParellesTotal</a></li><li><a href="global.html#tancarSessio">tancarSessio</a></li><li><a href="global.html#tancarSessioActiva">tancarSessioActiva</a></li><li><a href="global.html#taulaParelles">taulaParelles</a></li><li><a href="global.html#teSessioRecordada">teSessioRecordada</a></li><li><a href="global.html#validarAccesParelles">validarAccesParelles</a></li><li><a href="global.html#validarContrasenya">validarContrasenya</a></li><li><a href="global.html#validarCorreu">validarCorreu</a></li><li><a href="global.html#validarDataNaixement">validarDataNaixement</a></li><li><a href="global.html#validarTelefon">validarTelefon</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed May 06 2026 13:30:50 GMT+0200 (Hora d’estiu d’Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
