@@ -2,6 +2,7 @@
  * @file login.js
  * @author Grup1
  * @description Gestió del formulari d'accés, validacions i control de sessió.
+ * @module login 
  */
 
 /**

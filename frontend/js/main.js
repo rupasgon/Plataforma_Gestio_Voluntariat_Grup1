@@ -2,6 +2,7 @@
  * @file main.js 
  * @author Grup1
  * @description Inicialització del frontend - missatge de comprovació de càrrega de la interfície.
+ * @module main 
  */
 
 /**

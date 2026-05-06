@@ -2,6 +2,7 @@
  * @file nav-sessions.js 
  * @author Grup1
  * @description Gestió de la navegació segons la sessió - login, logout i accés a l'àrea privada.
+ * @module nav-sessions 
  */
 
 /**

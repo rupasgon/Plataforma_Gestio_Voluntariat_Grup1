@@ -1,7 +1,8 @@
 /**
- * @file auth.js
+ * @file auth-sessions.js
  * @author Grup1
  * @description Gestió de la sessió d'usuari, emmagatzematge en localStorage/sessionStorage i generació de capçaleres d'autenticació per a l'API.
+ * @module auth-sessions  
  */
 
 /**

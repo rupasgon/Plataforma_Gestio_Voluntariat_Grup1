@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: admin.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: admin.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @file admin.js
  * @author Grup1
  * @description Panell d'administració per gestionar usuaris, estadístiques i edició de dades amb integració amb l'API.
@@ -157,7 +185,7 @@ function amagarEstat() {
  * @param {number} [columnes=3]
  */
 function omplirTaulaBuida(element, missatge, columnes = 3) {
-  element.innerHTML = `<tr><td colspan="${columnes}" class="text-muted">${missatge}</td></tr>`;
+  element.innerHTML = `&lt;tr>&lt;td colspan="${columnes}" class="text-muted">${missatge}&lt;/td>&lt;/tr>`;
 }
 
 /**
@@ -194,7 +222,7 @@ function assignarValorSelect(select, valor) {
   const valorNormalitzat = valor || '';
   const existeixOpcio = Array.from(select.options).some((option) => option.value === valorNormalitzat);
 
-  if (valorNormalitzat && !existeixOpcio) {
+  if (valorNormalitzat &amp;&amp; !existeixOpcio) {
     select.add(new Option(valorNormalitzat, valorNormalitzat));
   }
 
@@ -237,7 +265,7 @@ function emplenarFormulariEdicio(usuari) {
  * Realitza una petició fetch protegida amb autenticació
  * @param {string} url - URL de la petició
  * @param {Object} [options={}] - Opcions de fetch
- * @returns {Promise<Object>} Resposta en format JSON
+ * @returns {Promise&lt;Object>} Resposta en format JSON
  */
 async function obtenirJSONProtegit(url, options = {}) {
   const resposta = await fetch(url, {
@@ -258,7 +286,7 @@ async function obtenirJSONProtegit(url, options = {}) {
 
 /**
  * Valida que l'usuari autenticat sigui administrador
- * @returns {Promise<boolean>} True si té accés, false si no
+ * @returns {Promise&lt;boolean>} True si té accés, false si no
  */
 async function validarAccesAdministrador() {
   const sessio = window.PARELLES_AUTH.obtenirSessio();
@@ -298,15 +326,15 @@ function renderitzarUltimsUsuaris(llistat = []) {
   taulaUltimsUsuaris.innerHTML = llistat
     .map(
       (usuari) => `
-        <tr>
-          <td>${usuari.nom} ${usuari.cognoms}</td>
-          <td>${usuari.email}</td>
-          <td><span class="badge text-bg-light text-uppercase">${usuari.rol}</span></td>
-          <td class="text-end">
-            <button class="btn btn-sm btn-outline-primary" type="button" data-editar-usuari="${usuari.id}">Editar</button>
-            <button class="btn btn-sm btn-outline-danger ms-1" type="button" data-eliminar-usuari="${usuari.id}">Eliminar</button>
-          </td>
-        </tr>
+        &lt;tr>
+          &lt;td>${usuari.nom} ${usuari.cognoms}&lt;/td>
+          &lt;td>${usuari.email}&lt;/td>
+          &lt;td>&lt;span class="badge text-bg-light text-uppercase">${usuari.rol}&lt;/span>&lt;/td>
+          &lt;td class="text-end">
+            &lt;button class="btn btn-sm btn-outline-primary" type="button" data-editar-usuari="${usuari.id}">Editar&lt;/button>
+            &lt;button class="btn btn-sm btn-outline-danger ms-1" type="button" data-eliminar-usuari="${usuari.id}">Eliminar&lt;/button>
+          &lt;/td>
+        &lt;/tr>
       `
     )
     .join('');
@@ -314,7 +342,7 @@ function renderitzarUltimsUsuaris(llistat = []) {
 
 /**
  * Carrega les dades resum del dashboard
- * @returns {Promise<void>}
+ * @returns {Promise&lt;void>}
  */
 async function carregarResumDashboard() {
   const dades = await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/admin/dashboard`);
@@ -324,7 +352,7 @@ async function carregarResumDashboard() {
 
 /**
  * Carrega la llista d'usuaris
- * @returns {Promise<void>}
+ * @returns {Promise&lt;void>}
  */
 async function carregarUsuaris() {
   const dades = await obtenirJSONProtegit(`${window.PARELLES_AUTH.API_BASE}/users`);
@@ -336,7 +364,7 @@ async function carregarUsuaris() {
 
 /**
  * Carrega tot el dashboard
- * @returns {Promise<void>}
+ * @returns {Promise&lt;void>}
  */
 async function carregarDashboardComplet() {
   amagarEstat();
@@ -352,7 +380,7 @@ async function carregarDashboardComplet() {
 /**
  * Selecciona un usuari per editar
  * @param {number} userId
- * @returns {Promise<void>}
+ * @returns {Promise&lt;void>}
  */
 async function seleccionarUsuariPerEdicio(userId) {
   try {
@@ -371,7 +399,7 @@ async function seleccionarUsuariPerEdicio(userId) {
 /**
  * Elimina un usuari
  * @param {number} userId
- * @returns {Promise<void>}
+ * @returns {Promise&lt;void>}
  */
 async function eliminarUsuari(userId) {
   const usuari = usuaris.find((item) => item.id === userId);
@@ -518,3 +546,26 @@ netejarFormulariEdicio();
     await carregarDashboardComplet();
   }
 })();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-admin.html">admin</a></li><li><a href="module-aprenent-form.html">aprenent-form</a></li><li><a href="module-auth-sessions.html">auth-sessions</a></li><li><a href="module-login.html">login</a></li><li><a href="module-main.html">main</a></li><li><a href="module-nav-sessions.html">nav-sessions</a></li><li><a href="module-parelles.html">parelles</a></li><li><a href="module-profile.html">profile</a></li><li><a href="module-profile-dashboard.html">profile-dashboard</a></li><li><a href="module-script.html">script</a></li><li><a href="module-voluntari-form.html">voluntari-form</a></li></ul><h3>Events</h3><ul><li><a href="module-script.html#~event:mouseout">mouseout</a></li><li><a href="module-script.html#~event:mouseover">mouseover</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed May 06 2026 14:46:27 GMT+0200 (Hora d’estiu d’Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

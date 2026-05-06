@@ -2,6 +2,7 @@
  * @file profile.js 
  * @author Grup1
  * @description Gestió del perfil d'usuari - càrrega, edició i actualització de dades amb API.
+ * @module profile 
  */
 
 /**

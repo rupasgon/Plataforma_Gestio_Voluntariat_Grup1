@@ -4,6 +4,7 @@
  * @description Controla les interaccions de la pàgina:
  * - Funció 1: Efecte actiu del menú de navegació quan l'usuari passa el ratolí.
  * - Funció 2: Reproducció de sons quan l'usuari clica els perfils Voluntari o Aprenent.
+ * @module script 
  */
 
 

@@ -2,6 +2,7 @@
  * @file parelles.js 
  * @author Grup1
  * @description Gestió de parelles (admin) - creació, consulta, filtratge, actualització d'estat i eliminació.
+ * @module parelles 
  */
 
 /**

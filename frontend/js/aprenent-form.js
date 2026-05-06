@@ -2,6 +2,7 @@
  * @file aprenent-form.js
  * @author Grup1
  * @description Gestió del formulari de registre d'aprenents, validacions de camps i enviament de dades a l'API.
+ * @module aprenent-form 
  */
 
 /**

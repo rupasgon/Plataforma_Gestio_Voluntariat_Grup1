@@ -2,6 +2,7 @@
  * @file voluntari-form.js 
  * @author Grup1
  * @description Registre de voluntaris - Gestió del formulari amb validacions i enviament a API.
+ * @module voluntari-form 
  */
 
 /**

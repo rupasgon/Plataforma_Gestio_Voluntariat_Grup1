@@ -2,6 +2,7 @@
  * @file profile-dashboard.js 
  * @author Grup1
  * @description Visualització del perfil d'usuari - càrrega i mostra de dades des de l'API.
+ * @module profile-dashboard 
  */
 
 /**
